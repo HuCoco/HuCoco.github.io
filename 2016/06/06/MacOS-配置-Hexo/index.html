@@ -19,7 +19,7 @@ Hexo基于Node.js，由台湾大神tommy351开发，可以实现一个静态网�
 特性
 快速Hexo基于Node.js，支持多线程，几百篇文章也可以几秒生成。
 流畅支持GitHub Flavored Markdown和Octop">
-<meta property="og:updated_time" content="2016-06-09T16:14:43.000Z">
+<meta property="og:updated_time" content="2016-06-09T16:21:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MacOS 配置 Hexo">
 <meta name="twitter:description" content="前言 
@@ -256,8 +256,8 @@ Hexo基于Node.js，由台湾大神tommy351开发，可以实现一个静态网�
 <li>流畅<br>支持<code>GitHub</code> <code>Flavored</code> <code>Markdown</code>和<a href="octopress.org"><code>Octopress</code></a>的插件。</li>
 <li>扩展<br><code>Hexo</code>支持<code>EJS</code>、<code>Swig</code>和<code>Stylus</code>，通过插件支持<code>Haml</code>、<code>Jade</code>、<code>Less</code></li>
 </ul>
-<p><br></p>
-<h2 id="下面就来给大家介绍下Hexo静态博客环境搭建的方法。"><a href="#下面就来给大家介绍下Hexo静态博客环境搭建的方法。" class="headerlink" title="下面就来给大家介绍下Hexo静态博客环境搭建的方法。"></a>下面就来给大家介绍下<code>Hexo</code>静态博客环境搭建的方法。</h2><h3> 先整理一下思路</h3><br>1.首先hexo是基于<code>nodejs</code>，所以需要安装nodejs（之前没有安装过的话）。<br>2.安装nodejs的方法很多的，因为为了简单，而且网上的很多教程也是用的homebrew安装方式，我也就用的这个。<br>3.安装<code>homebrew</code>方式很简单，因为mac自带了<code>ruby</code>，一句话就能搞定。<br>4.hexo提交部署需要git部署到github，所以需要安装git工具。<br>5.整理一下安装顺序，<strong>（homebrew-nodejs-hexo-git）</strong><br><br>—<br><h3> 1.安装homebrew</h3><br>打开终端，输入下面代码：<br><br>    ruby -e “$(curl -fsSL <a href="https://raw.github.com/Homebrew/homebrew/go/install" target="_blank" rel="external">https://raw.github.com/Homebrew/homebrew/go/install</a>)”<br><br><br>稍等片刻安装完成就可以了，因为正在下载，如果没有网速的话，可以关闭或者按下‘Ctrk+C’来结束进程并重新下载。值得注意的是输入这行代码也可能会提醒你输入的过旧，需要输入新的代码，只用复制那段代码然后轻敲回车就OK。<br><br><h3> 2.安装nodejs</h3><br>用homebrew安装，一句话搞定。<br><br>    brew install node<br><br><h3> 3.安装hexo</h3><br>可以使用nodejs自带的<code>npm</code>进行安装。<br><br>    npm install -g hexo<br><h3> 3.1创建hexo文件夹</h3><br>待安装完成之后，在自己想要的位置新建一个文件夹，例如在根目录新建。打开终端输入：<br><br>    mkdir blog<br>    cd blog<br>    hexo init<br><h3> 3.2安装依赖包  </h3><br>    npm install<br><h3> 4.安装git</h3><br>安装好之后建议注册一个<code>github</code>账号，如果没有的话。<br><br><h3> 4.1homebrew安装</h3>
+<p><br><br>下面就来给大家介绍下<code>Hexo</code>静态博客环境搭建的方法。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h3> 先整理一下思路</h3><br>1.首先hexo是基于<code>nodejs</code>，所以需要安装nodejs（之前没有安装过的话）。<br>2.安装nodejs的方法很多的，因为为了简单，而且网上的很多教程也是用的homebrew安装方式，我也就用的这个。<br>3.安装<code>homebrew</code>方式很简单，因为mac自带了<code>ruby</code>，一句话就能搞定。<br>4.hexo提交部署需要git部署到github，所以需要安装git工具。<br>5.整理一下安装顺序，<strong>（homebrew-nodejs-hexo-git）</strong><br><br>—<br><h3> 1.安装homebrew</h3><br>打开终端，输入下面代码：<br><br>    ruby -e “$(curl -fsSL <a href="https://raw.github.com/Homebrew/homebrew/go/install" target="_blank" rel="external">https://raw.github.com/Homebrew/homebrew/go/install</a>)”<br><br><br>稍等片刻安装完成就可以了，因为正在下载，如果没有网速的话，可以关闭或者按下‘Ctrk+C’来结束进程并重新下载。值得注意的是输入这行代码也可能会提醒你输入的过旧，需要输入新的代码，只用复制那段代码然后轻敲回车就OK。<br><br><h3> 2.安装nodejs</h3><br>用homebrew安装，一句话搞定。<br><br>    brew install node<br><br><h3> 3.安装hexo</h3><br>可以使用nodejs自带的<code>npm</code>进行安装。<br><br>    npm install -g hexo<br><h3> 3.1创建hexo文件夹</h3><br>待安装完成之后，在自己想要的位置新建一个文件夹，例如在根目录新建。打开终端输入：<br><br>    mkdir blog<br>    cd blog<br>    hexo init<br><h3> 3.2安装依赖包  </h3><br>    npm install<br><h3> 4.安装git</h3><br>安装好之后建议注册一个<code>github</code>账号，如果没有的话。<br><br><h3> 4.1homebrew安装</h3>
 
 <pre><code>sudo brew install git
 </code></pre><h3> 4.2配置</h3>
@@ -315,7 +315,7 @@ hexo s
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/06/06/MacOS-配置-Hexo/" data-id="cip8ifh9a0006tlkfz0hkdiur" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/06/06/MacOS-配置-Hexo/" data-id="cip8ihy0p0000u7kf7zfssxdf" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -402,6 +402,11 @@ hexo s
         </a>
     
     
+        <a href="/2016/06/05/Windows-配置-Hexo/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Windows 配置 Hexo</div>
+        </a>
+    
 </nav>
 
 
@@ -429,25 +434,6 @@ hexo s
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2016/06/10/Windows-配置-Hexo/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/Hexo/">Hexo</a></p>
-                            <p class="item-title"><a href="/2016/06/10/Windows-配置-Hexo/" class="title">Windows 配置 Hexo</a></p>
-                            <p class="item-date"><time datetime="2016-06-09T16:08:57.000Z" itemprop="datePublished">2016-06-10</time></p>
-                        </div>
-                    </li>
                 
                     <li>
                         
@@ -522,6 +508,25 @@ hexo s
                             <p class="item-category"><a class="article-category-link" href="/categories/Hexo/">Hexo</a></p>
                             <p class="item-title"><a href="/2016/06/06/MacOS-配置-Hexo/" class="title">MacOS 配置 Hexo</a></p>
                             <p class="item-date"><time datetime="2016-06-05T16:09:16.000Z" itemprop="datePublished">2016-06-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2016/06/05/Windows-配置-Hexo/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Hexo/">Hexo</a></p>
+                            <p class="item-title"><a href="/2016/06/05/Windows-配置-Hexo/" class="title">Windows 配置 Hexo</a></p>
+                            <p class="item-date"><time datetime="2016-06-04T16:08:57.000Z" itemprop="datePublished">2016-06-05</time></p>
                         </div>
                     </li>
                 
