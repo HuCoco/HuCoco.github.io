@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>HuCoco</title>
+    <title>浅析const关键字 | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://hucoco.com/index.html">
+    <meta name="description" content="const关键字它允许你指定一个语义的约束，也就是不允许被改动的对象，而编译器会帮助你实施这样的约束，这有有助于在团队协作中不去违反这样的规则。const可以用到的地方很多，你可以在classes外部去修饰global或者namespace作用域中的常量，或者修饰文件、函数、区块作用域中被声明为static的对象，也可以用它修饰classes内部的成员变量，而面对指针，你可以可以指出是对于指针自身">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析const关键字">
+<meta property="og:url" content="http://hucoco.com/2016/06/09/浅析const关键字/index.html">
 <meta property="og:site_name" content="HuCoco">
-<meta property="og:description">
+<meta property="og:description" content="const关键字它允许你指定一个语义的约束，也就是不允许被改动的对象，而编译器会帮助你实施这样的约束，这有有助于在团队协作中不去违反这样的规则。const可以用到的地方很多，你可以在classes外部去修饰global或者namespace作用域中的常量，或者修饰文件、函数、区块作用域中被声明为static的对象，也可以用它修饰classes内部的成员变量，而面对指针，你可以可以指出是对于指针自身">
+<meta property="og:updated_time" content="2016-06-09T07:48:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HuCoco">
-<meta name="twitter:description">
+<meta name="twitter:title" content="浅析const关键字">
+<meta name="twitter:description" content="const关键字它允许你指定一个语义的约束，也就是不允许被改动的对象，而编译器会帮助你实施这样的约束，这有有助于在团队协作中不去违反这样的规则。const可以用到的地方很多，你可以在classes外部去修饰global或者namespace作用域中的常量，或者修饰文件、函数、区块作用域中被声明为static的对象，也可以用它修饰classes内部的成员变量，而面对指针，你可以可以指出是对于指针自身">
     
 
     
@@ -193,8 +194,7 @@
 </aside>
 
             
-            <section id="main">
-    <article id="post-浅析const关键字" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-浅析const关键字" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -202,8 +202,8 @@
             <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/06/09/浅析const关键字/">浅析const关键字</a>
+        <h1 class="article-title" itemprop="name">
+            浅析const关键字
         </h1>
     
 
@@ -348,8 +348,22 @@
         </footer>
     </div>
     
+        
+
+    
 </article>
 
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
 
 </section>
             
@@ -450,11 +464,13 @@
     var disqus_shortname = 'hucoco';
     
     
+    var disqus_url = 'http://hucoco.com/2016/06/09/浅析const关键字/';
+    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
