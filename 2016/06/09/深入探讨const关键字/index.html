@@ -15,7 +15,7 @@
 <meta property="og:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
 
 创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
-<meta property="og:updated_time" content="2016-06-09T10:35:00.000Z">
+<meta property="og:updated_time" content="2016-06-09T10:37:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入探讨const关键字">
 <meta name="twitter:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
@@ -249,6 +249,7 @@
 <li>Point类中需要存储点的坐标信息，并且可以修改和获取这些信息。</li>
 <li>Line类中需要存储点的信息，并且可以修改和获取这些信息，以及获取总共的点的数量，删除的点的功能。</li>
 </ul>
+<a id="more"></a>
 <p>首先看看Point.h<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Point</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">bool</span> isInit;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point();</span><br><span class="line">    Point(<span class="keyword">const</span> <span class="keyword">int</span>&amp; _x,<span class="keyword">const</span> <span class="keyword">int</span>&amp; _y);</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateXY</span>(<span class="params"><span class="keyword">const</span> <span class="keyword">int</span>&amp; _x,<span class="keyword">const</span> <span class="keyword">int</span>&amp; _y</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getX</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> x;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getY</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> y;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">getIsInit</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> isInit;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span>(<span class="params"></span>) <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>x,y表示点的坐标，isInit表示这个点是否被初始化。</li>
@@ -288,7 +289,7 @@
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/06/09/深入探讨const关键字/" data-id="cip864qsr000279kf1znubkla" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/06/09/深入探讨const关键字/" data-id="cip8672cd000580kfjzesl5jm" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
