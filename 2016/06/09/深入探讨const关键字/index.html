@@ -3,17 +3,24 @@
 <head>
     <meta charset="utf-8">
     
-    <title>HuCoco</title>
+    <title>深入探讨const关键字 | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://hucoco.com/index.html">
+    <meta name="description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探讨const关键字">
+<meta property="og:url" content="http://hucoco.com/2016/06/09/深入探讨const关键字/index.html">
 <meta property="og:site_name" content="HuCoco">
-<meta property="og:description">
+<meta property="og:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
+<meta property="og:updated_time" content="2016-06-09T10:35:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HuCoco">
-<meta name="twitter:description">
+<meta name="twitter:title" content="深入探讨const关键字">
+<meta name="twitter:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
     
 
     
@@ -195,8 +202,7 @@
 </aside>
 
             
-            <section id="main">
-    <article id="post-深入探讨const关键字" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-深入探讨const关键字" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -204,8 +210,8 @@
             <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/06/09/深入探讨const关键字/">深入探讨const关键字</a>
+        <h1 class="article-title" itemprop="name">
+            深入探讨const关键字
         </h1>
     
 
@@ -356,310 +362,32 @@
         </footer>
     </div>
     
-</article>
-
-
-
-    <article id="post-浅析const关键字" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
         
-        
-        
-            <header class="article-header">
-                
+<nav id="article-nav">
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/06/09/浅析const关键字/">浅析const关键字</a>
-        </h1>
     
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/06/09/浅析const关键字/">
-            <time datetime="2016-06-09T07:45:01.000Z" itemprop="datePublished">2016-06-09</time>
+        <a href="/2016/06/09/浅析const关键字/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">浅析const关键字</div>
         </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/编程语言/">编程语言</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程语言/C/">C++</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>
-    </div>
-
-                </div>
-            </header>
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p><strong>const</strong>关键字它允许你指定一个语义的约束，也就是不允许被改动的对象，而编译器会帮助你实施这样的约束，这有有助于在团队协作中不去违反这样的规则。<br>const可以用到的地方很多，你可以在classes外部去修饰global或者namespace作用域中的常量，或者修饰文件、函数、区块作用域中被声明为static的对象，也可以用它修饰classes内部的成员变量，而面对指针，你可以可以指出是对于指针自身，还是指针所指物，或者两个都不是。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> authorName[] = <span class="string">"HookCoco"</span>;</span><br><span class="line"><span class="keyword">char</span>* name = authorName;                    <span class="comment">//1</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* name = authorName;              <span class="comment">//2</span></span><br><span class="line"><span class="keyword">char</span>* <span class="keyword">const</span> name = authorName;              <span class="comment">//3</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> name = authorName;        <span class="comment">//4</span></span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>指针可修改，数据可修改</li>
-<li>指针可修改，数据不可修改</li>
-<li>指针不可修改，数据可修改</li>
-<li>指针不可修改，数据不可修改</li>
-</ol></p>
-            <p class="article-more-link">
-                <a href="/2016/06/09/浅析const关键字/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://hucoco.com/2016/06/09/浅析const关键字/" data-id="cip864qsm000079kf9yo04pin" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
     
-        <a href="http://hucoco.com/2016/06/09/浅析const关键字/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://hucoco.com/2016/06/09/浅析const关键字/">评论</a>
-    
+</nav>
 
-        </footer>
-    </div>
+
     
 </article>
 
 
-
-    <article id="post-慎用-define" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-        
-            <header class="article-header">
-                
     
-        <h1 itemprop="name">
-            <a class="article-title" href="/2016/06/08/慎用-define/">慎用#define</a>
-        </h1>
+    <section id="comments">
     
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2016/06/08/慎用-define/">
-            <time datetime="2016-06-08T10:33:38.000Z" itemprop="datePublished">2016-06-08</time>
-        </a>
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </div>
 
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/编程语言/">编程语言</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/编程语言/C/">C++</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>
-    </div>
-
-                </div>
-            </header>
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>在我们学习C的时候，会常常使用到 <strong>#define</strong> 关键字来定义一些我们需要的元素，比如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MATH_PI 3.1415</span></span><br></pre></td></tr></table></figure></p>
-<p>记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到<strong>3.1415</strong>而不是<strong>MATH_PI</strong>，若果他是你的小伙伴写的那一部分，但你并不知道，这可能会折腾你很久，处理这样的问题就非常的浪费时间。<br>解决的办法很简单，就是以一个常量来替换上述的宏：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> MathPI = <span class="number">3.1415</span>;</span><br></pre></td></tr></table></figure></p>
-<p>这样MathPI可能会被编译器看到并记入记号表内，这样就绝不会出现刚刚的情况。</p>
-<blockquote>
-<p>这里在说一些题外话：我们在以不同的方式定义元素的时候，应该按照定于方式的规范来命名，比如这里的宏，我们使用的全大写+下划线来表示，而常量我们使用另外一种命名方式来表示，以此我们就可以区分不同的方式定义的元素。</p>
-</blockquote>
-<p>当我们使用<strong>const</strong>来代替<strong>#define</strong>时，有两种特殊的情况需要提一下。</p>
-<ol>
-<li>定义常量指针<br>由于常量定义通常放在头文件内，这样便于被不同的源码包含，因此有必要将指针声明为const，若要定义一个不变的指针，就必须const两次：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> authorName = <span class="string">"Hook"</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>为什么要这样做，在后面的文章中我会讲到。这里还会有更好的方法，我也更建议使用下面这样的方法。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">authorName</span><span class="params">(<span class="string">"Hook"</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>Class专有常量<br>为了将常量的作用于限制在类中，就必须把常量成为类的一个成员，为了保证只有一份这样的实体，就必须让它成为一个<strong>static</strong>成员<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime = <span class="number">2.5</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>但是这种写法并不好，因为C++要求每一个元素都应该有它的定义式，而这种写法是声明式，所以建议使用一下的这种方式：<br>*.h<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>*.cpp<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> BaseSkill::CoolDownTime = <span class="number">2.5</span>;</span><br></pre></td></tr></table></figure></p>
-<p>这样的功能#define就没有办法完成，因为#define对作用域是不敏感的，只要#define被定义，直到它被#undef，否则它将一直有用，所有任何有封装性的方法都不能使用它。<br>倘若Class在编译期间就需要使用一个常量又该怎么办呢，比如我们需要声明一个数组，编译器必须要在编译期间就要直到这个数组的长度，但这时候编译器不允许static const常量来完整这个任务，这里就需要用到一种就做“the enum hack”的补偿做法。</p>
-<blockquote>
-<p>因为一个枚举类型的数值可以当做ints来使用</p>
-</blockquote>
-  <figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataBuffer</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123; BufferLength = <span class="number">100</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> Buffer[BufferLength];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>enum是很值得我们深度认识的元素，它比较像#define而不像const，这也是它优秀的地方。</p>
-<p>接下来我们回到#define上来，通常我们习惯用#define去写一些宏函数，这东西很棒，但是需要格外的注意一些情况，比如下面这段代码：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define CALL_WITH_MAX(<span class="name">a</span>,b) f((<span class="name">a</span>) &gt; (<span class="name">b</span>) ? (<span class="name">a</span>) :(<span class="name">b</span>))</span><br></pre></td></tr></table></figure></p>
-<p>这个应该不难理解，选取a和b中较大的作为f(int)的参数传入。这里再说点其他的，书写宏函数时，实参一定要用括号包起来，不然你会经历绝望。当然就算我们括起来了，接下来也会经历绝望。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int a = <span class="number">4</span>,<span class="keyword">b </span>= <span class="number">2</span><span class="comment">;</span></span><br><span class="line">CALL_WITH_MAX(++a,<span class="keyword">b);</span><br><span class="line"></span>CALL_WITH_MAX(++a,<span class="keyword">b+8);</span></span><br></pre></td></tr></table></figure></p>
-<p>你能想象结果是什么么？<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f<span class="comment">(5)</span>;</span><br><span class="line">f<span class="comment">(10)</span>;</span><br></pre></td></tr></table></figure></p>
-<p>我想大部分会认为是上面这个结果，但是你错了，我们完全还原一下函数：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b</span>) ? (<span class="name">++a</span>):(<span class="name">b</span>))</span><br><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b+8</span>) ? (<span class="name">++a</span>):(<span class="name">b+8</span>))</span><br></pre></td></tr></table></figure></p>
-<p>现在应该清楚了吧！a的值取决于a被使用的次数，而且这样的错误使我们不能明确控制的，但是template inline函数会完全解决这个问题。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  f(a &gt; b ? a :b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>T可以代表你所需要的一切类型，只要他们能拿来比较，大的一个就会成为f的参数传入，而且你也可以把它作为某一个类的成员，宏是没有办法完成的。</p>
-<p>好了，这一章就到这里，简单概括一下：</p>
-<ul>
-<li>对于常量，使用const或者enum来代替#define</li>
-<li>对于函数，使用template inline来代替#define</li>
-</ul>
-<p>下一次我们会来细细的讨论下const这个关键字。</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://hucoco.com/2016/06/08/慎用-define/" data-id="cip864qsx000579kfy5b2o3ay" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
     
-        <a href="http://hucoco.com/2016/06/08/慎用-define/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://hucoco.com/2016/06/08/慎用-define/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
+    </section>
 
 </section>
             
@@ -809,11 +537,13 @@
     var disqus_shortname = 'hucoco';
     
     
+    var disqus_url = 'http://hucoco.com/2016/06/09/深入探讨const关键字/';
+    
     (function() {
     var dsq = document.createElement('script');
     dsq.type = 'text/javascript';
     dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
     </script>
