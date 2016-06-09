@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     
-    <title>HuCoco</title>
+    <title>分类: C++ | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://hucoco.com/index.html">
+<meta property="og:url" content="http://hucoco.com/categories/编程语言/C/index.html">
 <meta property="og:site_name" content="HuCoco">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -194,16 +194,19 @@
 
             
             <section id="main">
-    <article id="post-浅析const关键字" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-        
-            <header class="article-header">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-folder"></i></span>
+        <h1 class="title">C++</h1>
+    </div>
+    
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
                 
     
         <h1 itemprop="name">
-            <a class="article-title" href="/2016/06/09/浅析const关键字/">浅析const关键字</a>
+            <a class="timeline-article-title" href="/2016/06/09/浅析const关键字/">浅析const关键字</a>
         </h1>
     
 
@@ -230,106 +233,10 @@
     </div>
 
                 </div>
-            </header>
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p><strong>const</strong>关键字它允许你指定一个语义的约束，也就是不允许被改动的对象，而编译器会帮助你实施这样的约束，这有有助于在团队协作中不去违反这样的规则。<br>const可以用到的地方很多，你可以在classes外部去修饰global或者namespace作用域中的常量，或者修饰文件、函数、区块作用域中被声明为static的对象，也可以用它修饰classes内部的成员变量，而面对指针，你可以可以指出是对于指针自身，还是指针所指物，或者两个都不是。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> authorName[] = <span class="string">"HookCoco"</span>;</span><br><span class="line"><span class="keyword">char</span>* name = authorName;                    <span class="comment">//1</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* name = authorName;              <span class="comment">//2</span></span><br><span class="line"><span class="keyword">char</span>* <span class="keyword">const</span> name = authorName;              <span class="comment">//3</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> name = authorName;        <span class="comment">//4</span></span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>指针可修改，数据可修改</li>
-<li>指针可修改，数据不可修改</li>
-<li>指针不可修改，数据可修改</li>
-<li>指针不可修改，数据不可修改</li>
-</ol></p>
-            <p class="article-more-link">
-                <a href="/2016/06/09/浅析const关键字/#more">查看更多</a>
-            </p>
-        
+            </div>
         </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
+    
 </div>
-
-    <a data-url="http://hucoco.com/2016/06/09/浅析const关键字/" data-id="cip82mgbc0000z5kf3yoal794" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-        <a href="http://hucoco.com/2016/06/09/浅析const关键字/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://hucoco.com/2016/06/09/浅析const关键字/">评论</a>
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
 </section>
             
                 <aside id="sidebar">
