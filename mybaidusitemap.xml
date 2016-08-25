@@ -4,31 +4,86 @@
 
     
   <url>
-    <loc>http://hucoco.com/2016/08/16/CPU-%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA-Part1/</loc>
-    <lastmod>2016-08-18T10:35:33.000Z</lastmod>
+    <loc>http://hucoco.com/2016/06/09/%E6%B5%85%E6%9E%90const%E5%85%B3%E9%94%AE%E5%AD%97/</loc>
+    <lastmod>2016-08-25T04:51:23.000Z</lastmod>
     <data>
         <display>
-        <title>CPU_光线追踪_Part1</title>
+        <title>浅析const关键字</title>
+        <pubTime>2016-06-09T07:45:01.000Z</pubTime>
+        
+        <tag>C++</tag>
+         
+         
+           
+             
+              <breadCrumb title="C++" url="http://hucoco.com/categories/C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://hucoco.com/2016/08/16/CPU-%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA-Part1/</loc>
+    <lastmod>2016-08-25T04:51:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>CPU_Ray Tracing_Part1</title>
         <pubTime>2016-08-16T09:13:12.000Z</pubTime>
         
-        <tag>图形学</tag>
+        <tag>Graphics</tag>
          
         <tag>FreeImage</tag>
-         
-        <tag>光线追踪</tag>
          
         <tag>Ray Tracing</tag>
          
          
            
              
-              <breadCrumb title="图形学" url="http://hucoco.com/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/"/>
+              <breadCrumb title="Graphics" url="http://hucoco.com/categories/Graphics/"/>
           
              
-              <breadCrumb title="光线追踪" url="http://hucoco.com/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/"/>
+              <breadCrumb title="Ray Tracing" url="http://hucoco.com/categories/Graphics/Ray-Tracing/"/>
           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://hucoco.com/2016/06/08/%E6%85%8E%E7%94%A8-define/</loc>
+    <lastmod>2016-08-25T04:49:27.000Z</lastmod>
+    <data>
+        <display>
+        <title>慎用#define</title>
+        <pubTime>2016-06-08T10:33:38.000Z</pubTime>
+        
+        <tag>C++</tag>
+         
+         
+           
              
-              <breadCrumb title="CPU计算" url="http://hucoco.com/categories/%E5%9B%BE%E5%BD%A2%E5%AD%A6/%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA/CPU%E8%AE%A1%E7%AE%97/"/>
+              <breadCrumb title="C++" url="http://hucoco.com/categories/C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://hucoco.com/2016/06/09/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8const%E5%85%B3%E9%94%AE%E5%AD%97/</loc>
+    <lastmod>2016-08-25T04:49:22.000Z</lastmod>
+    <data>
+        <display>
+        <title>深入探讨const关键字</title>
+        <pubTime>2016-06-09T10:33:58.000Z</pubTime>
+        
+        <tag>C++</tag>
+         
+         
+           
+             
+              <breadCrumb title="C++" url="http://hucoco.com/categories/C/"/>
           
         </display>
     </data>
@@ -76,73 +131,4 @@
 
     
     
-    
-  <url>
-    <loc>http://hucoco.com/2016/06/08/%E6%85%8E%E7%94%A8-define/</loc>
-    <lastmod>2016-06-09T10:37:21.000Z</lastmod>
-    <data>
-        <display>
-        <title>慎用#define</title>
-        <pubTime>2016-06-08T10:33:38.000Z</pubTime>
-        
-        <tag>C++</tag>
-         
-         
-           
-             
-              <breadCrumb title="编程语言" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-          
-             
-              <breadCrumb title="C++" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://hucoco.com/2016/06/09/%E6%B7%B1%E5%85%A5%E6%8E%A2%E8%AE%A8const%E5%85%B3%E9%94%AE%E5%AD%97/</loc>
-    <lastmod>2016-06-09T10:37:11.000Z</lastmod>
-    <data>
-        <display>
-        <title>深入探讨const关键字</title>
-        <pubTime>2016-06-09T10:33:58.000Z</pubTime>
-        
-        <tag>C++</tag>
-         
-         
-           
-             
-              <breadCrumb title="编程语言" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-          
-             
-              <breadCrumb title="C++" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://hucoco.com/2016/06/09/%E6%B5%85%E6%9E%90const%E5%85%B3%E9%94%AE%E5%AD%97/</loc>
-    <lastmod>2016-06-09T09:01:41.000Z</lastmod>
-    <data>
-        <display>
-        <title>浅析const关键字</title>
-        <pubTime>2016-06-09T07:45:01.000Z</pubTime>
-        
-        <tag>C++</tag>
-         
-         
-           
-             
-              <breadCrumb title="编程语言" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-          
-             
-              <breadCrumb title="C++" url="http://hucoco.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/C/"/>
-          
-        </display>
-    </data>
-    </url>
-
 </urlset>
