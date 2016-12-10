@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>红黑树实现（插入） | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="上一节《红黑树实现(旋转)》
+红黑树基本操作添加将一个节点插入到红黑树中，需要执行哪些步骤呢？首先，将红黑树当作一颗二叉查找树，将节点插入；然后，将节点着色为红色；最后，通过旋转和重新着色等方法来修正该树，使之重新成为一颗红黑树。详细描述如下：
+第一步: 将红黑树当作一颗二叉查找树，将节点插入。红黑树本身就是一颗二叉查找树，将节点插入后，该树仍然是一颗二叉查找树。也就意味着，树的键值仍然是有序的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树实现（插入）">
+<meta property="og:url" content="http://hucoco.com/2016/12/09/红黑树实现（添加操作）/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="上一节《红黑树实现(旋转)》
+红黑树基本操作添加将一个节点插入到红黑树中，需要执行哪些步骤呢？首先，将红黑树当作一颗二叉查找树，将节点插入；然后，将节点着色为红色；最后，通过旋转和重新着色等方法来修正该树，使之重新成为一颗红黑树。详细描述如下：
+第一步: 将红黑树当作一颗二叉查找树，将节点插入。红黑树本身就是一颗二叉查找树，将节点插入后，该树仍然是一颗二叉查找树。也就意味着，树的键值仍然是有序的。">
+<meta property="og:image" content="http://hucoco.com/img/RedBlackTree/insertFix1.png">
+<meta property="og:updated_time" content="2016-12-10T10:56:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="红黑树实现（插入）">
+<meta name="twitter:description" content="上一节《红黑树实现(旋转)》
+红黑树基本操作添加将一个节点插入到红黑树中，需要执行哪些步骤呢？首先，将红黑树当作一颗二叉查找树，将节点插入；然后，将节点着色为红色；最后，通过旋转和重新着色等方法来修正该树，使之重新成为一颗红黑树。详细描述如下：
+第一步: 将红黑树当作一颗二叉查找树，将节点插入。红黑树本身就是一颗二叉查找树，将节点插入后，该树仍然是一颗二叉查找树。也就意味着，树的键值仍然是有序的。">
+<meta name="twitter:image" content="http://hucoco.com/img/RedBlackTree/insertFix1.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                8
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                7
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-红黑树实现（添加操作）" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            红黑树实现（插入）
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/12/09/红黑树实现（添加操作）/">
+            <time datetime="2016-12-09T01:43:32.000Z" itemprop="datePublished">2016-12-09</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/数据结构/">数据结构</a>, <a class="tag-link" href="/tags/红黑树/">红黑树</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>上一节<a href="http://hucoco.com/2016/12/10/%E7%BA%A2%E9%BB%91%E6%A0%91/">《红黑树实现(旋转)》</a></p>
+<h2 id="红黑树基本操作"><a href="#红黑树基本操作" class="headerlink" title="红黑树基本操作"></a>红黑树基本操作</h2><h3 id="添加"><a href="#添加" class="headerlink" title="添加"></a>添加</h3><p>将一个节点插入到红黑树中，需要执行哪些步骤呢？首先，将红黑树当作一颗二叉查找树，将节点插入；然后，将节点着色为红色；最后，通过旋转和重新着色等方法来修正该树，使之重新成为一颗红黑树。详细描述如下：</p>
+<h5 id="第一步-将红黑树当作一颗二叉查找树，将节点插入。"><a href="#第一步-将红黑树当作一颗二叉查找树，将节点插入。" class="headerlink" title="第一步: 将红黑树当作一颗二叉查找树，将节点插入。"></a>第一步: 将红黑树当作一颗二叉查找树，将节点插入。</h5><p>红黑树本身就是一颗二叉查找树，将节点插入后，该树仍然是一颗二叉查找树。也就意味着，树的键值仍然是有序的。此外，无论是左旋还是右旋，若旋转之前这棵树是二叉查找树，旋转之后它一定还是二叉查找树。这也就意味着，任何的旋转和重新着色操作，都不会改变它仍然是一颗二叉查找树的事实。</p>
+<p>那接下来，我们就来想方设法的旋转以及重新着色，使这颗树重新成为红黑树！</p>
+<a id="more"></a>
+<h5 id="第二步：将插入的节点着色为”红色”。"><a href="#第二步：将插入的节点着色为”红色”。" class="headerlink" title="第二步：将插入的节点着色为”红色”。"></a>第二步：将插入的节点着色为”红色”。</h5><p>为什么着色成红色，而不是黑色呢？为什么呢？在回答之前，我们需要重新温习一下红黑树的特性：</p>
+<ol>
+<li>每个节点或者是黑色，或者是红色。</li>
+<li>根节点是黑色。</li>
+<li>每个叶子节点是黑色。</li>
+<li>如果一个节点是红色的，则它的子节点必须是黑色的。</li>
+<li>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</li>
+</ol>
+<p>将插入的节点着色为红色，不会违背”特性(5)”！少违背一条特性，就意味着我们需要处理的情况越少。接下来，就要努力的让这棵树满足其它性质即可；满足了的话，它就又是一颗红黑树了。</p>
+<h5 id="第三步-通过一系列的旋转或着色等操作，使之重新成为一颗红黑树。"><a href="#第三步-通过一系列的旋转或着色等操作，使之重新成为一颗红黑树。" class="headerlink" title="第三步: 通过一系列的旋转或着色等操作，使之重新成为一颗红黑树。"></a>第三步: 通过一系列的旋转或着色等操作，使之重新成为一颗红黑树。</h5><p>第二步中，将插入节点着色为”红色”之后，不会违背”特性(5)”。那它到底会违背哪些特性呢？</p>
+<ul>
+<li>对于”特性(1)”，显然不会违背了。因为我们已经将它涂成红色了。</li>
+<li>对于”特性(2)”，显然也不会违背。在第一步中，我们是将红黑树当作二叉查找树，然后执行的插入操作。而根据二叉查找数的特点，插入操作不会改变根节点。所以，根节点仍然是黑色。</li>
+<li>对于”特性(3)”，显然不会违背了。这里的叶子节点是指的空叶子节点，插入非空节点并不会对它们造成影响。</li>
+<li>对于”特性(4)”，是有可能违背的！</li>
+</ul>
+<p>那接下来，想办法使之”满足特性(4)”，就可以将树重新构造成红黑树了。</p>
+<h5 id="添加操作伪代码"><a href="#添加操作伪代码" class="headerlink" title="添加操作伪代码"></a>添加操作伪代码</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RB-<span class="keyword">INSERT</span>(T, z)  </span><br><span class="line"> y ← nil[T]                        </span><br><span class="line"> x ← root[T]                       </span><br><span class="line"> <span class="keyword">while</span> x ≠ nil[T]                  </span><br><span class="line">     <span class="keyword">do</span> y ← x                      </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">key</span>[z] &lt; <span class="keyword">key</span>[x]  </span><br><span class="line">           <span class="keyword">then</span> x ← <span class="keyword">left</span>[x]  </span><br><span class="line">           <span class="keyword">else</span> x ← <span class="keyword">right</span>[x]  </span><br><span class="line"> p[z] ← y                          </span><br><span class="line"> <span class="keyword">if</span> y = nil[T]                     </span><br><span class="line">    <span class="keyword">then</span> root[T] ← z               </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">key</span>[z] &lt; <span class="keyword">key</span>[y]        </span><br><span class="line">            <span class="keyword">then</span> <span class="keyword">left</span>[y] ← z       </span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">right</span>[y] ← z       </span><br><span class="line"> <span class="keyword">left</span>[z] ← nil[T]                  </span><br><span class="line"> <span class="keyword">right</span>[z] ← nil[T]                 </span><br><span class="line"> color[z] ← RED                    </span><br><span class="line"> RB-<span class="keyword">INSERT</span>-FIXUP(T, z)</span><br></pre></td></tr></table></figure>
+<h5 id="添加修复操作伪代码"><a href="#添加修复操作伪代码" class="headerlink" title="添加修复操作伪代码"></a>添加修复操作伪代码</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">RB-INSERT-FIXUP</span><span class="params">(T, z)</span></span></span><br><span class="line">while <span class="attribute">color</span>[p[z]] = RED                                                  </span><br><span class="line">    do <span class="keyword">if</span> <span class="selector-tag">p</span>[z] = <span class="attribute">left</span>[p[p[z]]]                                           </span><br><span class="line">          then y ← <span class="attribute">right</span>[p[p[z]]]                                       </span><br><span class="line">               <span class="keyword">if</span> <span class="attribute">color</span>[y] = RED                                         </span><br><span class="line">                  then <span class="attribute">color</span>[p[z]] ← BLACK                    ▹ Case <span class="number">1</span>   </span><br><span class="line">                       <span class="attribute">color</span>[y] ← BLACK                       ▹ Case <span class="number">1</span>   </span><br><span class="line">                       <span class="attribute">color</span>[p[p[z]]] ← RED                   ▹ Case <span class="number">1</span>   </span><br><span class="line">                       z ← <span class="selector-tag">p</span>[<span class="selector-tag">p</span>[z]]                            ▹ Case <span class="number">1</span>   </span><br><span class="line">                  <span class="keyword">else</span> <span class="keyword">if</span> z = <span class="attribute">right</span>[p[z]]                                </span><br><span class="line">                          then z ← <span class="selector-tag">p</span>[z]                       ▹ Case <span class="number">2</span>   </span><br><span class="line">                               LEFT-ROTATE(T, z)              ▹ Case <span class="number">2</span>   </span><br><span class="line">                          <span class="attribute">color</span>[p[z]] ← BLACK                 ▹ Case <span class="number">3</span>   </span><br><span class="line">                          <span class="attribute">color</span>[p[p[z]]] ← RED                ▹ Case <span class="number">3</span>   </span><br><span class="line">                          RIGHT-ROTATE(T, <span class="selector-tag">p</span>[<span class="selector-tag">p</span>[z]])            ▹ Case <span class="number">3</span>  </span><br><span class="line">       <span class="keyword">else</span> (same as then clause with <span class="string">"right"</span> and <span class="string">"left"</span> exchanged)      </span><br><span class="line"><span class="attribute">color</span>[root[T]] ← BLACK</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">情况编号</th>
+<th style="text-align:left">现象说明</th>
+<th style="text-align:left">处理策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">当前节点的父节点是红色，且当前节点的祖父节点的另一个子节点（叔叔节点）也是红色。</td>
+<td style="text-align:left">(01) 将“父节点”设为黑色。<br>(02) 将“叔叔节点”设为黑色。<br>(03) 将“祖父节点”设为“红色”。<br>(04) 将“祖父节点”设为“当前节点”(红色节点)；即，之后继续对“当前节点”进行操作。</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">当前节点的父节点是红色，叔叔节点是黑色，且当前节点是其父节点的右孩子</td>
+<td style="text-align:left">(01) 将“父节点”作为“新的当前节点”。<br>(02) 以“新的当前节点”为支点进行左旋。</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">当前节点的父节点是红色，叔叔节点是黑色，且当前节点是其父节点的左孩子</td>
+<td style="text-align:left">(01) 将“父节点”设为“黑色”。<br>(02) 将“祖父节点”设为“红色”。<br>(03) 以“祖父节点”为支点进行右旋。</td>
+</tr>
+</tbody>
+</table>
+<h5 id="C-实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h5><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">template <span class="tag">&lt;class T&gt;</span></span><br><span class="line">bool RedBlackTree<span class="tag">&lt;T&gt;</span>::insert(RedBlackNode<span class="tag">&lt;T&gt;</span> *&amp;root, RedBlackNode<span class="tag">&lt;T&gt;</span> *<span class="keyword">node</span><span class="title">) &#123;</span><br><span class="line"></span><br><span class="line">	RedBlackNode</span><span class="tag">&lt;T&gt;</span>* y = nullptr;   </span><br><span class="line">	RedBlackNode<span class="tag">&lt;T&gt;</span>* x = root;     </span><br><span class="line"></span><br><span class="line">	while (x != nullptr) &#123;          </span><br><span class="line"></span><br><span class="line">		if(x-&gt;key == <span class="keyword">node</span><span class="title">-&gt;key</span>)&#123;    </span><br><span class="line">			return <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		y = x;                     </span><br><span class="line">		if(<span class="keyword">node</span><span class="title">-&gt;key</span> <span class="tag">&lt; x-&gt;</span>key) &#123;   </span><br><span class="line">			x = x-&gt;pLeft;           </span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			x = x-&gt;pRight;			</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">node</span><span class="title">-&gt;pParent</span> = y;				</span><br><span class="line"></span><br><span class="line">	if(y != nullptr) &#123;				</span><br><span class="line">		if(<span class="keyword">node</span><span class="title">-&gt;key</span> <span class="tag">&lt; y-&gt;</span>key) &#123;	</span><br><span class="line">			y-&gt;pLeft = <span class="keyword">node</span><span class="title">;		</span><br><span class="line">		&#125; else</span> &#123;					</span><br><span class="line">			y-&gt;pRight = <span class="keyword">node</span><span class="title">;		</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; else</span> &#123;</span><br><span class="line">		root = <span class="keyword">node</span><span class="title">;				</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	set_red</span>(<span class="keyword">node</span><span class="title">);		</span><br><span class="line"></span><br><span class="line">	insertFixUp</span>(root, <span class="keyword">node</span><span class="title">);</span><br><span class="line"></span><br><span class="line">	return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">template <span class="tag">&lt;class T&gt;</span></span><br><span class="line">void RedBlackTree<span class="tag">&lt;T&gt;</span>::insertFixUp(RedBlackNode<span class="tag">&lt;T&gt;</span> *&amp;root, RedBlackNode<span class="tag">&lt;T&gt;</span> *<span class="keyword">node</span><span class="title">) &#123;</span><br><span class="line"></span><br><span class="line">	RedBlackNode</span><span class="tag">&lt;T&gt;</span>* parent;</span><br><span class="line">	RedBlackNode<span class="tag">&lt;T&gt;</span>* gparnet;</span><br><span class="line"></span><br><span class="line">	while ((parent = get_parent(<span class="keyword">node</span><span class="title">))&amp;&amp;(is_red</span>(parent))) &#123;</span><br><span class="line"></span><br><span class="line">		gparnet = get_parent(parent);</span><br><span class="line"></span><br><span class="line">		if(parent == gparnet-&gt;pLeft) &#123;</span><br><span class="line">            RedBlackNode<span class="tag">&lt;T&gt;</span>* uncle = gparnet-&gt;pRight;</span><br><span class="line">            if(uncle &amp;&amp; is_red(uncle)) &#123;</span><br><span class="line">                set_black(uncle);</span><br><span class="line">                set_black(parent);</span><br><span class="line">                set_red(gparnet);</span><br><span class="line">                <span class="keyword">node</span> <span class="title">= gparnet</span>;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            if(parent-&gt;pRight == <span class="keyword">node</span><span class="title">) &#123;</span><br><span class="line">                RedBlackNode</span><span class="tag">&lt;T&gt;</span>* tmp;</span><br><span class="line">                leftRotate(root, parent);</span><br><span class="line">                tmp = parent;</span><br><span class="line">                parent = <span class="keyword">node</span><span class="title">;</span><br><span class="line">                node</span> = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            set_black(parent);</span><br><span class="line">            set_red(gparnet);</span><br><span class="line">            rightRotate(root, gparnet);</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">		else &#123;</span><br><span class="line">            RedBlackNode<span class="tag">&lt;T&gt;</span>* uncle = gparnet-&gt;pLeft;</span><br><span class="line">            if(uncle &amp;&amp; is_red(uncle)) &#123;</span><br><span class="line">                set_black(uncle);</span><br><span class="line">                set_black(parent);</span><br><span class="line">                set_red(gparnet);</span><br><span class="line">                <span class="keyword">node</span> <span class="title">= gparnet</span>;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            if(parent-&gt;pLeft == <span class="keyword">node</span><span class="title">) &#123;</span><br><span class="line">                RedBlackNode</span><span class="tag">&lt;T&gt;</span>* tmp;</span><br><span class="line">                rightRotate(root, parent);</span><br><span class="line">                tmp = parent;</span><br><span class="line">                parent = <span class="keyword">node</span><span class="title">;</span><br><span class="line">                node</span> = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            set_black(parent);</span><br><span class="line">            set_red(gparnet);</span><br><span class="line">            leftRotate(root, gparnet);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	set_black(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="Case-1-当前结点的父结点是红色，祖父结点的另一个子结点（叔叔结点）是红色。"><a href="#Case-1-当前结点的父结点是红色，祖父结点的另一个子结点（叔叔结点）是红色。" class="headerlink" title="Case 1: 当前结点的父结点是红色，祖父结点的另一个子结点（叔叔结点）是红色。"></a>Case 1: 当前结点的父结点是红色，祖父结点的另一个子结点（叔叔结点）是红色。</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while z<span class="selector-class">.p</span><span class="selector-class">.color</span> == RED  </span><br><span class="line">    do <span class="keyword">if</span> z<span class="selector-class">.p</span> == z<span class="selector-class">.p</span><span class="selector-class">.p</span><span class="selector-class">.left</span>  </span><br><span class="line">        then y ← z<span class="selector-class">.p</span><span class="selector-class">.p</span><span class="selector-class">.right</span>  </span><br><span class="line">        <span class="keyword">if</span> y<span class="selector-class">.color</span> == RED</span><br></pre></td></tr></table></figure>
+<p>此时父结点的父结点一定存在，否则插入前就已不是红黑树。与此同时，又分为父结点是祖父结点的左孩子还是右孩子，根据对称性，我们只要解开一个方向就可以了。这里只考虑父结点为祖父左孩子的情况，如下图所示。</p>
+<p><img src="http://hucoco.com/img/RedBlackTree/insertFix1.png" alt="insertFix1"></p>
+<p>对此我们策略是：将当前节点的父节点和叔叔节点涂黑，祖父结点涂红，把当前结点指向祖父节点，从新的当前节点重新开始算法。即如下代码所示：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">then z<span class="selector-class">.p</span><span class="selector-class">.color</span> ← BLACK               ▹ Case <span class="number">1</span>  </span><br><span class="line">y<span class="selector-class">.color</span> ← BLACK                      ▹ Case <span class="number">1</span>  </span><br><span class="line">z<span class="selector-class">.p</span><span class="selector-class">.p</span><span class="selector-class">.color</span> ← RED                    ▹ Case <span class="number">1</span>  </span><br><span class="line">z ← z<span class="selector-class">.p</span><span class="selector-class">.p</span>                            ▹ Case <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://hucoco.com/img/RedBlackTree/insertFix2.png" alt="insertFix2"></p>
+<p>于是，插入修复情况1转换成了插入修复情况2。</p>
+<h5 id="Case-2-当前节点的父节点是红色-叔叔节点是黑色，当前节点是其父节点的右子"><a href="#Case-2-当前节点的父节点是红色-叔叔节点是黑色，当前节点是其父节点的右子" class="headerlink" title="Case 2: 当前节点的父节点是红色,叔叔节点是黑色，当前节点是其父节点的右子"></a>Case 2: 当前节点的父节点是红色,叔叔节点是黑色，当前节点是其父节点的右子</h5><p>此时，解决对策是：当前节点的父节点做为新的当前节点，以新当前节点为支点左旋。即如下代码所示：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> z == z<span class="selector-class">.p</span><span class="selector-class">.right</span>  </span><br><span class="line">    then z ← z<span class="selector-class">.p</span>						▹ Case <span class="number">2</span>  </span><br><span class="line">    LEFT-ROTATE(T, z)				    ▹ Case <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://hucoco.com/img/RedBlackTree/insertFix3.png" alt="insertFix3"></p>
+<p>从而插入修复情况2转换成了插入修复情况3。</p>
+<h5 id="Case-3-当前节点的父节点是红色-叔叔节点是黑色，当前节点是其父节点的左孩子"><a href="#Case-3-当前节点的父节点是红色-叔叔节点是黑色，当前节点是其父节点的左孩子" class="headerlink" title="Case 3: 当前节点的父节点是红色,叔叔节点是黑色，当前节点是其父节点的左孩子"></a>Case 3: 当前节点的父节点是红色,叔叔节点是黑色，当前节点是其父节点的左孩子</h5><p>解决对策是：父节点变为黑色，祖父节点变为红色，在祖父节点为支点右旋，操作代码为： </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z<span class="selector-class">.p</span><span class="selector-class">.color</span> ← BLACK                        ▹ Case <span class="number">3</span>  </span><br><span class="line">z<span class="selector-class">.p</span><span class="selector-class">.p</span><span class="selector-class">.color</span> ← RED                         ▹ Case <span class="number">3</span>  </span><br><span class="line"><span class="function"><span class="title">RIGHT-ROTATE</span><span class="params">(T, z.p.p)</span></span>                  ▹ Case <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://hucoco.com/img/RedBlackTree/insertFix4.png" alt="insertFix4"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/12/09/红黑树实现（添加操作）/" data-id="ciwj3wxs800082pvee393pwws" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/12/09/红黑树实现（添加操作）/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/12/09/红黑树实现（添加操作）/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2016/12/08/红黑树/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">红黑树实现（旋转）</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/12/09/红黑树实现（添加操作）/" data-title="红黑树实现（插入）" data-url="http://hucoco.com/2016/12/09/红黑树实现（添加操作）/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a></p>
+                            <p class="item-title"><a href="/2016/12/09/红黑树实现（添加操作）/" class="title">红黑树实现（插入）</a></p>
+                            <p class="item-date"><time datetime="2016-12-09T01:43:32.000Z" itemprop="datePublished">2016-12-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a></p>
+                            <p class="item-title"><a href="/2016/12/08/红黑树/" class="title">红黑树实现（旋转）</a></p>
+                            <p class="item-date"><time datetime="2016-12-08T06:51:56.000Z" itemprop="datePublished">2016-12-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/图形学/">图形学</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/图形学/光线追踪/">光线追踪</a></p>
+                            <p class="item-title"><a href="/2016/08/16/CPU-光线追踪-Part1/" class="title">光线追踪</a></p>
+                            <p class="item-date"><time datetime="2016-08-16T09:13:12.000Z" itemprop="datePublished">2016-08-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C++</a></p>
+                            <p class="item-title"><a href="/2016/06/09/深入探讨const关键字/" class="title">深入探讨const关键字</a></p>
+                            <p class="item-date"><time datetime="2016-06-09T10:33:58.000Z" itemprop="datePublished">2016-06-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/C/">C++</a></p>
+                            <p class="item-title"><a href="/2016/06/09/浅析const关键字/" class="title">浅析const关键字</a></p>
+                            <p class="item-date"><time datetime="2016-06-09T07:45:01.000Z" itemprop="datePublished">2016-06-09</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">2</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 15px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 15px;">数据结构</a> <a href="/tags/红黑树/" style="font-size: 15px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">22.5k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
