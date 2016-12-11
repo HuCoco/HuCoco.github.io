@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>图基类和工厂函数 | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="图 Graph图论图的定义图(graph)是由一些点(vertex)和这些点之间的连线(edge)所组成的；其中，点通常被成为”顶点(vertex)”，而点与点之间的连线则被成为”边或弧”(edege)。通常记为，G=(V,E)。
+图的种类根据边是否有方向，将图可以划分为：无向图和有向图。
+无向图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图基类和工厂函数">
+<meta property="og:url" content="http://hucoco.com/2016/11/14/图基类和工厂函数/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="图 Graph图论图的定义图(graph)是由一些点(vertex)和这些点之间的连线(edge)所组成的；其中，点通常被成为”顶点(vertex)”，而点与点之间的连线则被成为”边或弧”(edege)。通常记为，G=(V,E)。
+图的种类根据边是否有方向，将图可以划分为：无向图和有向图。
+无向图">
+<meta property="og:image" content="http://hucoco.com/img/Graph/UDG.png">
+<meta property="og:updated_time" content="2016-12-11T02:41:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图基类和工厂函数">
+<meta name="twitter:description" content="图 Graph图论图的定义图(graph)是由一些点(vertex)和这些点之间的连线(edge)所组成的；其中，点通常被成为”顶点(vertex)”，而点与点之间的连线则被成为”边或弧”(edege)。通常记为，G=(V,E)。
+图的种类根据边是否有方向，将图可以划分为：无向图和有向图。
+无向图">
+<meta name="twitter:image" content="http://hucoco.com/img/Graph/UDG.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                12
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                8
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-图基类和工厂函数" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            图基类和工厂函数
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/11/14/图基类和工厂函数/">
+            <time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/图/">图</a>, <a class="tag-link" href="/tags/数据结构/">数据结构</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h1 id="图-Graph"><a href="#图-Graph" class="headerlink" title="图 Graph"></a>图 Graph</h1><h2 id="图论"><a href="#图论" class="headerlink" title="图论"></a>图论</h2><h3 id="图的定义"><a href="#图的定义" class="headerlink" title="图的定义"></a>图的定义</h3><p>图(graph)是由一些点(vertex)和这些点之间的连线(edge)所组成的；其中，点通常被成为”顶点(vertex)”，而点与点之间的连线则被成为”边或弧”(edege)。通常记为，<strong>G=(V,E)</strong>。</p>
+<h3 id="图的种类"><a href="#图的种类" class="headerlink" title="图的种类"></a>图的种类</h3><p>根据边是否有方向，将图可以划分为：<code>无向图</code>和<code>有向图</code>。</p>
+<h4 id="无向图"><a href="#无向图" class="headerlink" title="无向图"></a>无向图</h4><p><img src="http://hucoco.com/img/Graph/UDG.png" alt="UDG"></p>
+<a id="more"></a>
+<p>上面的图是无向图，无向图的所有的边都是不区分方向的。G0=(V1,{E1})。其中：</p>
+<p><code>V1 = { A , B , C , D , E , F }</code></p>
+<p>V1表示由”A,B,C,D,E,F”几个顶点组成的集合。</p>
+<p><code>E1 = { (A,B) , (A,C) , (B,C) , (B,E) , (B,F) , (C,F) ,  (C,D) , (E,F) , (C,E)}</code></p>
+<p>E1是由边(A,B),边(A,C)…等等组成的集合。其中，(A,C)表示由顶点A和顶点C连接成的边。</p>
+<h4 id="有向图"><a href="#有向图" class="headerlink" title="有向图"></a>有向图</h4><p><img src="http://hucoco.com/img/Graph/DG.png" alt="DG"></p>
+<p>上面的图G2是有向图。和无向图不同，有向图的所有的边都是有方向的！ G2=(V2,{A2})。其中，</p>
+<p><code>V2={A,C,B,F,D,E,G}</code></p>
+<p>V2表示由”A,B,C,D,E,F,G”几个顶点组成的集合。<br> <code>E2={&lt;A,B&gt;,&lt;B,C&gt;,&lt;B,F&gt;,&lt;B,E&gt;,&lt;C,E&gt;,&lt;E,D&gt;,&lt;D,C&gt;,&lt;E,B&gt;,&lt;F,G&gt;}</code></p>
+<p>E1是由矢量<a,b>,矢量<b,c>…等等组成的集合。其中，矢量&lt;A,B)表示由”顶点A”指向”顶点C”的有向边。</b,c></a,b></p>
+<h3 id="邻接点和度"><a href="#邻接点和度" class="headerlink" title="邻接点和度"></a>邻接点和度</h3><h4 id="邻接点"><a href="#邻接点" class="headerlink" title="邻接点"></a>邻接点</h4><p>一条边上的两个顶点叫做邻接点。<br>例如，上面无向图中的顶点A和顶点C就是邻接点。</p>
+<p>在有向图中，除了邻接点之外；还有”入边”和”出边”的概念。<br>顶点的入边，是指以该顶点为终点的边。而顶点的出边，则是指以该顶点为起点的边。 </p>
+<p>例如，上面有向图中的B和E是邻接点；<b,e>是B的出边，还是E的入边。</b,e></p>
+<h4 id="度"><a href="#度" class="headerlink" title="度"></a>度</h4><p>在无向图中，某个顶点的度是邻接到该顶点的边(或弧)的数目。<br>例如，上面无向图中顶点A的度是2。</p>
+<p>在有向图中，度还有”入度”和”出度”之分。 </p>
+<p>某个顶点的入度，是指以该顶点为终点的边的数目。而顶点的出度，则是指以该顶点为起点的边的数目。 </p>
+<p><code>顶点的度=入度+出度</code>。 </p>
+<p>例如，上面有向图中，顶点B的入度是2，出度是3，<code>顶点B的度=2+3=5</code>。</p>
+<h3 id="路径和回路"><a href="#路径和回路" class="headerlink" title="路径和回路"></a>路径和回路</h3><p><strong>路径：</strong>如果顶点(Vm)到顶点(Vn)之间存在一个顶点序列。则表示Vm到Vn是一条路径。 </p>
+<p><strong>路径长度：</strong>路径中”边的数量”。 </p>
+<p><strong>简单路径：</strong>若一条路径上顶点不重复出现，则是简单路径。 </p>
+<p><strong>回路：</strong>若路径的第一个顶点和最后一个顶点相同，则是回路。 </p>
+<p><strong>简单回路：</strong>第一个顶点和最后一个顶点相同，其它各顶点都不重复的回路则是简单回路。</p>
+<h3 id="连通图和连通分量"><a href="#连通图和连通分量" class="headerlink" title="连通图和连通分量"></a>连通图和连通分量</h3><p><strong>连通图：</strong>对无向图而言，任意两个顶点之间都存在一条无向路径，则称该无向图为连通图。 对有向图而言，若图中任意两个顶点之间都存在一条有向路径，则称该有向图为强连通图。</p>
+<p><strong>连通分量：</strong>非连通图中的各个连通子图称为该图的连通分量。</p>
+<h3 id="权"><a href="#权" class="headerlink" title="权"></a>权</h3><h2 id="图的存储"><a href="#图的存储" class="headerlink" title="图的存储"></a>图的存储</h2><p>图的存储结构，常用的是”邻接矩阵”和”邻接表”。</p>
+<h3 id="邻接矩阵"><a href="#邻接矩阵" class="headerlink" title="邻接矩阵"></a>邻接矩阵</h3><p>邻接矩阵是指用矩阵来表示图。它是采用矩阵来描述图中顶点之间的关系(及弧或边的权)。<br>假设图中顶点数为n，则邻接矩阵定义为</p>
+<p><code>A[i][j] == 1</code> <strong>存在边</strong></p>
+<p><code>A[i][j] == 0</code> <strong>不存在边</strong></p>
+<p>下面通过示意图来进行解释。</p>
+<p><img src="http://hucoco.com/img/Graph/UDG.png" alt="UDG"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">N/A</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">G</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">B</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">C</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">D</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">E</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">G</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>无向图和它对应的邻接矩阵</strong></p>
+<p><img src="http://hucoco.com/img/Graph/DG.png" alt="UDG"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">N/A</th>
+<th style="text-align:center">A</th>
+<th style="text-align:center">B</th>
+<th style="text-align:center">C</th>
+<th style="text-align:center">D</th>
+<th style="text-align:center">E</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">G</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">A</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">B</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">C</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">D</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+<tr>
+<td style="text-align:center">E</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">G</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>有向图和它对应的邻接矩阵</strong></p>
+<p>通常采用两个数组来实现邻接矩阵：一个一维数组用来保存顶点信息，一个二维数组来用保存边的信息。 </p>
+<p>邻接矩阵的缺点就是比较<strong>耗费空间</strong>。</p>
+<h3 id="邻接表"><a href="#邻接表" class="headerlink" title="邻接表"></a>邻接表</h3><p>邻接表是图的一种链式存储表示方法。它是改进后的”邻接矩阵”，它的缺点是不方便判断两个顶点之间是否有边，但是相对邻接矩阵来说更省空间。</p>
+<p><img src="http://hucoco.com/img/Graph/UDG.png" alt="UDG"><br><img src="http://hucoco.com/img/Graph/UDGL.png" alt="UDGL"></p>
+<p>无向图和它对应的邻接矩阵。</p>
+<p><img src="http://hucoco.com/img/Graph/DG.png" alt="UDG"><br><img src="http://hucoco.com/img/Graph/DGL.png" alt="UDGL"></p>
+<p>有向图和它对应的邻接矩阵。</p>
+<h2 id="图基类"><a href="#图基类" class="headerlink" title="图基类"></a>图基类</h2><p>这里我们构造一个图的接口类，这样我们能使用一套接口来完成对这几种类型的图的操作，虚基类能很好的完成这项任务。</p>
+<p>这里涉及到了C++的动态多态。</p>
+<p>源码：<a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/Graph.hpp" target="_blank" rel="external">Graph.hpp</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="keyword">class</span> GraphType &#123;</span><br><span class="line">    Undirected = <span class="number">0</span>,</span><br><span class="line">    Directed = <span class="number">1</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Graph &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    Graph()&#123;&#125;;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     *  [Graph 构造函数模板]</span><br><span class="line">     *  </span><br><span class="line">     *  @param type     [有向图或者无向图]</span><br><span class="line">     *  @param vexs     [节点数据数组]</span><br><span class="line">     *  @param vlen     [节点数据数组长度]</span><br><span class="line">     *  @param edges    [边数据数组]</span><br><span class="line">     *  @param elen     [边数据数组长度]</span><br><span class="line">     *  </span><br><span class="line">     */</span></span><br><span class="line">    Graph(<span class="keyword">const</span> GraphType&amp; type,<span class="built_in">std</span>::<span class="built_in">string</span> vexs[], <span class="keyword">int</span> vlen, <span class="built_in">std</span>::<span class="built_in">string</span> edges[][<span class="number">2</span>], <span class="keyword">int</span> elen) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * [getPosition 返回对应数据节点位置]</span><br><span class="line">     * @param  std::string [节点数据]</span><br><span class="line">     * @return             [节点位置]</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">getPosition</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span>)</span> </span>= <span class="number">0</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">virtual</span> ~Graph() &#123;&#125;;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * [print 打印图数据]</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * [DepthFirstSearch 深度优先搜索（遍历）]</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">DepthFirstSearch</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * [BreadthFirstSearch 广度优先搜索（遍历）]</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">BreadthFirstSearch</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * [topologicalSort 拓扑排序]</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">topologicalSort</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="图工厂类"><a href="#图工厂类" class="headerlink" title="图工厂类"></a>图工厂类</h2><p>用工厂模式来构造图类，我们不需要关心我们需要声明一个什么类型的数据，只需要传入相关的参数就能获取到对应的数据。</p>
+<p>源码：<a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/Graph.hpp" target="_blank" rel="external">GraphCreator.hpp</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int8_t</span> GraphMask;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> GraphMask GRAPH_MATRIX = <span class="number">0x1</span>;</span><br><span class="line"><span class="keyword">const</span> GraphMask GRAPH_LIST = <span class="number">0x2</span>;</span><br><span class="line"><span class="keyword">const</span> GraphMask GRAPH_DIRECTION = <span class="number">0x4</span>;</span><br><span class="line"><span class="keyword">const</span> GraphMask GRAPH_UNDIRECTION = <span class="number">0x8</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Graph;</span><br><span class="line"><span class="keyword">class</span> GraphByMatrix;</span><br><span class="line"><span class="keyword">class</span> GraphByList;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> *  图类数据工厂类</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">class</span> GraphCreator &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="comment">/**</span><br><span class="line">	 * 	[create 构造图类数据]</span><br><span class="line">	 *  @param GraphMask 	[传入需要构造的图的类型]  GRAPH_MATRIX 和 GRAPH_LIST必须选择一个，GRAPH_DIRECTION 和 GRAPH_UNDIRECTION 可选可不选，默认为GRAPH_UNDIRECTION</span><br><span class="line">	 *  @param others 		[参见Graph.hpp]</span><br><span class="line">	 *</span><br><span class="line">	 * 	@return 			[图类数据]</span><br><span class="line">	 */</span></span><br><span class="line">		</span><br><span class="line">    <span class="function"><span class="keyword">static</span> Graph* <span class="title">create</span><span class="params">(GraphMask mask,<span class="built_in">std</span>::<span class="built_in">string</span> vexs[], <span class="keyword">int</span> vlen, <span class="built_in">std</span>::<span class="built_in">string</span> edges[][<span class="number">2</span>], <span class="keyword">int</span> elen)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>源码：<a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/Graph.cpp" target="_blank" rel="external">GraphCreator.cpp</a></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"GraphCreator.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"Graph.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"GraphByMatrix.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="string">"GraphByList.hpp"</span></span></span><br><span class="line"></span><br><span class="line">Graph* GraphCreator::create(GraphMask mask,<span class="built_in">std</span>::<span class="built_in">string</span> vexs[], <span class="keyword">int</span> vlen, <span class="built_in">std</span>::<span class="built_in">string</span> edges[][<span class="number">2</span>], <span class="keyword">int</span> elen) &#123;</span><br><span class="line"></span><br><span class="line">    Graph* pRet;</span><br><span class="line">    <span class="keyword">switch</span> (mask) &#123;</span><br><span class="line">        <span class="keyword">case</span> GRAPH_MATRIX:</span><br><span class="line">        <span class="keyword">case</span> GRAPH_MATRIX | GRAPH_UNDIRECTION:</span><br><span class="line">            pRet = <span class="keyword">new</span> GraphByMatrix(GraphType::Undirected,vexs,vlen,edges,elen);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> GRAPH_MATRIX | GRAPH_DIRECTION:</span><br><span class="line">            pRet = <span class="keyword">new</span> GraphByMatrix(GraphType::Directed,vexs,vlen,edges,elen);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> GRAPH_LIST:</span><br><span class="line">        <span class="keyword">case</span> GRAPH_LIST | GRAPH_UNDIRECTION:</span><br><span class="line">            pRet = <span class="keyword">new</span> GraphByList(GraphType::Undirected,vexs,vlen,edges,elen);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> GRAPH_LIST | GRAPH_DIRECTION:</span><br><span class="line">            pRet = <span class="keyword">new</span> GraphByList(GraphType::Directed,vexs,vlen,edges,elen);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            pRet = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(pRet == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pRet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后我们很轻松的就能创建不同类型的度，而且我们不需要关注它具体是什么类型的。</p>
+<p><strong>邻接矩阵有向图</strong><br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Graph</span>* <span class="keyword">graph</span> = GraphCreator::<span class="keyword">create</span>(GRAPH_MATRIX | GRAPH_DIRECTION, vexs,vlen,edges,elen);</span><br></pre></td></tr></table></figure></p>
+<p><strong>邻接矩阵有向图</strong><br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Graph</span>* <span class="keyword">graph</span> = GraphCreator::<span class="keyword">create</span>(GRAPH_MATRIX | GRAPH_UNDIRECTION, vexs,vlen,edges2,elen2);</span><br></pre></td></tr></table></figure></p>
+<p><strong>邻接表有向图</strong><br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Graph</span>* <span class="keyword">graph</span> = GraphCreator::<span class="keyword">create</span>(GRAPH_LIST | GRAPH_DIRECTION, vexs,vlen,edges,elen);</span><br></pre></td></tr></table></figure></p>
+<p><strong>邻接表无向图</strong><br><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Graph</span>* <span class="keyword">graph</span> = GraphCreator::<span class="keyword">create</span>(GRAPH_LIST | GRAPH_UNDIRECTION, vexs,vlen,edges2,elen2);</span><br></pre></td></tr></table></figure></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/11/14/图基类和工厂函数/" data-id="ciwk1ocga00090rvekjdz3y9t" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/11/14/图基类和工厂函数/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/11/14/图基类和工厂函数/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/11/16/邻接矩阵图/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    邻接矩阵图
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/11/10/红黑树实现（删除）/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">红黑树实现（删除）</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/11/14/图基类和工厂函数/" data-title="图基类和工厂函数" data-url="http://hucoco.com/2016/11/14/图基类和工厂函数/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/邻接表图/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/邻接矩阵图/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/图基类和工厂函数/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a></p>
+                            <p class="item-title"><a href="/2016/11/10/红黑树实现（删除）/" class="title">红黑树实现（删除）</a></p>
+                            <p class="item-date"><time datetime="2016-11-10T11:43:32.000Z" itemprop="datePublished">2016-11-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a></p>
+                            <p class="item-title"><a href="/2016/11/09/红黑树实现（添加操作）/" class="title">红黑树实现（插入）</a></p>
+                            <p class="item-date"><time datetime="2016-11-09T01:43:32.000Z" itemprop="datePublished">2016-11-09</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12.5px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 15px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 17.5px;">数据结构</a> <a href="/tags/红黑树/" style="font-size: 15px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">38.9k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
