@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>红黑树实现（旋转） | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="二叉树复习二叉树有以下特性：
+
+若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值。
+任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值。
+任意节点的左、右子树也分别为二叉查找树。
+没有键值相等的节点。
+
+红黑树简介红黑树是一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红或黑。
+红黑树特性
+每个节点或者是黑色，或者是红色。
+根节点是黑色。
+每">
+<meta property="og:type" content="article">
+<meta property="og:title" content="红黑树实现（旋转）">
+<meta property="og:url" content="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="二叉树复习二叉树有以下特性：
+
+若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值。
+任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值。
+任意节点的左、右子树也分别为二叉查找树。
+没有键值相等的节点。
+
+红黑树简介红黑树是一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红或黑。
+红黑树特性
+每个节点或者是黑色，或者是红色。
+根节点是黑色。
+每">
+<meta property="og:image" content="http://hucoco.com/img/RedBlackTree/rbtree.png">
+<meta property="og:updated_time" content="2016-12-11T02:40:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="红黑树实现（旋转）">
+<meta name="twitter:description" content="二叉树复习二叉树有以下特性：
+
+若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值。
+任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值。
+任意节点的左、右子树也分别为二叉查找树。
+没有键值相等的节点。
+
+红黑树简介红黑树是一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红或黑。
+红黑树特性
+每个节点或者是黑色，或者是红色。
+根节点是黑色。
+每">
+<meta name="twitter:image" content="http://hucoco.com/img/RedBlackTree/rbtree.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                14
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Tree/RBTree/红黑树" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            红黑树实现（旋转）
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/11/08/Tree/RBTree/红黑树/">
+            <time datetime="2016-11-08T06:51:56.000Z" itemprop="datePublished">2016-11-08</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/树/">树</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/数据结构/">数据结构</a>, <a class="tag-link" href="/tags/红黑树/">红黑树</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="二叉树复习"><a href="#二叉树复习" class="headerlink" title="二叉树复习"></a>二叉树复习</h2><p>二叉树有以下特性：</p>
+<ol>
+<li>若任意节点的左子树不空，则左子树上所有结点的值均小于它的根结点的值。</li>
+<li>任意节点的右子树不空，则右子树上所有结点的值均大于它的根结点的值。</li>
+<li>任意节点的左、右子树也分别为二叉查找树。</li>
+<li>没有键值相等的节点。</li>
+</ol>
+<h2 id="红黑树简介"><a href="#红黑树简介" class="headerlink" title="红黑树简介"></a>红黑树简介</h2><p>红黑树是一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红或黑。</p>
+<h3 id="红黑树特性"><a href="#红黑树特性" class="headerlink" title="红黑树特性"></a>红黑树特性</h3><ol>
+<li>每个节点或者是黑色，或者是红色。</li>
+<li>根节点是黑色。</li>
+<li>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</li>
+<li>如果一个节点是红色的，则它的子节点必须是黑色的。</li>
+<li>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点。</li>
+</ol>
+<h4 id="Notes"><a href="#Notes" class="headerlink" title="Notes:"></a>Notes:</h4><ol>
+<li>特性(3)中的叶子节点，是只为空(NIL或null)的节点。</li>
+<li>特性(5)，确保没有一条路径会比其他路径长出俩倍。因而，红黑树是相对是接近平衡的二叉树。</li>
+</ol>
+<p><img src="http://hucoco.com/img/RedBlackTree/rbtree.png" alt="RedBlackTree"></p>
+<a id="more"></a>
+<h2 id="红黑树应用"><a href="#红黑树应用" class="headerlink" title="红黑树应用"></a>红黑树应用</h2><p>红黑树的应用特别广泛，主要是用它来存储有序的数据，它的时间复杂度是O(lgn)，效率非常之高。</p>
+<ul>
+<li>STL中的<strong>Set、Map</strong>。</li>
+<li>Java中的<strong>TreeSet、TreeMap</strong>。</li>
+<li>Linux中的虚拟内存管理。</li>
+</ul>
+<h2 id="红黑树基本操作"><a href="#红黑树基本操作" class="headerlink" title="红黑树基本操作"></a>红黑树基本操作</h2><h4 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                              z</span><br><span class="line">  x                          /                  </span><br><span class="line"> / <span class="string">\</span>      --<span class="function"><span class="params">(左旋)</span>--&gt;</span>        x</span><br><span class="line">y   z                      /</span><br><span class="line">                          y</span><br></pre></td></tr></table></figure>
+<p>对x进行左旋，意味着”将x变成一个左节点”。</p>
+<p><img src="http://hucoco.com/img/RedBlackTree/leftrotate.jpg" alt="Left Rotate"></p>
+<h5 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">LEFT-ROTATE</span><span class="params">(T, x)</span></span>  </span><br><span class="line"> y ← <span class="attribute">right</span>[x]            </span><br><span class="line"> <span class="attribute">right</span>[x] ← left[y]      </span><br><span class="line"> <span class="selector-tag">p</span>[<span class="attribute">left</span>[y]] ← x         </span><br><span class="line"> <span class="selector-tag">p</span>[y] ← <span class="selector-tag">p</span>[x]             </span><br><span class="line"> <span class="keyword">if</span> <span class="selector-tag">p</span>[x] = nil[T]       </span><br><span class="line"> then root[T] ← y                 </span><br><span class="line"> <span class="keyword">else</span> <span class="keyword">if</span> x = <span class="attribute">left</span>[p[x]]  </span><br><span class="line">           then <span class="attribute">left</span>[p[x]] ← y   </span><br><span class="line">           <span class="keyword">else</span> <span class="attribute">right</span>[p[x]] ← y  </span><br><span class="line"> <span class="attribute">left</span>[y] ← x             </span><br><span class="line"> <span class="selector-tag">p</span>[x] ← y</span><br></pre></td></tr></table></figure>
+<h5 id="C-实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h5><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T&gt;</span><br><span class="line">void RedBlackTree&lt;T&gt;::leftRotate(RedBlackNode&lt;T&gt; *&amp;root, RedBlackNode&lt;T&gt; *x) &#123;</span><br><span class="line"></span><br><span class="line">	R<span class="function"><span class="title">edBlackNode</span>&lt;T&gt; *y = x-&gt;</span>pRight;     </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">x</span>-&gt;</span><span class="function"><span class="title">pRight</span> = y-&gt;</span>pLeft;                    </span><br><span class="line">	<span class="function"><span class="title">if</span>(y-&gt;</span>pLeft != nullptr) &#123;</span><br><span class="line">		<span class="function"><span class="title">y</span>-&gt;</span><span class="function"><span class="title">pLeft</span>-&gt;</span>pParent = x;        </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">y</span>-&gt;</span><span class="function"><span class="title">pParent</span> = x-&gt;</span>pParent;         </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">if</span>(x-&gt;</span>pParent == nullptr) &#123;      </span><br><span class="line">		root = y;                      </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">if</span>(x-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pLeft == x) &#123;    </span><br><span class="line">			<span class="function"><span class="title">x</span>-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pLeft = y;      </span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="function"><span class="title">x</span>-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pRight = y; </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="title">y</span>-&gt;</span>pLeft = x;                   </span><br><span class="line">	<span class="function"><span class="title">x</span>-&gt;</span>pParent = y;                    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h4><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                             y</span><br><span class="line">  x                           <span class="string">\</span>                 </span><br><span class="line"> / <span class="string">\</span>      --<span class="function"><span class="params">(右旋)</span>--&gt;</span>           x</span><br><span class="line">y   z                            <span class="string">\</span></span><br><span class="line">                                  z</span><br></pre></td></tr></table></figure>
+<p>对x进行左旋，意味着”将x变成一个左节点”。</p>
+<p><img src="http://hucoco.com/img/RedBlackTree/rightrotate.jpg" alt="Right Left"></p>
+<h5 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">RIGHT-ROTATE</span><span class="params">(T, y)</span></span>  </span><br><span class="line"> x ← <span class="attribute">left</span>[y]             </span><br><span class="line"> <span class="attribute">left</span>[y] ← right[x]      </span><br><span class="line"> <span class="selector-tag">p</span>[<span class="attribute">right</span>[x]] ← y         </span><br><span class="line"> <span class="selector-tag">p</span>[x] ← <span class="selector-tag">p</span>[y]             </span><br><span class="line"> <span class="keyword">if</span> <span class="selector-tag">p</span>[y] = nil[T]       </span><br><span class="line"> then root[T] ← x               </span><br><span class="line"> <span class="keyword">else</span> <span class="keyword">if</span> y = <span class="attribute">right</span>[p[y]]  </span><br><span class="line">           then <span class="attribute">right</span>[p[y]] ← x   </span><br><span class="line">           <span class="keyword">else</span> <span class="attribute">left</span>[p[y]] ← x   </span><br><span class="line"> <span class="attribute">right</span>[x] ← y            </span><br><span class="line"> <span class="selector-tag">p</span>[y] ← x</span><br></pre></td></tr></table></figure>
+<h5 id="C-实现-1"><a href="#C-实现-1" class="headerlink" title="C++实现"></a>C++实现</h5><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">template &lt;class T&gt;</span><br><span class="line">void RedBlackTree&lt;T&gt;::rightRotate(RedBlackNode&lt;T&gt; *&amp;root, RedBlackNode&lt;T&gt; *y) &#123;</span><br><span class="line"></span><br><span class="line">	R<span class="function"><span class="title">edBlackNode</span>&lt;T&gt; *x = y-&gt;</span>pLeft;    </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">y</span>-&gt;</span><span class="function"><span class="title">pLeft</span> = x-&gt;</span>pRight;              </span><br><span class="line">	<span class="function"><span class="title">if</span>(x-&gt;</span>pRight != nullptr) &#123;</span><br><span class="line">		<span class="function"><span class="title">x</span>-&gt;</span><span class="function"><span class="title">pRight</span>-&gt;</span>pParent = y;     </span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">x</span>-&gt;</span><span class="function"><span class="title">pParent</span> = y-&gt;</span>pParent;           </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">if</span>(y-&gt;</span>pParent == nullptr) &#123;        </span><br><span class="line">		root = x;                       </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="function"><span class="title">if</span>(y-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pRight == y) &#123;   </span><br><span class="line">			<span class="function"><span class="title">y</span>-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pRight = x;     </span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="function"><span class="title">y</span>-&gt;</span><span class="function"><span class="title">pParent</span>-&gt;</span>pLeft = x;   </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="title">x</span>-&gt;</span>pRight = y;       </span><br><span class="line">	<span class="function"><span class="title">y</span>-&gt;</span>pParent = x;  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>红黑树源码：<a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/tree/RedBlackTree.hpp" target="_blank" rel="external">RedBlackTree.hpp</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/" data-id="ciwk95df1002ku8vef2fjho54" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/11/09/Tree/RBTree/红黑树实现（添加操作）/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    红黑树实现（插入）
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/08/16/Graphics/Ray Tracing/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">光线追踪</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/11/08/Tree/RBTree/红黑树/" data-title="红黑树实现（旋转）" data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/22/Graph/BFS/" class="title">广度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/20/Graph/DFS/" class="title">深度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/Graph/GraphByList/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/Graph/GraphByMatrix/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/Graph/Graph/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 16px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 18px;">数据结构</a> <a href="/tags/算法/" style="font-size: 12px;">算法</a> <a href="/tags/红黑树/" style="font-size: 14px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

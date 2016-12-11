@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>慎用#define | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
+记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="慎用#define">
+<meta property="og:url" content="http://hucoco.com/2016/06/08/Cpp/#define/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
+记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
+<meta property="og:updated_time" content="2016-08-25T04:49:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="慎用#define">
+<meta name="twitter:description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
+记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                14
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Cpp/#define" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            慎用#define
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/06/08/Cpp/#define/">
+            <time datetime="2016-06-08T10:33:38.000Z" itemprop="datePublished">2016-06-08</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/C/">C++</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>在我们学习C的时候，会常常使用到 <strong>#define</strong> 关键字来定义一些我们需要的元素，比如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MATH_PI 3.1415</span></span><br></pre></td></tr></table></figure></p>
+<p>记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到<strong>3.1415</strong>而不是<strong>MATH_PI</strong>，若果他是你的小伙伴写的那一部分，但你并不知道，这可能会折腾你很久，处理这样的问题就非常的浪费时间。<br>解决的办法很简单，就是以一个常量来替换上述的宏：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> MathPI = <span class="number">3.1415</span>;</span><br></pre></td></tr></table></figure></p>
+<p>这样MathPI可能会被编译器看到并记入记号表内，这样就绝不会出现刚刚的情况。</p>
+<blockquote>
+<p>这里在说一些题外话：我们在以不同的方式定义元素的时候，应该按照定于方式的规范来命名，比如这里的宏，我们使用的全大写+下划线来表示，而常量我们使用另外一种命名方式来表示，以此我们就可以区分不同的方式定义的元素。</p>
+</blockquote>
+<a id="more"></a>
+<p>当我们使用<strong>const</strong>来代替<strong>#define</strong>时，有两种特殊的情况需要提一下。</p>
+<ol>
+<li>定义常量指针<br>由于常量定义通常放在头文件内，这样便于被不同的源码包含，因此有必要将指针声明为const，若要定义一个不变的指针，就必须const两次：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> authorName = <span class="string">"Hook"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>为什么要这样做，在后面的文章中我会讲到。这里还会有更好的方法，我也更建议使用下面这样的方法。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">authorName</span><span class="params">(<span class="string">"Hook"</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>Class专有常量<br>为了将常量的作用于限制在类中，就必须把常量成为类的一个成员，为了保证只有一份这样的实体，就必须让它成为一个<strong>static</strong>成员<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime = <span class="number">2.5</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>但是这种写法并不好，因为C++要求每一个元素都应该有它的定义式，而这种写法是声明式，所以建议使用一下的这种方式：<br>*.h<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>*.cpp<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> BaseSkill::CoolDownTime = <span class="number">2.5</span>;</span><br></pre></td></tr></table></figure></p>
+<p>这样的功能#define就没有办法完成，因为#define对作用域是不敏感的，只要#define被定义，直到它被#undef，否则它将一直有用，所有任何有封装性的方法都不能使用它。<br>倘若Class在编译期间就需要使用一个常量又该怎么办呢，比如我们需要声明一个数组，编译器必须要在编译期间就要直到这个数组的长度，但这时候编译器不允许static const常量来完整这个任务，这里就需要用到一种就做“the enum hack”的补偿做法。</p>
+<blockquote>
+<p>因为一个枚举类型的数值可以当做ints来使用</p>
+</blockquote>
+  <figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataBuffer</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123; BufferLength = <span class="number">100</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> Buffer[BufferLength];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>enum是很值得我们深度认识的元素，它比较像#define而不像const，这也是它优秀的地方。</p>
+<p>接下来我们回到#define上来，通常我们习惯用#define去写一些宏函数，这东西很棒，但是需要格外的注意一些情况，比如下面这段代码：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define CALL_WITH_MAX(<span class="name">a</span>,b) f((<span class="name">a</span>) &gt; (<span class="name">b</span>) ? (<span class="name">a</span>) :(<span class="name">b</span>))</span><br></pre></td></tr></table></figure></p>
+<p>这个应该不难理解，选取a和b中较大的作为f(int)的参数传入。这里再说点其他的，书写宏函数时，实参一定要用括号包起来，不然你会经历绝望。当然就算我们括起来了，接下来也会经历绝望。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int a = <span class="number">4</span>,<span class="keyword">b </span>= <span class="number">2</span><span class="comment">;</span></span><br><span class="line">CALL_WITH_MAX(++a,<span class="keyword">b);</span><br><span class="line"></span>CALL_WITH_MAX(++a,<span class="keyword">b+8);</span></span><br></pre></td></tr></table></figure></p>
+<p>你能想象结果是什么么？<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f<span class="comment">(5)</span>;</span><br><span class="line">f<span class="comment">(10)</span>;</span><br></pre></td></tr></table></figure></p>
+<p>我想大部分会认为是上面这个结果，但是你错了，我们完全还原一下函数：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b</span>) ? (<span class="name">++a</span>):(<span class="name">b</span>))</span><br><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b+8</span>) ? (<span class="name">++a</span>):(<span class="name">b+8</span>))</span><br></pre></td></tr></table></figure></p>
+<p>现在应该清楚了吧！a的值取决于a被使用的次数，而且这样的错误使我们不能明确控制的，但是template inline函数会完全解决这个问题。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  f(a &gt; b ? a :b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>T可以代表你所需要的一切类型，只要他们能拿来比较，大的一个就会成为f的参数传入，而且你也可以把它作为某一个类的成员，宏是没有办法完成的。</p>
+<p>好了，这一章就到这里，简单概括一下：</p>
+<ul>
+<li>对于常量，使用const或者enum来代替#define</li>
+<li>对于函数，使用template inline来代替#define</li>
+</ul>
+<p>下一次我们会来细细的讨论下const这个关键字。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/06/08/Cpp/#define/" data-id="ciwk95dcv0003u8veamcuwtbq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/06/08/Cpp/#define/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/06/08/Cpp/#define/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/06/09/Cpp/const/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    浅析const关键字
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/06/06/Hexo/MacOS_Hexo/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">MacOS 配置 Hexo</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/06/08/Cpp/#define/" data-title="慎用#define" data-url="http://hucoco.com/2016/06/08/Cpp/#define/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/22/Graph/BFS/" class="title">广度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/20/Graph/DFS/" class="title">深度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/Graph/GraphByList/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/Graph/GraphByMatrix/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/Graph/Graph/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 16px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 18px;">数据结构</a> <a href="/tags/算法/" style="font-size: 12px;">算法</a> <a href="/tags/红黑树/" style="font-size: 14px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

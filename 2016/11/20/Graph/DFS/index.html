@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>深度优先搜索 | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="深度优先搜索深度优先搜索介绍图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。
+它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。 若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度优先搜索">
+<meta property="og:url" content="http://hucoco.com/2016/11/20/Graph/DFS/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="深度优先搜索深度优先搜索介绍图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。
+它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。 若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访">
+<meta property="og:image" content="http://hucoco.com/img/Graph/UDG.png">
+<meta property="og:updated_time" content="2016-12-11T03:08:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度优先搜索">
+<meta name="twitter:description" content="深度优先搜索深度优先搜索介绍图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。
+它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。 若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访">
+<meta name="twitter:image" content="http://hucoco.com/img/Graph/UDG.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                14
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Graph/DFS" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            深度优先搜索
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/11/20/Graph/DFS/">
+            <time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/图/">图</a>, <a class="tag-link" href="/tags/数据结构/">数据结构</a>, <a class="tag-link" href="/tags/算法/">算法</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h1 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h1><h2 id="深度优先搜索介绍"><a href="#深度优先搜索介绍" class="headerlink" title="深度优先搜索介绍"></a>深度优先搜索介绍</h2><p>图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。</p>
+<p>它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。 若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
+<p>显然，深度优先搜索是一个递归的过程，当然也可以使用迭代来实现，但在这里使用递归来实现。<strong>（对，我就是懒！）</strong></p>
+<h2 id="深度优先搜索图解"><a href="#深度优先搜索图解" class="headerlink" title="深度优先搜索图解"></a>深度优先搜索图解</h2><h3 id="无向图的深度优先搜索"><a href="#无向图的深度优先搜索" class="headerlink" title="无向图的深度优先搜索"></a>无向图的深度优先搜索</h3><h4 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h4><p>下面以”无向图”为例，来对深度优先搜索进行演示。</p>
+<p><img src="http://hucoco.com/img/Graph/UDG.png" alt="UDG"></p>
+<a id="more"></a>
+<p>对上面的图进行深度优先遍历，从顶点A开始：</p>
+<p><img src="http://hucoco.com/img/Graph/UDGDFS.png" alt="UDGDFS"></p>
+<ol>
+<li>访问A。 </li>
+<li><p>访问(A的邻接点)C。 </p>
+<p> 在第1步访问A之后，接下来应该访问的是A的邻接点，即”C,D,F”中的一个。但在本文的实现中，顶点ABCDEFG是按照顺序存储，C在”D和F”的前面，因此，先访问C。 </p>
+</li>
+<li><p>访问(C的邻接点)B。 </p>
+<p> 在第2步访问C之后，接下来应该访问C的邻接点，即”B和D”中一个(A已经被访问过，就不算在内)。而由于B在D之前，先访问B。 </p>
+</li>
+<li><p>访问(C的邻接点)D。 </p>
+<p> 在第3步访问了C的邻接点B之后，B没有未被访问的邻接点；因此，返回到访问C的另一个邻接点D。 </p>
+</li>
+<li><p>访问(A的邻接点)F。 </p>
+<p> 前面已经访问了A，并且访问完了”A的邻接点B的所有邻接点(包括递归的邻接点在内)”；因此，此时返回到访问A的另一个邻接点F。 </p>
+</li>
+<li>访问(F的邻接点)G。 </li>
+<li>访问(G的邻接点)E。</li>
+</ol>
+<p>因此访问顺序是<strong>：A -&gt; C -&gt; B -&gt; D -&gt; F -&gt; G -&gt; E</strong></p>
+<h3 id="有向图的深度优先搜索"><a href="#有向图的深度优先搜索" class="headerlink" title="有向图的深度优先搜索"></a>有向图的深度优先搜索</h3><p>下面以”有向图”为例，来对深度优先搜索进行演示。</p>
+<p><img src="http://hucoco.com/img/Graph/DG.png" alt="DG"></p>
+<p>对上面的图G2进行深度优先遍历，从顶点A开始。</p>
+<p><img src="http://hucoco.com/img/Graph/DGDFS.png" alt="DG"></p>
+<ol>
+<li>访问A。 </li>
+<li><p>访问B。 </p>
+<p> 在访问了A之后，接下来应该访问的是A的出边的另一个顶点，即顶点B。 </p>
+</li>
+<li><p>访问C。 </p>
+<p> 在访问了B之后，接下来应该访问的是B的出边的另一个顶点，即顶点C,E,F。在本文实现的图中，顶点ABCDEFG按照顺序存储，因此先访问C。 </p>
+</li>
+<li><p>访问E。 </p>
+<p> 接下来访问C的出边的另一个顶点，即顶点E。 </p>
+</li>
+<li><p>访问D。 </p>
+<p> 接下来访问E的出边的另一个顶点，即顶点B,D。顶点B已经被访问过，因此访问顶点D。 </p>
+</li>
+<li><p>访问F。 </p>
+<p> 接下应该回溯”访问A的出边的另一个顶点F”。 </p>
+</li>
+<li>访问G。</li>
+</ol>
+<p>因此访问顺序是：<strong>A -&gt; B -&gt; C -&gt; E -&gt; D -&gt; F -&gt; G</strong></p>
+<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>实现邻接矩阵图的深度优先搜索，我们需要两个辅助函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> GraphByMatrix::firstVertex(<span class="keyword">int</span> v) &#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">if</span>(v &lt; <span class="number">0</span> || v &gt;(m_VexNum<span class="number">-1</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(m_pMatrix[v][i] == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数会返回索引为v的顶点的第一个邻接点，邻接点的顺序根据存储顺序来判定。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> GraphByMatrix::nextVertex(<span class="keyword">int</span> v, <span class="keyword">int</span> w) &#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">if</span>(v &lt; <span class="number">0</span> || v &gt;(m_VexNum<span class="number">-1</span>) || w &lt; <span class="number">0</span> || w &gt; (m_VexNum<span class="number">-1</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = w + <span class="number">1</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(m_pMatrix[v][i] == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个函数会返回索引为v的顶点，相对于邻接点索引为w的顶点的下一个顶点。</p>
+<p>接下来是邻接矩阵图的深度优先搜索</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByMatrix::DepthFirstSearch(<span class="keyword">int</span> i, <span class="keyword">int</span> *visited) &#123;</span><br><span class="line">    <span class="keyword">int</span> w;</span><br><span class="line">    visited[i] = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    <span class="keyword">for</span>(w = firstVertex(i); w &gt;= <span class="number">0</span> ; w = nextVertex(i, w)) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[w]) &#123;</span><br><span class="line">            DepthFirstSearch(w, visited);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GraphByMatrix::DepthFirstSearch() &#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span>* visited = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        visited[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Depth First Search: "</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[i]) &#123;</span><br><span class="line">            DepthFirstSearch(i, visited);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] visited;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后是邻接表的深度优先搜索：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByList::DepthFirstSearch(<span class="keyword">int</span> i, <span class="keyword">bool</span> *visited) &#123;</span><br><span class="line">    ENode* p;</span><br><span class="line"></span><br><span class="line">    visited[i] = <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[i].m_Data &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    p = m_pVexs[i].firstEdge;</span><br><span class="line">    <span class="keyword">while</span> (p != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[p-&gt;m_Vex]) &#123;</span><br><span class="line">            DepthFirstSearch(p-&gt;m_Vex, visited);</span><br><span class="line">        &#125;</span><br><span class="line">        p = p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GraphByList::DepthFirstSearch() &#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">bool</span>* visited = <span class="keyword">new</span> <span class="keyword">bool</span>[m_VexNum];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        visited[i] = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Depth First Search: "</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[i]) &#123;</span><br><span class="line">            DepthFirstSearch(i, visited);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] visited;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里可以将<code>DepthFirstSearch()</code>的实现放到Graph基类上。</p>
+<hr>
+<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.hpp" target="_blank" rel="external">邻接矩阵图头文件</a></p>
+<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.cpp" target="_blank" rel="external">邻接矩阵图源文件</a></p>
+<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.hpp" target="_blank" rel="external">邻接表图头文件</a></p>
+<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.cpp" target="_blank" rel="external">邻接表图源文件</a></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/11/20/Graph/DFS/" data-id="ciwk95dd3000cu8veipf0rlmp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/11/20/Graph/DFS/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/11/20/Graph/DFS/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/11/22/Graph/BFS/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    广度优先搜索
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/11/18/Graph/GraphByList/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">邻接表图</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/11/20/Graph/DFS/" data-title="深度优先搜索" data-url="http://hucoco.com/2016/11/20/Graph/DFS/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/22/Graph/BFS/" class="title">广度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/20/Graph/DFS/" class="title">深度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/Graph/GraphByList/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/Graph/GraphByMatrix/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/Graph/Graph/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 16px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 18px;">数据结构</a> <a href="/tags/算法/" style="font-size: 12px;">算法</a> <a href="/tags/红黑树/" style="font-size: 14px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

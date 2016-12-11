@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>深入探讨const关键字 | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入探讨const关键字">
+<meta property="og:url" content="http://hucoco.com/2016/06/09/Cpp/const_keyword/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
+<meta property="og:updated_time" content="2016-08-25T04:49:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入探讨const关键字">
+<meta name="twitter:description" content="这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。这个例子的需求是这样的：我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。首先我们来分析一下需求：
+
+创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                14
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Cpp/const_keyword" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            深入探讨const关键字
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/06/09/Cpp/const_keyword/">
+            <time datetime="2016-06-09T10:33:58.000Z" itemprop="datePublished">2016-06-09</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/C/">C++</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/C/">C++</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>这一次我准备用一个实际的例子来更加深入的探讨const关键字，可能这个例子不是特别的符合要求。<br>这个例子的需求是这样的：<br>我们需要一个画折线的对象，这个对象可以添加新的点，也可以删除的点，为了方便实践，我们规定这个折线最多由20个点组成，并且可以输出当前点的个数和所有点的信息。<br>首先我们来分析一下需求：</p>
+<ul>
+<li>创建这样的一个简单对象，我们需要一个Point类和Line类，而且他们的关系属于has-a，所以应该用组合的方式实现。</li>
+<li>Point类中需要存储点的坐标信息，并且可以修改和获取这些信息。</li>
+<li>Line类中需要存储点的信息，并且可以修改和获取这些信息，以及获取总共的点的数量，删除的点的功能。</li>
+</ul>
+<a id="more"></a>
+<p>首先看看Point.h<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Point</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">bool</span> isInit;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Point();</span><br><span class="line">    Point(<span class="keyword">const</span> <span class="keyword">int</span>&amp; _x,<span class="keyword">const</span> <span class="keyword">int</span>&amp; _y);</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">updateXY</span>(<span class="params"><span class="keyword">const</span> <span class="keyword">int</span>&amp; _x,<span class="keyword">const</span> <span class="keyword">int</span>&amp; _y</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getX</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> x;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getY</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> y;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">getIsInit</span>(<span class="params"></span>) <span class="keyword">const</span> </span>&#123;<span class="keyword">return</span> isInit;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">display</span>(<span class="params"></span>) <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>x,y表示点的坐标，isInit表示这个点是否被初始化。</li>
+<li>有参构造函数中和updateXY方法中，参数我们使用的const reference to int的类型，这样做的原因是因为我们只需要传递这个值进入这个方法。</li>
+<li>而在get以及display方法中，我们只需要传递某一个值出去，并不需要函数去修改某些变量，所以我们将方法标记为const。</li>
+</ul>
+<p>接下来我们在看看Point.cpp<br><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Point::Point():x(<span class="number">0</span>),y(<span class="number">0</span>),isInit(<span class="literal">false</span>)</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Point::Point(const int&amp; <span class="built_in">_x</span>,const int&amp; _y):x(<span class="built_in">_x</span>),y(_y),isInit(<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Point::updateXY(const int &amp;<span class="built_in">_x</span>, const int &amp;_y)</span><br><span class="line">&#123;</span><br><span class="line">    x = <span class="built_in">_x</span>;</span><br><span class="line">    y = _y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Point::display() const</span><br><span class="line">&#123;</span><br><span class="line">    printf(<span class="string">"(%d,%d)\n"</span>,x,y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实现很简单，但是这里我需要谈谈另外一个话题，关于初始化的问题。<br>我相信很多初学者都是这样实现第一个无参构造函数的：<br><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Point::Point()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">x</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="attr">y</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="attr">isInit</span> = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样的做法叫做赋值，而非初始化，C++有一条这样的规定，在成员变量的初始化动作发生在进入构造函数本体之前。换句话说，你应该使用参数列表去初始化所有的成员变量，就像示例代码中所实现的一样。<br>这样做符合C++规定并在效率也会更高。</p>
+<p>接下来回归正题，我们来细谈Line类的实现，我们先谈谈成员变量：<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Line</span></span><br><span class="line"></span>&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Point pointArray[<span class="number">20</span>];</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">count</span>;</span><br><span class="line">    bool countIsValid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>我们需要一个长度为20的Point的数组，这个没什么好多说的。</li>
+<li>count变量用来表示当前Line中所存储的点的数量，countIsValid用来表示点的数量是否发生的变化</li>
+</ul>
+<p>接下来我们来看看怎么实现所有需要的函数，首先是构造函数：<br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Line::Line():count(0),countIsValid(<span class="keyword">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>构造函数的实现方法我上面说过了，还是请记住构造函数，并不是赋值函数。<br>接下来是添加点的函数实现：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Line::addPoint(<span class="keyword">const</span> Point &amp;_new)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">20</span> ; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(!pointArray[i].getIsInit())</span><br><span class="line">        &#123;</span><br><span class="line">            pointArray[i] = _new;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    countIsValid = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>参数我们只是需要值就行，而不是需要对象，所以我们使用const reference类型进行传递就行了，函数中我们遍历到我们第一个没有使用的空间时，便使用这一空间存储当前传入的数据。</p>
+<blockquote>
+<p>这段实现很不合实际，但是我只想想为后面最关键的部分做铺垫而已，大家就不要吐槽了。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Line::deletePointByIndex(<span class="keyword">const</span> <span class="keyword">int</span> &amp;_index)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = _index;i&lt;=<span class="number">20</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(pointArray[i+<span class="number">1</span>].getIsInit())</span><br><span class="line">        &#123;</span><br><span class="line">            pointArray[i] = pointArray[i+<span class="number">1</span>];</span><br><span class="line">            pointArray[i+<span class="number">1</span>] = Point();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据下标删除一个点，然后将后面的点前向靠拢的一个操作。没有什么特别的地方。<br>接下来就这一次的重点，重载[]：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Point&amp; Line::<span class="keyword">operator</span>[] (<span class="keyword">const</span> <span class="keyword">int</span>&amp; _index) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(_index &gt;= <span class="number">20</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">"Error"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!pointArray[_index].getIsInit())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">"Error"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pointArray[_index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第一个if语句用来表示下标超出的范围，然后抛出一个错误，第二个下标用来检测当前点是不是有有效数据，如果没有就会抛出一个错误，错误处理实现的很简单，因为这不是重点。<br>这里我们返回的是一个const Point&amp;类型的值并且函数也为const类型，因为我们不希望函数修改任何值，只是用来返回一个值。<br>然后我们发现返回的这个值并不能被操作，这个不是我们想要的，于是我们需要再次重载一个返回Point&amp;类型的函数，但是如果我们的类特别复杂，前面的检查方法十分的复杂，我们再这样写一遍就特别的麻烦，对了我们有粘贴复制，但整体代码会显得很长，或与又有人说，可以把检查方法写一成一个函数，但是并有这样的必要，因为这样的函数并非广泛使用，下面我就来说一种特别的方法：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Point&amp; Line::<span class="keyword">operator</span>[] (<span class="keyword">const</span> <span class="keyword">int</span>&amp; _index)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">const_cast</span>&lt;Point&amp;&gt;(<span class="keyword">static_cast</span>&lt;<span class="keyword">const</span> Line&amp;&gt;(*<span class="keyword">this</span>)[_index]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先我们将本对象转化为一个const Line&amp;的对象，因为我们只想使用值并不想修改static_cast<const line&="">(<em>this)帮助我们完成了这样的想法，然后我们使用了static_cast<const line&="">(</const></em>this)[_index]返回的const Point&amp;类型的值，但是我们需要去掉const关键字，这里使用了<br>const_cast<point&>()这个方法，它可以帮我们去掉const关键字。<br>这样我们就可以做这样的事情了：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Line l1;</span><br><span class="line">l1<span class="selector-class">.addPoint</span>(Point(<span class="number">3</span>,<span class="number">3</span>));</span><br><span class="line">l1<span class="selector-attr">[0]</span><span class="selector-class">.display</span>();</span><br></pre></td></tr></table></figure></point&></const></p>
+<p>接下来我们来说说怎么实现返回当前点的总和，上面那段烂代码也是为了这段代码出现的必要，因为它要告诉大家一个重要的关键字。<br><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> Line::getPointCount() const</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!countIsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">count</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">20</span> ; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(pointArray[i].getIsInit())</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">count</span>++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        countIsValid = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">count</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>作为一个获取某个值的函数，它同样被设置成为了const类型，但是我们在这个函数中改变了count和countIsValid的量，为了完成这个方法，我们需要修改一个成员变量的类型：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mutable</span> <span class="keyword">int</span> count;</span><br><span class="line"><span class="keyword">mutable</span> <span class="keyword">bool</span> countIsValid;</span><br></pre></td></tr></table></figure></p>
+<p>mutable这个关键字，允许这个变量在任何地方都可以被修改，即使它在const函数内。这样大家都懂了吧。</p>
+<p>好了其他的函数都不重要了，代码怎么实现的也不重要，关键是他们使用的方法，如果你已经完全掌握了上面的方法，现在你可以自己写一个String类。const能帮助你完成安全性的工作。</p>
+<p>下一次我们会分享一些构造/析构/赋值运算相关的内容。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/06/09/Cpp/const_keyword/" data-id="ciwk95dcz0006u8ve8wa020r4" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/06/09/Cpp/const_keyword/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/06/09/Cpp/const_keyword/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/08/16/Graphics/Ray Tracing/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    光线追踪
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/06/09/Cpp/const/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">浅析const关键字</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/06/09/Cpp/const_keyword/" data-title="深入探讨const关键字" data-url="http://hucoco.com/2016/06/09/Cpp/const_keyword/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/22/Graph/BFS/" class="title">广度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/20/Graph/DFS/" class="title">深度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/Graph/GraphByList/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/Graph/GraphByMatrix/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/Graph/Graph/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 16px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 18px;">数据结构</a> <a href="/tags/算法/" style="font-size: 12px;">算法</a> <a href="/tags/红黑树/" style="font-size: 14px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

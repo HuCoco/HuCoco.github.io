@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>光线追踪 | HuCoco&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="简述这一部分的内容会详细记录如何实现光线追踪(Ray Tracing)算法，该算法在CPU中完成计算，且是非实时的，最后的结果为渲染好的一张图片。
+这一部分完成会，还会有一个使用OpenGL实现实时光线追踪。
+首先我们需要准备建立这个项目，你需要如下东西：
+
+一个熟悉的C++的IDE，我用的Xcode
+FreeImage库（当然也可以使用其他图像库，例如OpenCV等）
+相关数学资料（后面会详细介">
+<meta property="og:type" content="article">
+<meta property="og:title" content="光线追踪">
+<meta property="og:url" content="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/index.html">
+<meta property="og:site_name" content="HuCoco's Blog">
+<meta property="og:description" content="简述这一部分的内容会详细记录如何实现光线追踪(Ray Tracing)算法，该算法在CPU中完成计算，且是非实时的，最后的结果为渲染好的一张图片。
+这一部分完成会，还会有一个使用OpenGL实现实时光线追踪。
+首先我们需要准备建立这个项目，你需要如下东西：
+
+一个熟悉的C++的IDE，我用的Xcode
+FreeImage库（当然也可以使用其他图像库，例如OpenCV等）
+相关数学资料（后面会详细介">
+<meta property="og:updated_time" content="2016-12-10T06:55:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="光线追踪">
+<meta name="twitter:description" content="简述这一部分的内容会详细记录如何实现光线追踪(Ray Tracing)算法，该算法在CPU中完成计算，且是非实时的，最后的结果为渲染好的一张图片。
+这一部分完成会，还会有一个使用OpenGL实现实时光线追踪。
+首先我们需要准备建立这个项目，你需要如下东西：
+
+一个熟悉的C++的IDE，我用的Xcode
+FreeImage库（当然也可以使用其他图像库，例如OpenCV等）
+相关数学资料（后面会详细介">
+    
+
+    
+
+    
+        <link rel="icon" href="/images/logo.png" />
+    
+
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/vendor/open-sans/styles.css">
+    <link rel="stylesheet" href="/vendor/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/vendor/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/vendor/fancybox/jquery.fancybox.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-83004636-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+    
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?240afc144ce33cf45a57f60a4b0351c6";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+    
+
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                
+                <span class="site-title">HuCoco&#39;s Blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.png" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.png" />
+            <h2 id="name">HuCoco</h2>
+            <h3 id="title">Game Developer &amp; Student</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
+            <a id="follow" target="_blank" href="https://github.com/HuCoco/">关注我</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                14
+                <span>文章</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/HuCoco/" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/QR/QR.jpg" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="http://weibo.com/hookcoco" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Graphics/Ray Tracing" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            光线追踪
+        </h1>
+    
+
+
+
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2016/08/16/Graphics/Ray Tracing/">
+            <time datetime="2016-08-16T09:13:12.000Z" itemprop="datePublished">2016-08-16</time>
+        </a>
+    </div>
+
+
+                    
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/图形学/">图形学</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/图形学/光线追踪/">光线追踪</a>
+    </div>
+
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/FreeImage/">FreeImage</a>, <a class="tag-link" href="/tags/光线追踪/">光线追踪</a>, <a class="tag-link" href="/tags/图形学/">图形学</a>
+    </div>
+
+                </div>
+            </header>
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>这一部分的内容会详细记录如何实现<strong>光线追踪(Ray Tracing)</strong>算法，该算法在<strong>CPU</strong>中完成计算，且是非实时的，最后的结果为渲染好的一张图片。</p>
+<p>这一部分完成会，还会有一个使用OpenGL实现实时光线追踪。</p>
+<p>首先我们需要准备建立这个项目，你需要如下东西：</p>
+<ol>
+<li>一个熟悉的C++的IDE，我用的<code>Xcode</code></li>
+<li><code>FreeImage</code>库（当然也可以使用其他图像库，例如<code>OpenCV</code>等）</li>
+<li>相关数学资料（后面会详细介绍，例如<strong>空间解析几何</strong>，<strong>线性代数等</strong>）</li>
+</ol>
+<p>相关IDE就不在这里多说废话了，这里重点说下<code>FreeImage</code>在<code>MacOS</code>平台下的配置问题。</p>
+<p>首先我们需要去下载一个FreeImage库，我使用的版本是<strong>3.1.5.4</strong>这个版本，其他版本配置问题可能会有差异，下面为每一步的详细步骤。</p>
+<a id="more"></a>
+<h4 id="Step-1-–-修改-Makefile-文件"><a href="#Step-1-–-修改-Makefile-文件" class="headerlink" title="Step 1 – 修改 Makefile 文件"></a>Step 1 – 修改 Makefile 文件</h4><h5 id="Step-1-1"><a href="#Step-1-1" class="headerlink" title="Step 1.1"></a>Step 1.1</h5><p>找到<code>Makefile.osx</code>文件，这个是MacOS平台下的Makefile配置信息，但是官方提供的配置信息已经不能完成MacOS下的编译工作，所以需要全部替换为一下配置信息。</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"># -*- Makefile -*-</span><br><span class="line"># Mac OSX makefile <span class="keyword">for</span> FreeImage</span><br><span class="line"></span><br><span class="line">include Makefile.srcs</span><br><span class="line"></span><br><span class="line"># General configuration <span class="keyword">variables</span>:</span><br><span class="line">CC_I386 <span class="comment">= Clang</span></span><br><span class="line">CC_X86_64 <span class="comment">= Clang</span></span><br><span class="line">CPP_I386 <span class="comment">= Clang++</span></span><br><span class="line">CPP_X86_64 <span class="comment">= Clang++</span></span><br><span class="line"></span><br><span class="line">COMPILERFLAGS <span class="comment">= -Os -fexceptions -fvisibility=hidden -DNO_LCMS -D__ANSI__ -mmacosx-version-min=10.7 -DDISABLE_PERF_MEASUREMENT</span> </span><br><span class="line">#-g <span class="comment">-DDEBUG</span></span><br><span class="line">COMPILERFLAGS_I386 <span class="comment">= -arch i386</span></span><br><span class="line">COMPILERFLAGS_X86_64 <span class="comment">= -arch x86_64</span></span><br><span class="line">COMPILERPPFLAGS <span class="comment">= -Wno-ctor-dtor-privacy -D__ANSI__ -stdlib=libc++</span></span><br><span class="line">INCLUDE <span class="comment">+=</span></span><br><span class="line">INCLUDE_I386 <span class="comment">= -isysroot</span> /Applications/<span class="comment">Xcode.app</span>/Contents/<span class="comment">Developer</span>/Platforms/<span class="comment">MacOSX.platform</span>/Developer/<span class="comment">SDKs</span>/MacOSX10<span class="number">.11</span>.sdk</span><br><span class="line">INCLUDE_X86_64 = -isysroot /<span class="comment">Applications</span>/Xcode.app/<span class="comment">Contents</span>/Developer/<span class="comment">Platforms</span>/MacOSX.platform/<span class="comment">Developer</span>/SDKs/<span class="comment">MacOSX10.11.sdk</span></span><br><span class="line">CFLAGS_I386 <span class="comment">= $(COMPILERFLAGS) $(COMPILERFLAGS_I386) $(INCLUDE) $(INCLUDE_I386)</span></span><br><span class="line">CFLAGS_X86_64 <span class="comment">= $(COMPILERFLAGS) $(COMPILERFLAGS_X86_64) $(INCLUDE) $(INCLUDE_X86_64)</span></span><br><span class="line">CPPFLAGS_I386 <span class="comment">= $(COMPILERPPFLAGS) $(CFLAGS_I386)</span></span><br><span class="line">CPPFLAGS_X86_64 <span class="comment">= $(COMPILERPPFLAGS) $(CFLAGS_X86_64)</span></span><br><span class="line">LIBRARIES_I386 <span class="comment">= -Wl,-syslibroot</span> /Applications/<span class="comment">Xcode.app</span>/Contents/<span class="comment">Developer</span>/Platforms/<span class="comment">MacOSX.platform</span>/Developer/<span class="comment">SDKs</span>/MacOSX10<span class="number">.11</span>.sdk</span><br><span class="line">LIBRARIES_X86_64 = -Wl,-syslibroot /<span class="comment">Applications</span>/Xcode.app/<span class="comment">Contents</span>/Developer/<span class="comment">Platforms</span>/MacOSX.platform/<span class="comment">Developer</span>/SDKs/<span class="comment">MacOSX10.11.sdk</span></span><br><span class="line">LIBTOOL <span class="comment">= libtool</span></span><br><span class="line">LIPO <span class="comment">= lipo</span></span><br><span class="line"></span><br><span class="line">TARGET <span class="comment">= freeimage</span></span><br><span class="line">STATICLIB <span class="comment">= lib$(TARGET).a</span></span><br><span class="line">SHAREDLIB <span class="comment">= lib$(TARGET)-$(VER_MAJOR).$(VER_MINOR).dylib</span></span><br><span class="line">LIBNAME <span class="comment">= lib$(TARGET).$(VER_MAJOR).dylib</span></span><br><span class="line">HEADER <span class="comment">= Source</span>/FreeImage.h</span><br><span class="line"></span><br><span class="line">.SUFFIXES: .o-i386 .o-x86_64</span><br><span class="line">MODULES_I386 = $(SRCS:.c=.o-i386)</span><br><span class="line">MODULES_X86_64 = $(SRCS:.c=.o-x86_64)</span><br><span class="line">MODULES_I386 := $(MODULES_I386:.cpp=.o-i386)</span><br><span class="line">MODULES_X86_64 := $(MODULES_X86_64:.cpp=.o-x86_64)</span><br><span class="line"></span><br><span class="line">PREFIX = /<span class="comment">usr</span>/local</span><br><span class="line">INSTALLDIR = $(PREFIX)/<span class="comment">lib</span></span><br><span class="line">INCDIR <span class="comment">= $(PREFIX)</span>/include</span><br><span class="line"></span><br><span class="line">default: <span class="keyword">all</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">all</span>: dist</span><br><span class="line"></span><br><span class="line">dist: FreeImage</span><br><span class="line">	cp *.a Dist</span><br><span class="line">	cp Source/<span class="comment">FreeImage.h Dist</span></span><br><span class="line">#	cp <span class="comment">*.dylib Dist</span></span><br><span class="line"></span><br><span class="line">FreeImage: $(STATICLIB)</span><br><span class="line">#$(STATICLIB) $(SHAREDLIB)</span><br><span class="line"></span><br><span class="line">$(STATICLIB): $(STATICLIB)-x86_64</span><br><span class="line">	$(LIPO) -create <span class="comment">$(STATICLIB)-x86_64 -output $(STATICLIB)</span></span><br><span class="line">#$(STATICLIB): $(STATICLIB)-i386 <span class="comment">$(STATICLIB)-x86_64</span></span><br><span class="line">#	$(LIPO) -create <span class="comment">$(STATICLIB)-i386 $(STATICLIB)-x86_64 -output $(STATICLIB)</span></span><br><span class="line"></span><br><span class="line">$(STATICLIB)-i386: $(MODULES_I386)</span><br><span class="line">	$(LIBTOOL) -arch_only <span class="comment">i386 -o $@ $(MODULES_I386)</span></span><br><span class="line"></span><br><span class="line">$(STATICLIB)-x86_64: $(MODULES_X86_64)</span><br><span class="line">	$(LIBTOOL) -arch_only <span class="comment">x86_64 -o $@ $(MODULES_X86_64)</span></span><br><span class="line"></span><br><span class="line">$(SHAREDLIB): $(SHAREDLIB)-i386 <span class="comment">$(SHAREDLIB)-x86_64</span></span><br><span class="line">	$(LIPO) -create <span class="comment">$(SHAREDLIB)-i386 $(SHAREDLIB)-x86_64 -output $(SHAREDLIB)</span></span><br><span class="line"></span><br><span class="line">$(SHAREDLIB)-i386: $(MODULES_I386)</span><br><span class="line">	$(CPP_I386) -arch <span class="comment">i386 -dynamiclib $(LIBRARIES_I386) -o $@ $(MODULES_I386)</span></span><br><span class="line"></span><br><span class="line">$(SHAREDLIB)-x86_64: $(MODULES_X86_64)</span><br><span class="line">	$(CPP_X86_64) -arch <span class="comment">x86_64 -dynamiclib $(LIBRARIES_X86_64) -o $@ $(MODULES_X86_64)</span></span><br><span class="line"></span><br><span class="line">.c.o-i386:</span><br><span class="line">	$(CC_I386) $(CFLAGS_I386) -c <span class="comment">$&lt; -o $@</span></span><br><span class="line"></span><br><span class="line">.c.o-x86_64:</span><br><span class="line">	$(CC_X86_64) $(CFLAGS_X86_64) -c <span class="comment">$&lt; -o $@</span></span><br><span class="line"></span><br><span class="line">.cpp.o-i386:</span><br><span class="line">	$(CPP_I386) $(CPPFLAGS_I386) -c <span class="comment">$&lt; -o $@</span></span><br><span class="line"></span><br><span class="line">.cpp.o-x86_64:</span><br><span class="line">	$(CPP_X86_64) $(CPPFLAGS_X86_64) -c <span class="comment">$&lt; -o $@</span></span><br><span class="line"></span><br><span class="line">install:</span><br><span class="line">	install <span class="comment">-d -m 755 -o root -g wheel $(INCDIR) $(INSTALLDIR)</span></span><br><span class="line">	install <span class="comment">-m 644 -o root -g wheel $(HEADER) $(INCDIR)</span></span><br><span class="line">	install <span class="comment">-m 644 -o root -g wheel $(SHAREDLIB) $(STATICLIB) $(INSTALLDIR)</span></span><br><span class="line">	ranlib <span class="comment">-sf $(INSTALLDIR)</span>/$(STATICLIB)</span><br><span class="line">	ln -sf $(SHAREDLIB) $(INSTALLDIR)/<span class="comment">$(LIBNAME)</span></span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">	rm <span class="comment">-f core Dist</span>/*.* u2dtmp* $(MODULES_I386) $(MODULES_X86_64) $(STATICLIB) $(STATICLIB)-i386 $(STATICLIB)-x86_64 $(SHAREDLIB) $(SHAREDLIB)-i386 $(SHAREDLIB)-x86_64</span><br></pre></td></tr></table></figure>
+<h5 id="Step-1-2"><a href="#Step-1-2" class="headerlink" title="Step 1.2"></a>Step 1.2</h5><p>我们需要根据自己的系统信息来修改一下配置信息，以便和我们的<code>MaxOS SDK</code>版本对应，为<code>gcc/g++</code>编译做好准备工作。</p>
+<p>找到以下代码：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">INCLUDE_I386 = -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk</span><br><span class="line">INCLUDE_X86_64 = -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk</span><br><span class="line">CFLAGS_I386 = <span class="variable">$(COMPILERFLAGS)</span> <span class="variable">$(COMPILERFLAGS_I386)</span> <span class="variable">$(INCLUDE)</span> <span class="variable">$(INCLUDE_I386)</span></span><br><span class="line">CFLAGS_X86_64 = <span class="variable">$(COMPILERFLAGS)</span> <span class="variable">$(COMPILERFLAGS_X86_64)</span> <span class="variable">$(INCLUDE)</span> <span class="variable">$(INCLUDE_X86_64)</span></span><br><span class="line">CPPFLAGS_I386 = <span class="variable">$(COMPILERPPFLAGS)</span> <span class="variable">$(CFLAGS_I386)</span></span><br><span class="line">CPPFLAGS_X86_64 = <span class="variable">$(COMPILERPPFLAGS)</span> <span class="variable">$(CFLAGS_X86_64)</span></span><br><span class="line">LIBRARIES_I386 = -Wl,-syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk</span><br><span class="line">LIBRARIES_X86_64 = -Wl,-syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk</span><br></pre></td></tr></table></figure>
+<p>关注<code>MacOSX10.11.sdk</code>这个地方，这个是当前系统版本对应的<code>SDK</code>，根据自己的版本号来设置。下面为两种看自己系统版本号的方法，第二种会更加准确。</p>
+<ol>
+<li>你可以在关于本机中看到你的系统版本号</li>
+<li>在<code>Applications</code>找到<code>Xcode</code>，并右键点击<code>显示包内容</code>，按以下顺序进入到SDKs文件夹中：<code>Contents--Developer--Platforms--MacOSX.platform--Developer--SDKs</code>，这个文件夹中的SDK都可以使用，一般情况下只会有一种SDK，也就是当前版本的SDK，使用那一个就对了。</li>
+</ol>
+<h4 id="Step-2-–-修改-FreeImage-中的错误"><a href="#Step-2-–-修改-FreeImage-中的错误" class="headerlink" title="Step 2 – 修改 FreeImage 中的错误"></a>Step 2 – 修改 FreeImage 中的错误</h4><p>顺着以下路径找到<code>ImfAutoArray.h</code>文件：</p>
+<p><code>Source--OpenEXR--IlmImf</code></p>
+<p>之后再这个文件的相应位置添加如下一句话：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>或者其他和这个<code>string</code>库匹配的头文件也可以。</p>
+<p>这里可能是FreeImage制作者的一点小马虎吧。</p>
+<h4 id="Step-3-–-开始编译"><a href="#Step-3-–-开始编译" class="headerlink" title="Step 3 – 开始编译"></a>Step 3 – 开始编译</h4><p>打开CMD，跳转到对应的FreeImage文件下，然后输入<code>make</code>，接下来就是等待成功吧。</p>
+<p>如果有额外问题，可以联系我，我们一起解决它。</p>
+<p>完成编译后，你会看的到该目录下<code>Dist</code>文件下有一个<code>FreeImage.a</code>以及<code>FreeImage.h</code>，你可以找一个固定的地方存放他们，也可以不动他们。</p>
+<h4 id="Step-4-–-配置项目文件"><a href="#Step-4-–-配置项目文件" class="headerlink" title="Step 4 – 配置项目文件"></a>Step 4 – 配置项目文件</h4><p>这里我们需要一个使用<code>Xcode</code>创建一个<code>Command Line Tool</code>项目，如果使用的<code>Windows</code>平台，可以使用<code>Win32控制台程序</code>项目，这里我只介绍<code>MacOS</code>下<code>Xcode</code>的配置。</p>
+<ol>
+<li>选中<code>TARGETS</code>中的对应项目，点击到<code>Build Phases</code>中，在<code>Link Binary With Libraryes</code>中，将刚刚的<code>FreeImage.a</code>加入进去。</li>
+<li>再点击到<code>Build Setting</code>，找到<code>Search Paths</code>部分，在<code>Library Search</code>和<code>User Header Search Path</code>中加入<code>FreeImage.a</code>对应的目录</li>
+<li>修改<code>Always Search User Path</code>改为<code>Yes</code></li>
+</ol>
+<h4 id="Step-5-–-配置完成"><a href="#Step-5-–-配置完成" class="headerlink" title="Step 5 – 配置完成"></a>Step 5 – 配置完成</h4><p>下一片，会实现一些基础数据类，顺带也可以熟悉下C++。</p>
+<hr>
+<p>如果有错误，欢迎指正。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/" data-id="ciwk95ddi000lu8ve514nomcc" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/">评论</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2016/11/08/Tree/RBTree/红黑树/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    红黑树实现（旋转）
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2016/06/09/Cpp/const_keyword/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">深入探讨const关键字</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div class="ds-thread" data-thread-key="2016/08/16/Graphics/Ray Tracing/" data-title="光线追踪" data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/"></div>
+    <style>
+        #ds-thread #ds-reset .ds-textarea-wrapper {
+            background: none;
+        }
+        #ds-reset .ds-avatar img {
+            box-shadow: none;
+        }
+        #ds-reset .ds-gradient-bg {
+            background: #f7f7f7;
+        }
+        #ds-thread #ds-reset li.ds-tab a {
+            border-radius: 3px;
+        }
+        #ds-thread #ds-reset .ds-post-button {
+            color: white;
+            border: none;
+            box-shadow: none;
+            background: #d32;
+            text-shadow: none;
+            font-weight: normal;
+            font-family: 'Microsoft Yahei';
+        }
+        #ds-thread #ds-reset .ds-post-button:hover {
+            color: white;
+            background: #DE594C;
+        }
+        #ds-thread #ds-reset .ds-post-button:active {
+            background: #d32;
+        }
+        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
+            color: white;
+            background: #d32;
+            box-shadow: none;
+            text-shadow: none;
+            font-weight: normal;
+        }
+    </style>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="no-thumbnail">
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/22/Graph/BFS/" class="title">广度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/20/Graph/DFS/" class="title">深度优先搜索</a></p>
+                            <p class="item-date"><time datetime="2016-11-20T02:47:36.000Z" itemprop="datePublished">2016-11-20</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/18/Graph/GraphByList/" class="title">邻接表图</a></p>
+                            <p class="item-date"><time datetime="2016-11-18T14:37:47.000Z" itemprop="datePublished">2016-11-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/16/Graph/GraphByMatrix/" class="title">邻接矩阵图</a></p>
+                            <p class="item-date"><time datetime="2016-11-16T00:37:39.000Z" itemprop="datePublished">2016-11-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a></p>
+                            <p class="item-title"><a href="/2016/11/14/Graph/Graph/" class="title">图基类和工厂函数</a></p>
+                            <p class="item-date"><time datetime="2016-11-14T14:38:37.000Z" itemprop="datePublished">2016-11-14</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/">图形学</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/图形学/光线追踪/">光线追踪</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/图/">图</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/树/">树</a><span class="category-list-count">3</span></li></ul></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">5</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeImage/">FreeImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/光线追踪/">光线追踪</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图/">图</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/图形学/">图形学</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/算法/">算法</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/红黑树/">红黑树</a><span class="tag-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/FreeImage/" style="font-size: 10px;">FreeImage</a> <a href="/tags/Hexo/" style="font-size: 12px;">Hexo</a> <a href="/tags/光线追踪/" style="font-size: 10px;">光线追踪</a> <a href="/tags/图/" style="font-size: 16px;">图</a> <a href="/tags/图形学/" style="font-size: 10px;">图形学</a> <a href="/tags/数据结构/" style="font-size: 18px;">数据结构</a> <a href="/tags/算法/" style="font-size: 12px;">算法</a> <a href="/tags/红黑树/" style="font-size: 14px;">红黑树</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://www.maodahua.com">毛大花的博客</a>
+                    </li>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2016 HuCoco | 
+            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
+            <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
+            |<span id="busuanzi_container_site_uv">本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+            <script>
+                var bp = document.createElement('script');
+                var curProtocol = window.location.protocol.split(':')[0];
+                if (curProtocol === 'https') {
+                    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+                }
+                else {
+                    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+                }
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(bp, s);
+            </script>
+        </div>
+    </div>
+    <script>
+    (function(){
+        var bp = document.createElement('script');
+        bp.src = '//push.zhanzhang.baidu.com/push.js';
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+    </script>
+</footer>
+
+        
+    
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:'hucoco'};
+    (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+
+
+
+    
+        <script src="/vendor/fancybox/jquery.fancybox.pack.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
