@@ -335,7 +335,7 @@ code {
   font-weight: bold;
 }
 #header {
-  background: #000;
+  background: #fff;
   position: relative;
 }
 #header a,
@@ -1647,7 +1647,7 @@ ol.toc {
 #footer {
   padding: 20px 0;
   border-top: 1px solid #eceff2;
-  color: #565a5f;
+  color: #000;
   font-size: 16px;
   text-align: center;
 }
