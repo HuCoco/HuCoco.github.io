@@ -815,7 +815,7 @@ code {
 }
 .article-title {
   font-size: 2em;
-  color: #565a5f;
+  color: #000;
   text-decoration: none;
   line-height: 1.3em;
 }
@@ -1647,7 +1647,7 @@ ol.toc {
 #footer {
   padding: 20px 0;
   border-top: 1px solid #eceff2;
-  color: #000;
+  color: #565a5f;
   font-size: 16px;
   text-align: center;
 }
