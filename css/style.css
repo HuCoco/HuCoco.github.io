@@ -943,7 +943,7 @@ a.article-title:hover {
   font-size: 1.1em;
   margin: 0 -20px;
   padding: 10px 20px 10px 54px;
-  background: #fcfcfc;
+  background: #000;
   border-left: 4px solid #eee;
 }
 .article-entry blockquote:before {
