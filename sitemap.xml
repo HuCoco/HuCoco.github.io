@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://hucoco.com/2016/11/24/Graph/TopologicalOrder/</loc>
+    
+    <lastmod>2016-12-11T06:28:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://hucoco.com/2016/11/22/Graph/BFS/</loc>
     
     <lastmod>2016-12-11T06:19:14.000Z</lastmod>
