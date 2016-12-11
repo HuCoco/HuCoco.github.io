@@ -261,56 +261,12 @@ var _hmt = _hmt || [];
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <h1 id="拓扑"><a href="#拓扑" class="headerlink" title="拓扑"></a>拓扑</h1><h2 id="拓扑排序介绍"><a href="#拓扑排序介绍" class="headerlink" title="拓扑排序介绍"></a>拓扑排序介绍</h2><p>拓扑排序(Topological Order)是指，将一个有向无环图(Directed Acyclic Graph简称DAG)进行排序进而得到一个有序的线性序列。</p>
+            <p><h1 id="拓扑"><a href="#拓扑" class="headerlink" title="拓扑"></a>拓扑</h1><h2 id="拓扑排序介绍"><a href="#拓扑排序介绍" class="headerlink" title="拓扑排序介绍"></a>拓扑排序介绍</h2><p>拓扑排序(Topological Order)是指，将一个有向无环图(Directed Acyclic Graph简称DAG)进行排序进而得到一个有序的线性序列。</p>
 <p>这样说，可能理解起来比较抽象。下面通过简单的例子进行说明！<br>例如，一个项目包括A、B、C、D四个子部分来完成，并且A依赖于B和D，C依赖于D。现在要制定一个计划，写出A、B、C、D的执行顺序。这时，就可以利用到拓扑排序，它就是用来确定事物发生的顺序的。</p>
-<p>在拓扑排序中，如果存在一条从顶点A到顶点B的路径，那么在排序结果中B出现在A的后面。</p>
-<h2 id="拓扑排序算法"><a href="#拓扑排序算法" class="headerlink" title="拓扑排序算法"></a>拓扑排序算法</h2><p>拓扑排序算法的基本步骤：</p>
-<ol>
-<li>构造一个队列Q 和 拓扑排序的结果队列T； </li>
-<li>把所有没有依赖顶点的节点放入Q； </li>
-<li>当Q还有顶点的时候，执行下面步骤： <ol>
-<li>从Q中取出一个顶点n(将n从Q中删掉)，并放入T(将n加入到结果集中)； </li>
-<li>对n每一个邻接点m(n是起点，m是终点)； <ol>
-<li>去掉边(n,m); <ol>
-<li>如果m没有依赖顶点，则把m放入Q;<br>注：顶点A没有依赖顶点，是指不存在以A为终点的边。</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<p><img src="http://hucoco.com/img/Graph/Topological Order.png" alt="Graph"></p>
-<p>以上图为例，来对拓扑排序进行演示。</p>
-<p><img src="http://hucoco.com/img/Graph/Topological Order 1.png" alt="Step 1"></p>
-<p><img src="http://hucoco.com/img/Graph/Topological Order 2.png" alt="Step 2"></p>
-<p><img src="http://hucoco.com/img/Graph/Topological Order 3.png" alt="Step 3"></p>
-<ol>
-<li><p>将B和C加入到排序结果中。 </p>
-<p> 顶点B和顶点C都是没有依赖顶点，因此将C和C加入到结果集T中。假设ABCDEFG按顺序存储，因此先访问B，再访问C。访问B之后，去掉边(B,A)和(B,D)，并将A和D加入到队列Q中。同样的，去掉边(C,F)和(C,G)，并将F和G加入到Q中。 </p>
-<ol>
-<li><p>将B加入到排序结果中，然后去掉边(B,A)和(B,D)；此时，由于A和D没有依赖顶点，因此并将A和D加入到队列Q中。 </p>
-</li>
-<li><p>将C加入到排序结果中，然后去掉边(C,F)和(C,G)；此时，由于F有依赖顶点D，G有依赖顶点A，因此不对F和G进行处理。 </p>
-</li>
-</ol>
-</li>
-<li><p>将A,D依次加入到排序结果中。</p>
-<p> 第1步访问之后，A,D都是没有依赖顶点的，根据存储顺序，先访问A，然后访问D。访问之后，删除顶点A和顶点D的出边。 </p>
-</li>
-<li><p>将E,F,G依次加入到排序结果中。</p>
-</li>
-</ol>
-<p>因此访问顺序是：<strong>B -&gt; C -&gt; A -&gt; D -&gt; E -&gt; F -&gt; G</strong></p>
-<h2 id="拓扑排序实现"><a href="#拓扑排序实现" class="headerlink" title="拓扑排序实现"></a>拓扑排序实现</h2><p>拓扑排序是对有向无向图的排序。</p>
-<h3 id="邻接矩阵图实现"><a href="#邻接矩阵图实现" class="headerlink" title="邻接矩阵图实现"></a>邻接矩阵图实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByMatrix::topologicalSort() &#123;</span><br><span class="line">    <span class="keyword">if</span>(m_Type == GraphType::Undirected) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[TopSort Error] This is undirected graph!"</span> &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span>* <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">int</span>* ins;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span>* tops;</span><br><span class="line"></span><br><span class="line">    ins = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    <span class="built_in">queue</span> = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    tops = <span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[m_VexNum];</span><br><span class="line">    <span class="built_in">memset</span>(ins, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="built_in">memset</span>(<span class="built_in">queue</span>, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="built_in">memset</span>(tops, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="built_in">std</span>::<span class="built_in">string</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(k = firstVertex(i) ; k &gt;=<span class="number">0</span> ; k = nextVertex(i, k)) &#123;</span><br><span class="line">            ins[k]++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(ins[i] == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">queue</span>[rear++] = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">        j = <span class="built_in">queue</span>[head++];</span><br><span class="line">        tops[index++] = m_pVexs[j];</span><br><span class="line">        <span class="keyword">for</span>(k = firstVertex(j) ; k &gt;= <span class="number">0</span> ; k = nextVertex(j, k)) &#123;</span><br><span class="line">            ins[k]--;</span><br><span class="line">            <span class="keyword">if</span>(ins[k] == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">queue</span>[rear++] = k;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(index != m_VexNum) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[TopSort Error] Have cycle!"</span> &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">        <span class="keyword">delete</span>[] ins;</span><br><span class="line">        <span class="keyword">delete</span>[] tops;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"TopSort: "</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; tops[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] ins;</span><br><span class="line">    <span class="keyword">delete</span>[] tops;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="邻接表图实现"><a href="#邻接表图实现" class="headerlink" title="邻接表图实现"></a>邻接表图实现</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByList::topologicalSort() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(m_Type == GraphType::Undirected) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[TopSort Error] This is undirected graph!"</span> &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span>* <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">int</span>* ins;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span>* tops;</span><br><span class="line">    ENode* p;</span><br><span class="line"></span><br><span class="line">    ins = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    <span class="built_in">queue</span> = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    tops = <span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[m_VexNum];</span><br><span class="line">    <span class="built_in">memset</span>(ins, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="built_in">memset</span>(<span class="built_in">queue</span>, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="built_in">memset</span>(tops, <span class="number">0</span>, m_VexNum * <span class="keyword">sizeof</span>(<span class="built_in">std</span>::<span class="built_in">string</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        p = m_pVexs[i].firstEdge;</span><br><span class="line">        <span class="keyword">while</span> (p != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            ins[p-&gt;m_Vex]++;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(ins[i] == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">queue</span>[rear++] = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">        j = <span class="built_in">queue</span>[head++];</span><br><span class="line">        tops[index++] = m_pVexs[j].m_Data;</span><br><span class="line">        p = m_pVexs[j].firstEdge;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (p != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">            ins[p-&gt;m_Vex]--;</span><br><span class="line">            <span class="keyword">if</span>(ins[p-&gt;m_Vex] == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="built_in">queue</span>[rear++] = p-&gt;m_Vex;</span><br><span class="line">            &#125;</span><br><span class="line">            p = p-&gt;next;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(index != m_VexNum) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[TopSort Error] Have cycle!"</span> &lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">        <span class="keyword">delete</span>[] ins;</span><br><span class="line">        <span class="keyword">delete</span>[] tops;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"TopSort: "</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; tops[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] ins;</span><br><span class="line">    <span class="keyword">delete</span>[] tops;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.hpp" target="_blank" rel="external">邻接矩阵图头文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.cpp" target="_blank" rel="external">邻接矩阵图源文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.hpp" target="_blank" rel="external">邻接表图头文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.cpp" target="_blank" rel="external">邻接表图源文件</a></p>
-
+<p>在拓扑排序中，如果存在一条从顶点A到顶点B的路径，那么在排序结果中B出现在A的后面。</p></p>
+            <p class="article-more-link">
+                <a href="/2016/11/24/Graph/TopologicalOrder/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -320,7 +276,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/24/Graph/TopologicalOrder/" data-id="ciwka3199000pdcveqp33uksp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/24/Graph/TopologicalOrder/" data-id="ciwka53kg000lepveroeglyr3" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -458,7 +414,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/22/Graph/BFS/" data-id="ciwka318s0009dcvem0u8nn9e" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/22/Graph/BFS/" data-id="ciwka53jx0007epve1lc8tfch" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -596,7 +552,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/20/Graph/DFS/" data-id="ciwka3195000gdcvezao0qe4m" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/20/Graph/DFS/" data-id="ciwka53jy0009epvezhuk6fqt" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -733,7 +689,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/18/Graph/GraphByList/" data-id="ciwka3196000kdcvei355ktkc" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/18/Graph/GraphByList/" data-id="ciwka53k9000fepveohg7rwnh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -869,7 +825,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/16/Graph/GraphByMatrix/" data-id="ciwka3197000mdcvepbocz7fv" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/16/Graph/GraphByMatrix/" data-id="ciwka53kc000iepve4n4uehaa" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1005,7 +961,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/14/Graph/Graph/" data-id="ciwka318z000cdcvezpusq8yi" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/14/Graph/Graph/" data-id="ciwka53k2000cepvezx75krba" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1146,7 +1102,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/10/Tree/RBTree/红黑树实现（删除）/" data-id="ciwka31b4002udcvedoiyhcyg" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/10/Tree/RBTree/红黑树实现（删除）/" data-id="ciwka53m7002xepvebs1w83gy" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1283,7 +1239,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/09/Tree/RBTree/红黑树实现（添加操作）/" data-id="ciwka31b6002wdcvep61pjio7" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/09/Tree/RBTree/红黑树实现（添加操作）/" data-id="ciwka53ma002zepveqmzso45y" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1436,7 +1392,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/" data-id="ciwka31b3002tdcve7tejmkpx" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/" data-id="ciwka53m5002wepve65u3miqv" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1579,7 +1535,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/" data-id="ciwka318r0006dcvecjcmpklr" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/" data-id="ciwka53kh000oepve0n4d5k56" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
