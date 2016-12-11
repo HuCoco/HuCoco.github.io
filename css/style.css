@@ -117,7 +117,7 @@ body,
 }
 body {
   color: #000;
-  background: #f5f8f9;
+  background: #000;
   font: 14px "open sans", "Helvetica Neue", "Microsoft Yahei", Helvetica, Arial, sans-serif;
   -webkit-text-size-adjust: 100%;
 }
@@ -1008,7 +1008,7 @@ a.article-title:hover {
   padding: 6px 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
-  background: #f5f8f9;
+  background: #000;
   color: #999;
   text-shadow: 0 1px #fff;
   text-decoration: none;
@@ -1170,7 +1170,7 @@ a.article-title:hover {
   line-height: 36px;
 }
 .article-share-links {
-  background: #f5f8f9;
+  background: #000;
 }
 .article-share-links:before,
 .article-share-links:after {
