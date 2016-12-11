@@ -261,8 +261,14 @@ var _hmt = _hmt || [];
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            
+            <p><h1 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h1><h2 id="广度优先搜索介绍"><a href="#广度优先搜索介绍" class="headerlink" title="广度优先搜索介绍"></a>广度优先搜索介绍</h2><p>广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。</p>
+<p>它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有顶点未被访问，则需要另选一个未曾被访问过的顶点作为新的起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
+<p>换句话说，广度优先搜索遍历图的过程是以v为起点，由近至远，依次访问和v有路径相通且路径长度为1,2…的顶点。</p>
+<h2 id="广度优先搜索图解"><a href="#广度优先搜索图解" class="headerlink" title="广度优先搜索图解"></a>广度优先搜索图解</h2><h3 id="无向图的广度优先搜索"><a href="#无向图的广度优先搜索" class="headerlink" title="无向图的广度优先搜索"></a>无向图的广度优先搜索</h3><p>下面以”无向图”为例，来对广度优先搜索进行演示。</p>
+<p><img src="http://hucoco.com/img/Graph/UDGBFS.png" alt="UDGBFS"></p></p>
+            <p class="article-more-link">
+                <a href="/2016/11/22/Graph/BFS/#more">查看更多</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -272,7 +278,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/22/Graph/BFS/" data-id="ciwk95dd00007u8ve9z9fwndk" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/22/Graph/BFS/" data-id="ciwk9fy5500070cvecvd0xvt9" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -396,7 +402,7 @@ var _hmt = _hmt || [];
             <p><h1 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h1><h2 id="深度优先搜索介绍"><a href="#深度优先搜索介绍" class="headerlink" title="深度优先搜索介绍"></a>深度优先搜索介绍</h2><p>图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。</p>
 <p>它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。 若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
 <p>显然，深度优先搜索是一个递归的过程，当然也可以使用迭代来实现，但在这里使用递归来实现。<strong>（对，我就是懒！）</strong></p>
-<h2 id="深度优先搜索图解"><a href="#深度优先搜索图解" class="headerlink" title="深度优先搜索图解"></a>深度优先搜索图解</h2><h3 id="无向图的深度优先搜索"><a href="#无向图的深度优先搜索" class="headerlink" title="无向图的深度优先搜索"></a>无向图的深度优先搜索</h3><h4 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h4><p>下面以”无向图”为例，来对深度优先搜索进行演示。</p>
+<h2 id="深度优先搜索图解"><a href="#深度优先搜索图解" class="headerlink" title="深度优先搜索图解"></a>深度优先搜索图解</h2><h3 id="无向图的深度优先搜索"><a href="#无向图的深度优先搜索" class="headerlink" title="无向图的深度优先搜索"></a>无向图的深度优先搜索</h3><p>下面以”无向图”为例，来对深度优先搜索进行演示。</p>
 <p><img src="http://hucoco.com/img/Graph/UDG.png" alt="UDG"></p></p>
             <p class="article-more-link">
                 <a href="/2016/11/20/Graph/DFS/#more">查看更多</a>
@@ -410,7 +416,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/20/Graph/DFS/" data-id="ciwk95dd3000cu8veipf0rlmp" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/20/Graph/DFS/" data-id="ciwk9fy5600090cve7us7nle6" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -547,7 +553,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/18/Graph/GraphByList/" data-id="ciwk95ddc000fu8vele2hnfms" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/18/Graph/GraphByList/" data-id="ciwk9fy5g000f0cven0egh5b4" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -683,7 +689,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/16/Graph/GraphByMatrix/" data-id="ciwk95ddg000iu8ve81pkbllq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/16/Graph/GraphByMatrix/" data-id="ciwk9fy5k000i0cveoukcrgaf" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -819,7 +825,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/14/Graph/Graph/" data-id="ciwk95dd10009u8ve50nq5j05" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/14/Graph/Graph/" data-id="ciwk9fy58000c0cveuxyyrsy0" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -960,7 +966,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/10/Tree/RBTree/红黑树实现（删除）/" data-id="ciwk95df3002lu8ve0s3gz6p9" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/10/Tree/RBTree/红黑树实现（删除）/" data-id="ciwk9fy7f002k0cveu8on931c" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1097,7 +1103,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/09/Tree/RBTree/红黑树实现（添加操作）/" data-id="ciwk95df4002nu8veo2qtomph" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/09/Tree/RBTree/红黑树实现（添加操作）/" data-id="ciwk9fy7h002n0cvewuk8zl5i" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1250,7 +1256,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/" data-id="ciwk95df1002ku8vef2fjho54" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/11/08/Tree/RBTree/红黑树/" data-id="ciwk9fy7g002l0cvedoimgf1o" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1393,7 +1399,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/" data-id="ciwk95ddi000lu8ve514nomcc" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/08/16/Graphics/Ray Tracing/" data-id="ciwk9fy5m000l0cvehc4pmijg" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1532,7 +1538,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/06/09/Cpp/const_keyword/" data-id="ciwk95dcz0006u8ve8wa020r4" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/06/09/Cpp/const_keyword/" data-id="ciwk9fy5400060cvez57j9nvy" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1737,7 +1743,7 @@ var _hmt = _hmt || [];
     <div class="outer">
         <div id="footer-info" class="inner">
             &copy; 2016 HuCoco | 
-            懒惰的博主终于写了 <span class="post-count">42.6k</span> 字了！<br>
+            懒惰的博主终于写了 <span class="post-count">45.1k</span> 字了！<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
             <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
             <span id="busuanzi_container_site_pv">本站被宠信了<span id="busuanzi_value_site_pv"></span>次</span>
