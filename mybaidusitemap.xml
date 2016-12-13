@@ -4,11 +4,11 @@
 
     
   <url>
-    <loc>http://hucoco.com/2016/09/20/Algorithm/EightQueen/</loc>
-    <lastmod>2016-12-13T03:44:15.000Z</lastmod>
+    <loc>http://hucoco.com/2016/09/20/Algorithm/NQueens/</loc>
+    <lastmod>2016-12-13T04:11:16.000Z</lastmod>
     <data>
         <display>
-        <title>10行代码解N皇后问题</title>
+        <title>位运算解N皇后问题</title>
         <pubTime>2016-09-20T03:38:04.000Z</pubTime>
         
         <tag>算法</tag>

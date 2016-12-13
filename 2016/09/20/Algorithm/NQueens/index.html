@@ -3,21 +3,23 @@
 <head>
     <meta charset="utf-8">
     
-    <title>慎用#define | HuCoco&#39;s Blog</title>
+    <title>位运算解N皇后问题 | HuCoco&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
-记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
+    <meta name="description" content="问题概述八皇后问题是一个以国际象棋为背景的问题：如何能够在 8×8 的国际象棋棋盘上放置八个皇后，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的n皇后摆放问题：这时棋盘的大小变为n×n，而皇后个数也变成n。而且仅当 n = 1 或 n ≥ 4 时问题有解。
+八皇后问题最早是由国际西洋棋棋手马克斯·贝瑟尔于1848">
 <meta property="og:type" content="article">
-<meta property="og:title" content="慎用#define">
-<meta property="og:url" content="http://hucoco.com/2016/06/08/Cpp/#define/index.html">
+<meta property="og:title" content="位运算解N皇后问题">
+<meta property="og:url" content="http://hucoco.com/2016/09/20/Algorithm/NQueens/index.html">
 <meta property="og:site_name" content="HuCoco's Blog">
-<meta property="og:description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
-记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
-<meta property="og:updated_time" content="2016-08-25T04:49:26.000Z">
+<meta property="og:description" content="问题概述八皇后问题是一个以国际象棋为背景的问题：如何能够在 8×8 的国际象棋棋盘上放置八个皇后，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的n皇后摆放问题：这时棋盘的大小变为n×n，而皇后个数也变成n。而且仅当 n = 1 或 n ≥ 4 时问题有解。
+八皇后问题最早是由国际西洋棋棋手马克斯·贝瑟尔于1848">
+<meta property="og:image" content="http://hucoco.com/Users/HuCoco/blog/source/img/EightQueen/EightQueen1.jpg">
+<meta property="og:updated_time" content="2016-12-13T04:11:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="慎用#define">
-<meta name="twitter:description" content="在我们学习C的时候，会常常使用到 #define 关键字来定义一些我们需要的元素，比如：1#define MATH_PI 3.1415
-记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到3.1415而不是MAT">
+<meta name="twitter:title" content="位运算解N皇后问题">
+<meta name="twitter:description" content="问题概述八皇后问题是一个以国际象棋为背景的问题：如何能够在 8×8 的国际象棋棋盘上放置八个皇后，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的n皇后摆放问题：这时棋盘的大小变为n×n，而皇后个数也变成n。而且仅当 n = 1 或 n ≥ 4 时问题有解。
+八皇后问题最早是由国际西洋棋棋手马克斯·贝瑟尔于1848">
+<meta name="twitter:image" content="http://hucoco.com/Users/HuCoco/blog/source/img/EightQueen/EightQueen1.jpg">
     
 
     
@@ -221,7 +223,7 @@ var _hmt = _hmt || [];
 </aside>
 
             
-            <section id="main"><article id="post-Cpp/#define" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Algorithm/NQueens" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -230,7 +232,7 @@ var _hmt = _hmt || [];
                 
     
         <h1 class="article-title" itemprop="name">
-            慎用#define
+            位运算解N皇后问题
         </h1>
     
 
@@ -241,8 +243,8 @@ var _hmt = _hmt || [];
                     
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/06/08/Cpp/#define/">
-            <time datetime="2016-06-08T10:33:38.000Z" itemprop="datePublished">2016-06-08</time>
+        <a href="/2016/09/20/Algorithm/NQueens/">
+            <time datetime="2016-09-20T03:38:04.000Z" itemprop="datePublished">2016-09-20</time>
         </a>
     </div>
 
@@ -250,13 +252,13 @@ var _hmt = _hmt || [];
                     
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/C/">C++</a>
+        <a class="article-category-link" href="/categories/算法/">算法</a>
     </div>
 
                     
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>
+        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/N皇后问题/">N皇后问题</a>, <a class="tag-link" href="/tags/位运算/">位运算</a>, <a class="tag-link" href="/tags/算法/">算法</a>
     </div>
 
                 </div>
@@ -265,43 +267,39 @@ var _hmt = _hmt || [];
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>在我们学习C的时候，会常常使用到 <strong>#define</strong> 关键字来定义一些我们需要的元素，比如：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MATH_PI 3.1415</span></span><br></pre></td></tr></table></figure></p>
-<p>记号MATH_PI可能从未被编译器看见，也可能在编译器开始处理源码之前它就被预编译处理器移走了。于是MATH_PI有可能没进入记号表内。之后当以使用它时但获得了一个错误信息，可能你没法办很快的找到是哪里出现的问题，因为这个错误信息可能会提到<strong>3.1415</strong>而不是<strong>MATH_PI</strong>，若果他是你的小伙伴写的那一部分，但你并不知道，这可能会折腾你很久，处理这样的问题就非常的浪费时间。<br>解决的办法很简单，就是以一个常量来替换上述的宏：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> MathPI = <span class="number">3.1415</span>;</span><br></pre></td></tr></table></figure></p>
-<p>这样MathPI可能会被编译器看到并记入记号表内，这样就绝不会出现刚刚的情况。</p>
-<blockquote>
-<p>这里在说一些题外话：我们在以不同的方式定义元素的时候，应该按照定于方式的规范来命名，比如这里的宏，我们使用的全大写+下划线来表示，而常量我们使用另外一种命名方式来表示，以此我们就可以区分不同的方式定义的元素。</p>
-</blockquote>
-<a id="more"></a>
-<p>当我们使用<strong>const</strong>来代替<strong>#define</strong>时，有两种特殊的情况需要提一下。</p>
-<ol>
-<li>定义常量指针<br>由于常量定义通常放在头文件内，这样便于被不同的源码包含，因此有必要将指针声明为const，若要定义一个不变的指针，就必须const两次：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> authorName = <span class="string">"Hook"</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>为什么要这样做，在后面的文章中我会讲到。这里还会有更好的方法，我也更建议使用下面这样的方法。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">authorName</span><span class="params">(<span class="string">"Hook"</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<ol>
-<li>Class专有常量<br>为了将常量的作用于限制在类中，就必须把常量成为类的一个成员，为了保证只有一份这样的实体，就必须让它成为一个<strong>static</strong>成员<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime = <span class="number">2.5</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>但是这种写法并不好，因为C++要求每一个元素都应该有它的定义式，而这种写法是声明式，所以建议使用一下的这种方式：<br>*.h<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">BaseSkill</span></span><br><span class="line">&#123;</span><br><span class="line">  pirvate:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> CoolDownTime;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>*.cpp<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> BaseSkill::CoolDownTime = <span class="number">2.5</span>;</span><br></pre></td></tr></table></figure></p>
-<p>这样的功能#define就没有办法完成，因为#define对作用域是不敏感的，只要#define被定义，直到它被#undef，否则它将一直有用，所有任何有封装性的方法都不能使用它。<br>倘若Class在编译期间就需要使用一个常量又该怎么办呢，比如我们需要声明一个数组，编译器必须要在编译期间就要直到这个数组的长度，但这时候编译器不允许static const常量来完整这个任务，这里就需要用到一种就做“the enum hack”的补偿做法。</p>
-<blockquote>
-<p>因为一个枚举类型的数值可以当做ints来使用</p>
-</blockquote>
-  <figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataBuffer</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">enum</span> &#123; BufferLength = <span class="number">100</span> &#125;;</span><br><span class="line">    <span class="keyword">int</span> Buffer[BufferLength];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>enum是很值得我们深度认识的元素，它比较像#define而不像const，这也是它优秀的地方。</p>
-<p>接下来我们回到#define上来，通常我们习惯用#define去写一些宏函数，这东西很棒，但是需要格外的注意一些情况，比如下面这段代码：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define CALL_WITH_MAX(<span class="name">a</span>,b) f((<span class="name">a</span>) &gt; (<span class="name">b</span>) ? (<span class="name">a</span>) :(<span class="name">b</span>))</span><br></pre></td></tr></table></figure></p>
-<p>这个应该不难理解，选取a和b中较大的作为f(int)的参数传入。这里再说点其他的，书写宏函数时，实参一定要用括号包起来，不然你会经历绝望。当然就算我们括起来了，接下来也会经历绝望。<br><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">int a = <span class="number">4</span>,<span class="keyword">b </span>= <span class="number">2</span><span class="comment">;</span></span><br><span class="line">CALL_WITH_MAX(++a,<span class="keyword">b);</span><br><span class="line"></span>CALL_WITH_MAX(++a,<span class="keyword">b+8);</span></span><br></pre></td></tr></table></figure></p>
-<p>你能想象结果是什么么？<br><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f<span class="comment">(5)</span>;</span><br><span class="line">f<span class="comment">(10)</span>;</span><br></pre></td></tr></table></figure></p>
-<p>我想大部分会认为是上面这个结果，但是你错了，我们完全还原一下函数：<br><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b</span>) ? (<span class="name">++a</span>):(<span class="name">b</span>))</span><br><span class="line">f((<span class="name">++a</span>)&gt;(<span class="name">b+8</span>) ? (<span class="name">++a</span>):(<span class="name">b+8</span>))</span><br></pre></td></tr></table></figure></p>
-<p>现在应该清楚了吧！a的值取决于a被使用的次数，而且这样的错误使我们不能明确控制的，但是template inline函数会完全解决这个问题。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callWithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  f(a &gt; b ? a :b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>T可以代表你所需要的一切类型，只要他们能拿来比较，大的一个就会成为f的参数传入，而且你也可以把它作为某一个类的成员，宏是没有办法完成的。</p>
-<p>好了，这一章就到这里，简单概括一下：</p>
+            <h3 id="问题概述"><a href="#问题概述" class="headerlink" title="问题概述"></a>问题概述</h3><p>八皇后问题是一个以国际象棋为背景的问题：如何能够在 8×8 的国际象棋棋盘上放置八个皇后，使得任何一个皇后都无法直接吃掉其他的皇后？为了达到此目的，任两个皇后都不能处于同一条横行、纵行或斜线上。八皇后问题可以推广为更一般的n皇后摆放问题：这时棋盘的大小变为n×n，而皇后个数也变成n。而且仅当 n = 1 或 n ≥ 4 时问题有解。</p>
+<p>八皇后问题最早是由国际西洋棋棋手马克斯·贝瑟尔于1848年提出。之后陆续有数学家对其进行研究，其中包括高斯和康托，并且将其推广为更一般的n皇后摆放问题。八皇后问题的第一个解是在1850年由弗朗兹·诺克给出的。诺克也是首先将问题推广到更一般的n皇后摆放问题的人之一。1874年，S.冈德尔提出了一个通过行列式来求解的方法，这个方法后来又被J.W.L.格莱舍加以改进。</p>
+<p>艾兹格·迪杰斯特拉在1972年用这个问题为例来说明他所谓结构性编程的能力。</p>
+<p>八皇后问题出现在1990年代初期的著名电子游戏第七访客中。</p>
+<h3 id="算法源码"><a href="#算法源码" class="headerlink" title="算法源码"></a>算法源码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">NQueens</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> upperlim = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>, sum = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">std</span>::function&lt;<span class="keyword">void</span>(<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>)&gt; dfs = [&amp;](<span class="keyword">int</span> row,<span class="keyword">int</span> ld,<span class="keyword">int</span> rd) &#123;</span><br><span class="line">        <span class="keyword">if</span>(row == upperlim) &#123;++sum;<span class="keyword">return</span>;&#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> cur = upperlim &amp; (~(row|ld|rd)),pos = <span class="number">0</span>;cur ;dfs(row|pos,(ld|pos)&lt;&lt;<span class="number">1</span>,(rd|pos)&gt;&gt;<span class="number">1</span>)) &#123;</span><br><span class="line">            pos = cur &amp; (-cur);</span><br><span class="line">            cur -= pos;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    dfs(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>这里用到了C++的匿名函数，不太了解的朋友可以去查一下。</strong></p>
+<h2 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> upperlim = (<span class="number">1</span> &lt;&lt; n) - <span class="number">1</span>, <span class="keyword">sum</span> = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>upperlim的值位n位二进制1，这个不难理解。</p>
+<h3 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h3><figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">std::function&lt;void(<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>)&gt; dfs = [&amp;](<span class="keyword">int</span> row,<span class="keyword">int</span> ld,<span class="keyword">int</span> rd) &#123;</span><br><span class="line">    <span class="keyword">if</span>(row == upperlim) &#123;++sum;<span class="keyword">return</span>;&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> cur = upperlim &amp; (~(row|ld|rd)),<span class="keyword">pos</span> = <span class="number">0</span>;cur ;dfs(row|<span class="keyword">pos</span>,(ld|<span class="keyword">pos</span>)&lt;&lt;<span class="number">1</span>,(rd|<span class="keyword">pos</span>)&gt;&gt;<span class="number">1</span>)) &#123;</span><br><span class="line">        <span class="keyword">pos</span> = cur &amp; (-cur);</span><br><span class="line">        cur -= <span class="keyword">pos</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>函数有三个参数：</p>
 <ul>
-<li>对于常量，使用const或者enum来代替#define</li>
-<li>对于函数，使用template inline来代替#define</li>
+<li>row 纵列</li>
+<li>ld 左对角线</li>
+<li>rd 右对角线</li>
 </ul>
-<p>下一次我们会来细细的讨论下const这个关键字。</p>
+<p>通过这三个参数来判断某个位置能否放置皇后。</p>
+<h3 id="分步图解"><a href="#分步图解" class="headerlink" title="分步图解"></a>分步图解</h3><p><strong>这里用六皇后问题做一个分步图解。</strong></p>
+<p><img src="/Users/HuCoco/blog/source/img/EightQueen/EightQueen1.jpg" alt="Step 1"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">row</span> = <span class="number">000001</span></span><br><span class="line"><span class="attr">ld</span>  = <span class="number">000010</span></span><br><span class="line"><span class="attr">rd</span>  = <span class="number">000000</span></span><br><span class="line"><span class="attr">cur</span> = <span class="number">111100</span></span><br><span class="line"><span class="attr">pos</span> = <span class="number">000100</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/Users/HuCoco/blog/source/img/EightQueen/EightQueen2.jpg" alt="Step 2"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">row</span> = <span class="number">000101</span></span><br><span class="line"><span class="attr">ld</span>  = <span class="number">001100</span></span><br><span class="line"><span class="attr">rd</span>  = <span class="number">000010</span> </span><br><span class="line"><span class="attr">cur</span> = <span class="number">110000</span></span><br><span class="line"><span class="attr">pos</span> = <span class="number">010000</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/Users/HuCoco/blog/source/img/EightQueen/EightQueen3.jpg" alt="Step 3"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">row</span> = <span class="number">010101</span></span><br><span class="line"><span class="attr">ld</span>  = <span class="number">111000</span></span><br><span class="line"><span class="attr">rd</span>  = <span class="number">001001</span> </span><br><span class="line"><span class="attr">cur</span> = <span class="number">000010</span></span><br><span class="line"><span class="attr">pos</span> = <span class="number">000010</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/Users/HuCoco/blog/source/img/EightQueen/EightQueen4.jpg" alt="Step 4"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">row</span> = <span class="number">010111</span></span><br><span class="line"><span class="attr">ld</span>  = <span class="number">110100</span></span><br><span class="line"><span class="attr">rd</span>  = <span class="number">000101</span> </span><br><span class="line"><span class="attr">cur</span> = <span class="number">001000</span>，</span><br><span class="line"><span class="attr">pos</span> = <span class="number">001000</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/Users/HuCoco/blog/source/img/EightQueen/EightQueen5.jpg" alt="Step 5"></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">row</span> = <span class="number">011111</span></span><br><span class="line"><span class="attr">ld</span>  = <span class="number">111000</span></span><br><span class="line"><span class="attr">rd</span>  = <span class="number">000110</span></span><br><span class="line"><span class="attr">cur</span> = <span class="number">000000</span></span><br><span class="line"><span class="attr">pos</span> = <span class="number">000000</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>第一轮查找就完成了，这里还有一种思想是深度优先搜索，也就是直捣黄龙找出一个解之后再去找第二个解，因为八皇后问题属于图论范围，所以图论的思想也能在这个问题中找到。</p>
 
         
         </div>
@@ -312,7 +310,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/06/08/Cpp/#define/" data-id="ciwmzt1zl0003m0verolk1rnt" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/09/20/Algorithm/NQueens/" data-id="ciwmztixj0000meves5ctm67z" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -380,7 +378,7 @@ var _hmt = _hmt || [];
 
             
     
-        <a href="http://hucoco.com/2016/06/08/Cpp/#define/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/06/08/Cpp/#define/">评论</a>
+        <a href="http://hucoco.com/2016/09/20/Algorithm/NQueens/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/09/20/Algorithm/NQueens/">评论</a>
     
 
         </footer>
@@ -389,19 +387,19 @@ var _hmt = _hmt || [];
         
 <nav id="article-nav">
     
-        <a href="/2016/06/09/Cpp/const/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2016/11/08/Tree/RBTree/红黑树/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">上一篇</strong>
             <div class="article-nav-title">
                 
-                    浅析const关键字
+                    红黑树实现（旋转）
                 
             </div>
         </a>
     
     
-        <a href="/2016/06/06/Hexo/MacOS_Hexo/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2016/08/16/Graphics/Ray Tracing/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">MacOS 配置 Hexo</div>
+            <div class="article-nav-title">光线追踪</div>
         </a>
     
 </nav>
@@ -415,7 +413,7 @@ var _hmt = _hmt || [];
     <section id="comments">
     
         
-    <div class="ds-thread" data-thread-key="2016/06/08/Cpp/#define/" data-title="慎用#define" data-url="http://hucoco.com/2016/06/08/Cpp/#define/"></div>
+    <div class="ds-thread" data-thread-key="2016/09/20/Algorithm/NQueens/" data-title="位运算解N皇后问题" data-url="http://hucoco.com/2016/09/20/Algorithm/NQueens/"></div>
     <style>
         #ds-thread #ds-reset .ds-textarea-wrapper {
             background: none;
