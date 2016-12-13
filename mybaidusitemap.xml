@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://hucoco.com/2016/09/20/Algorithm/EightQueen/</loc>
+    <lastmod>2016-12-13T03:40:16.000Z</lastmod>
+    <data>
+        <display>
+        <title>10行代码解八皇后问题</title>
+        <pubTime>2016-09-20T03:38:04.000Z</pubTime>
+        
+        <tag>算法</tag>
+         
+        <tag>C++</tag>
+         
+         
+           
+             
+              <breadCrumb title="算法" url="http://hucoco.com/categories/%E7%AE%97%E6%B3%95/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://hucoco.com/2016/11/24/Graph/TopologicalOrder/</loc>
     <lastmod>2016-12-11T06:38:56.000Z</lastmod>
     <data>
@@ -11,13 +33,13 @@
         <title>拓扑排序</title>
         <pubTime>2016-11-24T06:21:11.000Z</pubTime>
         
+        <tag>算法</tag>
+         
         <tag>C++</tag>
          
         <tag>数据结构</tag>
          
         <tag>图</tag>
-         
-        <tag>算法</tag>
          
          
            
@@ -40,13 +62,13 @@
         <title>广度优先搜索</title>
         <pubTime>2016-11-22T06:04:58.000Z</pubTime>
         
+        <tag>算法</tag>
+         
         <tag>C++</tag>
          
         <tag>数据结构</tag>
          
         <tag>图</tag>
-         
-        <tag>算法</tag>
          
          
            
@@ -69,13 +91,13 @@
         <title>深度优先搜索</title>
         <pubTime>2016-11-20T02:47:36.000Z</pubTime>
         
+        <tag>算法</tag>
+         
         <tag>C++</tag>
          
         <tag>数据结构</tag>
          
         <tag>图</tag>
-         
-        <tag>算法</tag>
          
          
            

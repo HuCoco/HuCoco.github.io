@@ -3,23 +3,18 @@
 <head>
     <meta charset="utf-8">
     
-    <title>广度优先搜索 | HuCoco&#39;s Blog</title>
+    <title>10行代码解八皇后问题 | HuCoco&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="广度优先搜索广度优先搜索介绍广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。
-它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有">
+    <meta name="description">
 <meta property="og:type" content="article">
-<meta property="og:title" content="广度优先搜索">
-<meta property="og:url" content="http://hucoco.com/2016/11/22/Graph/BFS/index.html">
+<meta property="og:title" content="10行代码解八皇后问题">
+<meta property="og:url" content="http://hucoco.com/2016/09/20/Algorithm/EightQueen/index.html">
 <meta property="og:site_name" content="HuCoco's Blog">
-<meta property="og:description" content="广度优先搜索广度优先搜索介绍广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。
-它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有">
-<meta property="og:image" content="http://hucoco.com/img/Graph/UDGBFS.png">
-<meta property="og:updated_time" content="2016-12-11T06:19:14.000Z">
+<meta property="og:description">
+<meta property="og:updated_time" content="2016-12-13T03:40:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="广度优先搜索">
-<meta name="twitter:description" content="广度优先搜索广度优先搜索介绍广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。
-它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有">
-<meta name="twitter:image" content="http://hucoco.com/img/Graph/UDGBFS.png">
+<meta name="twitter:title" content="10行代码解八皇后问题">
+<meta name="twitter:description">
     
 
     
@@ -223,7 +218,7 @@ var _hmt = _hmt || [];
 </aside>
 
             
-            <section id="main"><article id="post-Graph/BFS" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Algorithm/EightQueen" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -232,7 +227,7 @@ var _hmt = _hmt || [];
                 
     
         <h1 class="article-title" itemprop="name">
-            广度优先搜索
+            10行代码解八皇后问题
         </h1>
     
 
@@ -243,8 +238,8 @@ var _hmt = _hmt || [];
                     
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2016/11/22/Graph/BFS/">
-            <time datetime="2016-11-22T06:04:58.000Z" itemprop="datePublished">2016-11-22</time>
+        <a href="/2016/09/20/Algorithm/EightQueen/">
+            <time datetime="2016-09-20T03:38:04.000Z" itemprop="datePublished">2016-09-20</time>
         </a>
     </div>
 
@@ -252,13 +247,13 @@ var _hmt = _hmt || [];
                     
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/数据结构/">数据结构</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/数据结构/图/">图</a>
+        <a class="article-category-link" href="/categories/算法/">算法</a>
     </div>
 
                     
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/图/">图</a>, <a class="tag-link" href="/tags/数据结构/">数据结构</a>, <a class="tag-link" href="/tags/算法/">算法</a>
+        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/算法/">算法</a>
     </div>
 
                 </div>
@@ -267,37 +262,7 @@ var _hmt = _hmt || [];
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h1 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h1><h2 id="广度优先搜索介绍"><a href="#广度优先搜索介绍" class="headerlink" title="广度优先搜索介绍"></a>广度优先搜索介绍</h2><p>广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。</p>
-<p>它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有顶点未被访问，则需要另选一个未曾被访问过的顶点作为新的起始点，重复上述过程，直至图中所有顶点都被访问到为止。</p>
-<p>换句话说，广度优先搜索遍历图的过程是以v为起点，由近至远，依次访问和v有路径相通且路径长度为1,2…的顶点。</p>
-<h2 id="广度优先搜索图解"><a href="#广度优先搜索图解" class="headerlink" title="广度优先搜索图解"></a>广度优先搜索图解</h2><h3 id="无向图的广度优先搜索"><a href="#无向图的广度优先搜索" class="headerlink" title="无向图的广度优先搜索"></a>无向图的广度优先搜索</h3><p>下面以”无向图”为例，来对广度优先搜索进行演示。</p>
-<p><img src="http://hucoco.com/img/Graph/UDGBFS.png" alt="UDGBFS"></p>
-<a id="more"></a>
-<p><strong>第1步：</strong>访问A。<br><strong>第2步：</strong>依次访问C,D,F。 </p>
-<p>在访问了A之后，接下来访问A的邻接点。前面已经说过，在本文实现中，顶点ABCDEFG按照顺序存储的，C在”D和F”的前面，因此，先访问C。再访问完C之后，再依次访问D,F。 </p>
-<p><strong>第3步：</strong>依次访问B,G。 </p>
-<p>在第2步访问完C,D,F之后，再依次访问它们的邻接点。首先访问C的邻接点B，再访问F的邻接点G。 </p>
-<p><strong>第4步：</strong>访问E。 </p>
-<p>在第3步访问完B,G之后，再依次访问它们的邻接点。只有G有邻接点E，因此访问G的邻接点E。</p>
-<p>因此访问顺序是：<strong>A -&gt; C -&gt; D -&gt; F -&gt; B -&gt; G -&gt; E</strong></p>
-<h3 id="有向图的广度优先搜索"><a href="#有向图的广度优先搜索" class="headerlink" title="有向图的广度优先搜索"></a>有向图的广度优先搜索</h3><p>下面以”有向图”为例，来对广度优先搜索进行演示。</p>
-<p><img src="http://hucoco.com/img/Graph/DGBFS.png" alt="DGBFS"></p>
-<p><strong>第1步：</strong>访问A。</p>
-<p><strong>第2步：</strong>访问B。</p>
-<p><strong>第3步：</strong>依次访问C,E,F。</p>
-<p>在访问了B之后，接下来访问B的出边的另一个顶点，即C,E,F。前面已经说过，在本文实现中，顶点ABCDEFG按照顺序存储的，因此会先访问C，再依次访问E,F。 </p>
-<p><strong>第4步：</strong>依次访问D,G。 </p>
-<p>在访问完C,E,F之后，再依次访问它们的出边的另一个顶点。还是按照C,E,F的顺序访问，C的已经全部访问过了，那么就只剩下E,F；先访问E的邻接点D，再访问F的邻接点G。</p>
-<p>因此访问顺序是：<strong>A -&gt; B -&gt; C -&gt; E -&gt; F -&gt; D -&gt; G</strong></p>
-<h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>用邻接矩阵图实现：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByMatrix::BreadthFirstSearch() &#123;</span><br><span class="line">    <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span>* <span class="built_in">queue</span> = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    <span class="keyword">int</span>* visited = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        visited[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Breadth First Search: "</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[i]) &#123;</span><br><span class="line">            visited[i] = <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">            <span class="built_in">queue</span>[rear++] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">            j = <span class="built_in">queue</span>[head++];</span><br><span class="line">            <span class="keyword">for</span>(k = firstVertex(j) ; k &gt;= <span class="number">0</span> ; k = nextVertex(j, k)) &#123;</span><br><span class="line">                <span class="keyword">if</span>(!visited[k]) &#123;</span><br><span class="line">                    visited[k] = <span class="number">1</span>;</span><br><span class="line">                    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[k] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">                    <span class="built_in">queue</span>[rear++] = k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] visited;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>用邻接表图实现：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> GraphByList::BreadthFirstSearch() &#123;</span><br><span class="line">    <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span>* <span class="built_in">queue</span> = <span class="keyword">new</span> <span class="keyword">int</span>[m_VexNum];</span><br><span class="line">    <span class="keyword">bool</span>* visited = <span class="keyword">new</span> <span class="keyword">bool</span>[m_VexNum];</span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    ENode* p;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        visited[i] = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Breadth First Search: "</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; m_VexNum ; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!visited[i]) &#123;</span><br><span class="line">            visited[i] = <span class="literal">true</span>;</span><br><span class="line">            <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[i].m_Data &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">            <span class="built_in">queue</span>[rear++] = i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">            j = <span class="built_in">queue</span>[head++];</span><br><span class="line">            p = m_pVexs[j].firstEdge;</span><br><span class="line">            <span class="keyword">while</span>(p != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                k = p-&gt;m_Vex;</span><br><span class="line">                <span class="keyword">if</span>(!visited[k]) &#123;</span><br><span class="line">                    visited[k] = <span class="literal">true</span>;</span><br><span class="line">                    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; m_pVexs[k].m_Data &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">                    <span class="built_in">queue</span>[rear++] = k;</span><br><span class="line">                &#125;</span><br><span class="line">                p = p-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] <span class="built_in">queue</span>;</span><br><span class="line">    <span class="keyword">delete</span>[] visited;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.hpp" target="_blank" rel="external">邻接矩阵图头文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByMatrix.cpp" target="_blank" rel="external">邻接矩阵图源文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.hpp" target="_blank" rel="external">邻接表图头文件</a></p>
-<p><a href="https://github.com/HuCoco/datastructs-algorithm/blob/master/datastructs/graph/GraphByList.cpp" target="_blank" rel="external">邻接表图源文件</a></p>
-
+            
         
         </div>
         <footer class="article-footer">
@@ -307,7 +272,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://hucoco.com/2016/11/22/Graph/BFS/" data-id="ciwmyn2j100090ave1orzrobm" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://hucoco.com/2016/09/20/Algorithm/EightQueen/" data-id="ciwmyn2is00020avezpjgh7su" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -375,7 +340,7 @@ var _hmt = _hmt || [];
 
             
     
-        <a href="http://hucoco.com/2016/11/22/Graph/BFS/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/11/22/Graph/BFS/">评论</a>
+        <a href="http://hucoco.com/2016/09/20/Algorithm/EightQueen/#comments" class="article-comment-link ds-thread-count" data-thread-key="http://hucoco.com/2016/09/20/Algorithm/EightQueen/">评论</a>
     
 
         </footer>
@@ -384,19 +349,19 @@ var _hmt = _hmt || [];
         
 <nav id="article-nav">
     
-        <a href="/2016/11/24/Graph/TopologicalOrder/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2016/11/08/Tree/RBTree/红黑树/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">上一篇</strong>
             <div class="article-nav-title">
                 
-                    拓扑排序
+                    红黑树实现（旋转）
                 
             </div>
         </a>
     
     
-        <a href="/2016/11/20/Graph/DFS/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2016/08/16/Graphics/Ray Tracing/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">深度优先搜索</div>
+            <div class="article-nav-title">光线追踪</div>
         </a>
     
 </nav>
@@ -410,7 +375,7 @@ var _hmt = _hmt || [];
     <section id="comments">
     
         
-    <div class="ds-thread" data-thread-key="2016/11/22/Graph/BFS/" data-title="广度优先搜索" data-url="http://hucoco.com/2016/11/22/Graph/BFS/"></div>
+    <div class="ds-thread" data-thread-key="2016/09/20/Algorithm/EightQueen/" data-title="10行代码解八皇后问题" data-url="http://hucoco.com/2016/09/20/Algorithm/EightQueen/"></div>
     <style>
         #ds-thread #ds-reset .ds-textarea-wrapper {
             background: none;
