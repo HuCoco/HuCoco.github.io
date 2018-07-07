@@ -3,14 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Tag: Sort | HuCoco</title>
+    <title>Ray and Camera | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://HuCoco.com/tags/Sort/index.html">
+    <meta name="description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta name="keywords" content="Graphics,Ray Tracing">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ray and Camera">
+<meta property="og:url" content="http://HuCoco.com/2018/07/07/Ray-and-Camera/index.html">
 <meta property="og:site_name" content="HuCoco">
+<meta property="og:description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta property="og:image" content="http://hucoco.com/img/Graphics/RayTracing/ray_00.png">
+<meta property="og:updated_time" content="2018-07-07T16:23:13.252Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HuCoco">
+<meta name="twitter:title" content="Ray and Camera">
+<meta name="twitter:description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta name="twitter:image" content="http://hucoco.com/img/Graphics/RayTracing/ray_00.png">
     
 
     
@@ -193,51 +200,194 @@
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#Sort</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-Ray-and-Camera" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/10/Sorting-Algorithm/">Sorting Algorithm</a>
+        <h1 class="article-title" itemprop="name">
+            Ray and Camera
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/03/10/Sorting-Algorithm/">
-            <time datetime="2018-03-10T05:07:14.000Z" itemprop="datePublished">2018-03-10</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">516</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
+        <a href="/2018/07/07/Ray-and-Camera/">
+            <time datetime="2018-07-07T08:08:16.000Z" itemprop="datePublished">2018-07-07</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">272</span>&nbsp;|&nbsp;Time: <span class="post-count">2</span>&nbsp;Mins <br>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Sort/">Sort</a>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/Python/">Python</a>, <a class="tag-link" href="/tags/Sort/">Sort</a>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/Ray-Tracing/">Ray Tracing</a>
     </div>
 
-                </div>
-            </div>
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h2><p>Finding ray-object  intersection and computing  surface normal is central to ray tracing.</p>
+<p>Ray representations:</p>
+<ul>
+<li>Two 3D vectors<ul>
+<li>Ray origin position</li>
+<li>Ray direction vector</li>
+</ul>
+</li>
+<li>Parametric form<ul>
+<li>$P(t) = origin + t \times direction$</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_00.png" alt=""></p>
+<a id="more"></a>
+<h3 id="Computing-Reflection-Refraction-Rays"><a href="#Computing-Reflection-Refraction-Rays" class="headerlink" title="Computing Reflection / Refraction Rays"></a>Computing Reflection / Refraction Rays</h3><p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_01.png" alt=""></p>
+<h4 id="Snell’s-law"><a href="#Snell’s-law" class="headerlink" title="Snell’s law"></a>Snell’s law</h4><script type="math/tex; mode=display">\mu_1sin\theta = \mu_2sin\phi</script><h4 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h4><script type="math/tex; mode=display">R = 2 (N \cdot L) N - L</script><h4 id="Refraction"><a href="#Refraction" class="headerlink" title="Refraction"></a>Refraction</h4><script type="math/tex; mode=display">\mu = \frac{\mu_1}{\mu_2}</script><script type="math/tex; mode=display">T = -\mu L + (\mu (N \cdot L) - \sqrt{1 - \mu^2 (1 - (N \cdot L)^2)})N</script><h3 id="Recursive-Ray-Tracing"><a href="#Recursive-Ray-Tracing" class="headerlink" title="Recursive Ray Tracing"></a>Recursive Ray Tracing</h3><p>For each reflection/refraction ray spawned, we can trace it just like tracing the original ray.</p>
+<p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_02.png" alt=""></p>
+<h4 id="When-to-stop-recursion"><a href="#When-to-stop-recursion" class="headerlink" title="When to stop recursion?"></a>When to stop recursion?</h4><ul>
+<li>When the surface is totally diffuse (and opaque)</li>
+<li>When reflected/refracted ray hits nothing</li>
+<li>When maximum recursion depth is reached</li>
+<li>When the contribution of the reflected/refracted ray to thecolor at the top level is too small<ul>
+<li>$(K_{rg1} | K_{tg1}) \times \cdots \times (k_{rg(n-1)}|k_{tg(n-1)}) &lt; threshold $</li>
+</ul>
+</li>
+</ul>
+<h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><p>Camera view &amp; image resolution</p>
+<ul>
+<li>Camera position and orientation in world coordinate frame<ul>
+<li>Similar to gluLookAt()</li>
+</ul>
+</li>
+<li>Field of view<ul>
+<li>Similar to gluPerspective(), but no need near &amp; far plane</li>
+</ul>
+</li>
+<li>Image resolution<ul>
+<li>Number of pixels in each dimension</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Camera &amp;Camera::setCamera( </span><br><span class="line">			    <span class="keyword">const</span> Vector3d &amp;eye, <span class="keyword">const</span> Vector3d &amp;lookAt, <span class="keyword">const</span> Vector3d &amp;upVector,</span><br><span class="line">		        <span class="keyword">double</span> left, <span class="keyword">double</span> right, <span class="keyword">double</span> bottom, <span class="keyword">double</span> top, <span class="keyword">double</span> near,</span><br><span class="line">			    <span class="keyword">int</span> image_width, <span class="keyword">int</span> image_height )</span><br><span class="line">&#123;</span><br><span class="line">	assert( image_width &gt; <span class="number">0</span> &amp;&amp; image_height &gt; <span class="number">0</span> );</span><br><span class="line">	mImageWidth = image_width;</span><br><span class="line">	mImageHeight = image_height;</span><br><span class="line"></span><br><span class="line">	mCOP = eye;</span><br><span class="line">	Vector3d cop_n = (eye - lookAt).unitVector();</span><br><span class="line">	Vector3d cop_u = cross( upVector.unitVector(), cop_n );</span><br><span class="line">	Vector3d cop_v = cross( cop_n, cop_u );</span><br><span class="line"></span><br><span class="line">	mImageOrigin = mCOP + ( left * cop_u ) + ( bottom * cop_v ) + ( -near * cop_n );</span><br><span class="line"></span><br><span class="line">	mImageU = (right - left) * cop_u;</span><br><span class="line">	mImageV = (top - bottom) * cop_v;</span><br><span class="line">	<span class="keyword">return</span> (*<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Ray <span class="title">getRay</span><span class="params">( <span class="keyword">double</span> pixelPosX, <span class="keyword">double</span> pixelPosY )</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Vector3d imgPos = mImageOrigin + (pixelPosX/mImageWidth) * mImageU + (pixelPosY/mImageHeight) * mImageV;</span><br><span class="line">	<span class="keyword">return</span> Ray( mCOP, imgPos - mCOP );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        
         </div>
-    
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
 </div>
+
+    <a data-url="http://HuCoco.com/2018/07/07/Ray-and-Camera/" data-id="cjjbmc2kq000d2ob90b3gnxrn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/07/06/Various-surfaces/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Various surfaces</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
 </section>
             
                 
