@@ -76,14 +76,14 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Cari" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Tulis Sesuatu.." />
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -95,11 +95,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Pos',
-            PAGES: 'Halaman',
-            CATEGORIES: 'Kategori',
-            TAGS: 'Tag',
-            UNTITLED: 'Tanpa Judul',
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -129,7 +129,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Cari" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
     </div>
 
                 </td>
@@ -149,16 +149,16 @@
             <h2 id="name">Hu Ke</h2>
             <h3 id="title">C++ Developer</h3>
             <span id="location"><i class="fa fa-map-marker"></i>Chengdu, China</span>
-            <a id="follow" target="_blank" href="http://github.com/HuCoco/">IKUTI</a>
+            <a id="follow" target="_blank" href="http://github.com/HuCoco/">FOLLOW</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                16
-                <span>pos</span>
+                17
+                <span>posts</span>
             </div>
             <div class="article-info-block">
                 13
-                <span>tag</span>
+                <span>tags</span>
             </div>
         </div>
         
@@ -194,6 +194,151 @@
 
             
             <section id="main">
+    <article id="post-Ray-Camera-and-Scene" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/07/07/Ray-Camera-and-Scene/">Ray Camera and Scene</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2018/07/07/Ray-Camera-and-Scene/">
+            <time datetime="2018-07-07T08:08:16.000Z" itemprop="datePublished">2018-07-07</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">44</span>&nbsp;|&nbsp;Time: <span class="post-count">1</span>&nbsp;Mins <br>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/Ray-Tracing/">Ray Tracing</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h2><p>Finding ray-object  intersection and computing  surface normal is central to ray tracing.</p>
+<p>Ray representations:</p>
+<ul>
+<li>Two 3D vectors<ul>
+<li>Ray origin position</li>
+<li>Ray direction vector</li>
+</ul>
+</li>
+<li>Parametric form<ul>
+<li>$P(t) = origin + t \times direction$</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_00.png" alt=""></p>
+<h3 id="Computing-Reflection-Refraction-Rays"><a href="#Computing-Reflection-Refraction-Rays" class="headerlink" title="Computing Reflection / Refraction Rays"></a>Computing Reflection / Refraction Rays</h3><p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_01.png" alt=""></p>
+<h4 id="Snell’s-law"><a href="#Snell’s-law" class="headerlink" title="Snell’s law"></a>Snell’s law</h4><script type="math/tex; mode=display">\mu_1sin\theta = \mu_2sin\phi</script><h4 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h4><script type="math/tex; mode=display">R = 2 (N \cdot L) N - L</script><h4 id="Refraction"><a href="#Refraction" class="headerlink" title="Refraction"></a>Refraction</h4><script type="math/tex; mode=display">\mu = \frac{\mu_1}{\mu_2}</script><script type="math/tex; mode=display">T = -\mu L + (\mu (N \cdot L) - \sqrt{1 - \mu^2 (1 - (N \cdot L)^2)})N</script><h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><h2 id="Scene"><a href="#Scene" class="headerlink" title="Scene"></a>Scene</h2>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://HuCoco.com/2018/07/07/Ray-Camera-and-Scene/" data-id="cjjb5xkv8000i3wb9qw2azsdf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-Various-surfaces" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -213,7 +358,7 @@
         <i class="fa fa-calendar"></i>
         <a href="/2018/07/06/Various-surfaces/">
             <time datetime="2018-07-06T15:28:40.000Z" itemprop="datePublished">2018-07-06</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">527</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
+            WORDS:&nbsp;<span class="post-count">1,133</span>&nbsp;|&nbsp;Time: <span class="post-count">7</span>&nbsp;Mins <br>
         </a>
     </div>
 
@@ -261,7 +406,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/06/Various-surfaces/" data-id="cjjb3fhqc001wrgb9gl2g5415" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/07/06/Various-surfaces/" data-id="cjjb5xkxh00483wb9kivp00rv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -400,7 +545,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/05/Theory-of-Ray-Tracing/" data-id="cjjb3fhqa001trgb9y7pwkp3y" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/07/05/Theory-of-Ray-Tracing/" data-id="cjjb5xkvf000y3wb93pfw7k9a" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -539,7 +684,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/04/Physically-Based-Rendering-Catalogue/" data-id="cjjb3fhpy0011rgb9fiv35d8k" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/07/04/Physically-Based-Rendering-Catalogue/" data-id="cjjb5xkv3000b3wb99jyqw53k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -634,7 +779,7 @@
         <i class="fa fa-calendar"></i>
         <a href="/2018/07/04/Ray-Tracing-Catalogue/">
             <time datetime="2018-07-04T13:26:13.000Z" itemprop="datePublished">2018-07-04</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">47</span>&nbsp;|&nbsp;Time: <span class="post-count">1</span>&nbsp;Mins <br>
+            WORDS:&nbsp;<span class="post-count">48</span>&nbsp;|&nbsp;Time: <span class="post-count">1</span>&nbsp;Mins <br>
         </a>
     </div>
 
@@ -663,7 +808,7 @@
 <p><img src="http://hucoco.com/img/Graphics/RayTracing/RayTracing_0.png" alt=""></p>
 <ul>
 <li>Theory of ray tracing</li>
-<li>Ray tracing world</li>
+<li>Ray, Scene and Camera</li>
 <li>Various surfaces</li>
 <li>Do ray tracing</li>
 <li>Shadow</li>
@@ -681,7 +826,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/04/Ray-Tracing-Catalogue/" data-id="cjjb3fhpz0014rgb97camx0co" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/07/04/Ray-Tracing-Catalogue/" data-id="cjjb5xkv5000e3wb95oc8myhx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -988,7 +1133,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/26/SSE-Instruction-List/" data-id="cjjb3fhq9001orgb9dn67ei7w" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/03/26/SSE-Instruction-List/" data-id="cjjb5xkvb000q3wb9rtcen22h" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1121,7 +1266,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/10/Sorting-Algorithm/" data-id="cjjb3fhq4001ergb9wqibkx60" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/03/10/Sorting-Algorithm/" data-id="cjjb5xkvd000t3wb9881uy5d7" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1255,7 +1400,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/09/N-Queens-Problem/" data-id="cjjb3fhpw000zrgb9odr6kv32" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/03/09/N-Queens-Problem/" data-id="cjjb5xkv2000a3wb96oinnvfy" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1407,7 +1552,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/08/Topological-Sort/" data-id="cjjb3fhq7001lrgb99bvsvkoz" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/03/08/Topological-Sort/" data-id="cjjb5xkve000u3wb9rg41n7jr" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1544,143 +1689,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/07/Breadth-First-Search/" data-id="cjjb3fhq3001argb9baz77to5" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
-    <article id="post-Depth-First-Search" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2018/03/07/Depth-First-Search/">Depth First Search</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/07/Depth-First-Search/">
-            <time datetime="2018-03-07T14:47:44.000Z" itemprop="datePublished">2018-03-07</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">433</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Search/">Search</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p><a href="http://hucoco.coding.me/2016/11/20/Graph/DFS/" target="_blank" rel="noopener">Depth First Search Chinese version address</a></p>
-<h1 id="Depth-First-Search"><a href="#Depth-First-Search" class="headerlink" title="Depth First Search"></a>Depth First Search</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Depth first search of the graph is similar to the preorder traversal of the tree.</p>
-<p>Suppose that the initial state is that all the vertices in the graph are not accessed, then starting from a vertex and first access to it, nextly, the depth first search traversal from each of its non-accessed adjacency points in turn, until all the vertices that have a path to the starting vertex in the graph are accessed. If there are other vertices that are not accessed, then choose another unvisited vertex as a starting point, repeat the above process until all graph vertices have been visited.</p>
-<h2 id="Diagram"><a href="#Diagram" class="headerlink" title="Diagram"></a>Diagram</h2><h3 id="Depth-first-search-for-undirected-graphs"><a href="#Depth-first-search-for-undirected-graphs" class="headerlink" title="Depth first search for undirected graphs"></a>Depth first search for undirected graphs</h3><p>The following is an example of undirected graph, to demonstrate the depth first search.</p>
-<p><img src="http://hucoco.com/img/Graph/UDG.png" alt="Undirected Graphs"></p></p>
-            <p class="article-more-link">
-                <a href="/2018/03/07/Depth-First-Search/#more">Read More</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://HuCoco.com/2018/03/07/Depth-First-Search/" data-id="cjjb3fhp70005rgb9xntpycer" class="article-share-link"><i class="fa fa-share"></i>Bagikan</a>
+    <a data-url="http://HuCoco.com/2018/03/07/Breadth-First-Search/" data-id="cjjb5xkv000073wb9b29ysk5s" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1757,7 +1766,7 @@
 
 
     <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Berikutnya &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
 </section>
             
@@ -1766,9 +1775,28 @@
    
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Terbaru</h3>
+        <h3 class="widget-title">recent</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2018/07/07/Ray-Camera-and-Scene/" class="thumbnail">
+    
+    
+        <span style="background-image:url(http://hucoco.com/img/Graphics/RayTracing/ray_00.png)" alt="Ray Camera and Scene" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a></p>
+                            <p class="item-title"><a href="/2018/07/07/Ray-Camera-and-Scene/" class="title">Ray Camera and Scene</a></p>
+                            <p class="item-date"><time datetime="2018-07-07T08:08:16.000Z" itemprop="datePublished">2018-07-07</time></p>
+                        </div>
+                    </li>
                 
                     <li>
                         
@@ -1846,25 +1874,6 @@
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2018/03/26/SSE-Instruction-List/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://hucoco.com/img/SIMD/Example_SIMD.jpg)" alt="SSE Instruction List" class="thumbnail-image"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/SIMD/">SIMD</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/SIMD/SSE/">SSE</a></p>
-                            <p class="item-title"><a href="/2018/03/26/SSE-Instruction-List/" class="title">SSE Instruction List</a></p>
-                            <p class="item-date"><time datetime="2018-03-26T14:22:53.000Z" itemprop="datePublished">2018-03-26</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -1872,43 +1881,43 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Kategori</h3>
+        <h3 class="widget-title">categories</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Problems/">Problems</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Search/">Search</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Sort/">Sort</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/Graph/">Graph</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/Tree/">Tree</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/">Graphics</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/PBR/">PBR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/SIMD/">SIMD</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/SIMD/SSE/">SSE</a><span class="category-list-count">1</span></li></ul></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Problems/">Problems</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Search/">Search</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/Sort/">Sort</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/Graph/">Graph</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/Tree/">Tree</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/">Graphics</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/PBR/">PBR</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/SIMD/">SIMD</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/SIMD/SSE/">SSE</a><span class="category-list-count">1</span></li></ul></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">Arsip</h3>
+        <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">12</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">12</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">tag</h3>
+        <h3 class="widget-title">tags</h3>
         <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracking</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/">Data Structure</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graphics/">Graphics</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PBR/">PBR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ray-Tracing/">Ray Tracing</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIMD/">SIMD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSE/">SSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a><span class="tag-list-count">3</span></li></ul>
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Backtracking/">Backtracking</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-Structure/">Data Structure</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graph/">Graph</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Graphics/">Graphics</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PBR/">PBR</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ray-Tracing/">Ray Tracing</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SIMD/">SIMD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SSE/">SSE</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sort/">Sort</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Tree/">Tree</a><span class="tag-list-count">3</span></li></ul>
         </div>
     </div>
 
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">awan tag</h3>
+        <h3 class="widget-title">tag cloud</h3>
         <div class="widget tagcloud">
-            <a href="/tags/Algorithm/" style="font-size: 16px;">Algorithm</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/Data-Structure/" style="font-size: 18px;">Data Structure</a> <a href="/tags/Graph/" style="font-size: 18px;">Graph</a> <a href="/tags/Graphics/" style="font-size: 14px;">Graphics</a> <a href="/tags/PBR/" style="font-size: 10px;">PBR</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Ray-Tracing/" style="font-size: 12px;">Ray Tracing</a> <a href="/tags/SIMD/" style="font-size: 10px;">SIMD</a> <a href="/tags/SSE/" style="font-size: 10px;">SSE</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Tree/" style="font-size: 12px;">Tree</a>
+            <a href="/tags/Algorithm/" style="font-size: 16px;">Algorithm</a> <a href="/tags/Backtracking/" style="font-size: 10px;">Backtracking</a> <a href="/tags/C/" style="font-size: 20px;">C++</a> <a href="/tags/Data-Structure/" style="font-size: 18px;">Data Structure</a> <a href="/tags/Graph/" style="font-size: 18px;">Graph</a> <a href="/tags/Graphics/" style="font-size: 16px;">Graphics</a> <a href="/tags/PBR/" style="font-size: 10px;">PBR</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Ray-Tracing/" style="font-size: 14px;">Ray Tracing</a> <a href="/tags/SIMD/" style="font-size: 10px;">SIMD</a> <a href="/tags/SSE/" style="font-size: 10px;">SSE</a> <a href="/tags/Sort/" style="font-size: 10px;">Sort</a> <a href="/tags/Tree/" style="font-size: 12px;">Tree</a>
         </div>
     </div>
 
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">tautan</h3>
+        <h3 class="widget-title">links</h3>
         <div class="widget">
             <ul>
                 
@@ -1933,7 +1942,7 @@
         <div id="footer-info" class="inner">
             &copy; 2018 Hu Ke<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
-            Visited:&nbsp;<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span></span>&nbsp;|&nbsp;Total Words:&nbsp;<span class="post-count">8.1k</span>
+            Visited:&nbsp;<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span></span>&nbsp;|&nbsp;Total Words:&nbsp;<span class="post-count">8.7k</span>
         </div>
     </div>
 </footer>

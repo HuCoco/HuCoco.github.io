@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Adjacency List Graph | HuCoco</title>
+    <title>Ray Camera and Scene | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Adjacency List Graph Chinese version address Adjacency List GraphAdjacency List Undirected GraphAdjacency matrix undirected graph refers to an undirected graph represented by an adjacency list.  The a">
-<meta name="keywords" content="C++,Data Structure,Graph">
+    <meta name="description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta name="keywords" content="Graphics,Ray Tracing">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Adjacency List Graph">
-<meta property="og:url" content="http://HuCoco.com/2018/03/06/Adjacency-List-Graph/index.html">
+<meta property="og:title" content="Ray Camera and Scene">
+<meta property="og:url" content="http://HuCoco.com/2018/07/07/Ray-Camera-and-Scene/index.html">
 <meta property="og:site_name" content="HuCoco">
-<meta property="og:description" content="Adjacency List Graph Chinese version address Adjacency List GraphAdjacency List Undirected GraphAdjacency matrix undirected graph refers to an undirected graph represented by an adjacency list.  The a">
-<meta property="og:image" content="http://hucoco.com/img/Graph/UDG.png">
-<meta property="og:updated_time" content="2018-03-07T16:04:09.114Z">
+<meta property="og:description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta property="og:image" content="http://hucoco.com/img/Graphics/RayTracing/ray_00.png">
+<meta property="og:updated_time" content="2018-07-07T08:43:52.747Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Adjacency List Graph">
-<meta name="twitter:description" content="Adjacency List Graph Chinese version address Adjacency List GraphAdjacency List Undirected GraphAdjacency matrix undirected graph refers to an undirected graph represented by an adjacency list.  The a">
-<meta name="twitter:image" content="http://hucoco.com/img/Graph/UDG.png">
+<meta name="twitter:title" content="Ray Camera and Scene">
+<meta name="twitter:description" content="RayFinding ray-object  intersection and computing  surface normal is central to ray tracing. Ray representations:  Two 3D vectors Ray origin position Ray direction vector   Parametric form $P(t) = ori">
+<meta name="twitter:image" content="http://hucoco.com/img/Graphics/RayTracing/ray_00.png">
     
 
     
@@ -200,7 +200,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Adjacency-List-Graph" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Ray-Camera-and-Scene" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -208,7 +208,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Adjacency List Graph
+            Ray Camera and Scene
         </h1>
     
 
@@ -217,9 +217,9 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/03/06/Adjacency-List-Graph/">
-            <time datetime="2018-03-05T16:40:11.000Z" itemprop="datePublished">2018-03-06</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">291</span>&nbsp;|&nbsp;Time: <span class="post-count">2</span>&nbsp;Mins <br>
+        <a href="/2018/07/07/Ray-Camera-and-Scene/">
+            <time datetime="2018-07-07T08:08:16.000Z" itemprop="datePublished">2018-07-07</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">44</span>&nbsp;|&nbsp;Time: <span class="post-count">1</span>&nbsp;Mins <br>
         </a>
     </div>
 
@@ -227,13 +227,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Graph/">Graph</a>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/Ray-Tracing/">Ray Tracing</a>
     </div>
 
                     </div>
@@ -244,23 +244,22 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p><a href="http://hucoco.coding.me/2016/11/18/Graph/GraphByList/" target="_blank" rel="noopener">Adjacency List Graph Chinese version address</a></p>
-<h1 id="Adjacency-List-Graph"><a href="#Adjacency-List-Graph" class="headerlink" title="Adjacency List Graph"></a>Adjacency List Graph</h1><h2 id="Adjacency-List-Undirected-Graph"><a href="#Adjacency-List-Undirected-Graph" class="headerlink" title="Adjacency List Undirected Graph"></a>Adjacency List Undirected Graph</h2><p>Adjacency matrix undirected graph refers to an undirected graph represented by an adjacency list.</p>
-<p><img src="http://hucoco.com/img/Graph/UDG.png" alt="Adjacency Matrix Undirected Graph"></p>
-<p>The above graph contains 7 vertices of <code>A, B, C, D, E, F, G</code>, and it also contains<code>&lt;A,C&gt;, &lt;A,D&gt;, &lt;A,F&gt;, &lt;B,C&gt;, &lt;C,D&gt;, &lt;E,G&gt;, &lt;F,G&gt;</code>, in total 7 edges. Since this is an undirected graph, the edge <code>&lt;A,C&gt;</code> and the edge <code>&lt;C,A&gt;</code> are the same edges. The table of edges is listed in alphabetical order..</p>
-<a id="more"></a>
-<p><img src="http://hucoco.com/img/Graph/UDGL.png" alt="Undirected Adjacency List"></p>
-<p>Each vertex contains a linked list that records the index of vertexs. For example, the data of the nodes included in the linked list included in the second vertex (vertex C) is <code>0, 1, 3</code>, and <code>0, 1, 3</code> corresponds to the index of <code>A, B, D</code>.</p>
-<h3 id="C-Definition"><a href="#C-Definition" class="headerlink" title="C++ Definition"></a>C++ Definition</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// Work in progress</span><br></pre></td></tr></table></figure>
-<h3 id="C-Implementation"><a href="#C-Implementation" class="headerlink" title="C++ Implementation"></a>C++ Implementation</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// Work in progress</span><br></pre></td></tr></table></figure>
-<h2 id="Adjacency-Matrix-Directed-Graph"><a href="#Adjacency-Matrix-Directed-Graph" class="headerlink" title="Adjacency Matrix Directed Graph"></a>Adjacency Matrix Directed Graph</h2><p>Adjacency matrix directed graph refers to an directed graph represented by an adjacency list.</p>
-<p><img src="http://hucoco.com/img/Graph/DG.png" alt="Adjacency Matrix Directed Graph"></p>
-<p>The above graph contains 7 vertices of <code>A, B, C, D, E, F, G</code>, and it also contains <code>&lt;A,B&gt;, &lt;B,C&gt;, &lt;B,E&gt;, &lt;B,F&gt;, &lt;C,E&gt;, &lt;D,C&gt;, &lt;E,B&gt;, &lt;E,D&gt;, &lt;F,G&gt;</code>, in total 7 edges.</p>
-<p><img src="http://hucoco.com/img/Graph/DGL.png" alt="Directed Adjacency Matrix"></p>
-<p>Each vertex contains a linked list that records the index of vertexs.</p>
-<p>The linked list contains the index of the other vertex of the out-edge corresponding to this vertex. For example, the data of the first vertex (vertex B) in list is <code>2,4,5</code>, this <code>2,4,5</code> corresponds to index of <code>C, E, F</code>, and <code>C, E, F</code> are the other vertices of B vertex’s out-edge.</p>
-<h3 id="C-Definition-1"><a href="#C-Definition-1" class="headerlink" title="C++ Definition"></a>C++ Definition</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// Work in progress</span><br></pre></td></tr></table></figure>
-<h3 id="C-Implementation-1"><a href="#C-Implementation-1" class="headerlink" title="C++ Implementation"></a>C++ Implementation</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// Work in progress</span><br></pre></td></tr></table></figure>
+            <h2 id="Ray"><a href="#Ray" class="headerlink" title="Ray"></a>Ray</h2><p>Finding ray-object  intersection and computing  surface normal is central to ray tracing.</p>
+<p>Ray representations:</p>
+<ul>
+<li>Two 3D vectors<ul>
+<li>Ray origin position</li>
+<li>Ray direction vector</li>
+</ul>
+</li>
+<li>Parametric form<ul>
+<li>$P(t) = origin + t \times direction$</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_00.png" alt=""></p>
+<h3 id="Computing-Reflection-Refraction-Rays"><a href="#Computing-Reflection-Refraction-Rays" class="headerlink" title="Computing Reflection / Refraction Rays"></a>Computing Reflection / Refraction Rays</h3><p><img src="http://hucoco.com/img/Graphics/RayTracing/ray_01.png" alt=""></p>
+<h4 id="Snell’s-law"><a href="#Snell’s-law" class="headerlink" title="Snell’s law"></a>Snell’s law</h4><script type="math/tex; mode=display">\mu_1sin\theta = \mu_2sin\phi</script><h4 id="Reflection"><a href="#Reflection" class="headerlink" title="Reflection"></a>Reflection</h4><script type="math/tex; mode=display">R = 2 (N \cdot L) N - L</script><h4 id="Refraction"><a href="#Refraction" class="headerlink" title="Refraction"></a>Refraction</h4><script type="math/tex; mode=display">\mu = \frac{\mu_1}{\mu_2}</script><script type="math/tex; mode=display">T = -\mu L + (\mu (N \cdot L) - \sqrt{1 - \mu^2 (1 - (N \cdot L)^2)})N</script><h2 id="Camera"><a href="#Camera" class="headerlink" title="Camera"></a>Camera</h2><h2 id="Scene"><a href="#Scene" class="headerlink" title="Scene"></a>Scene</h2>
         
         </div>
         <footer class="article-footer">
@@ -270,7 +269,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/03/06/Adjacency-List-Graph/" data-id="cjjb5xkur00003wb9hlnmlg09" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/07/Ray-Camera-and-Scene/" data-id="cjjb5xkv8000i3wb9qw2azsdf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -345,19 +344,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2018/03/07/Depth-First-Search/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    Depth First Search
-                
-            </div>
-        </a>
     
-    
-        <a href="/2018/03/06/Adjacency-Matrix-Graph/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/07/06/Various-surfaces/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">Adjacency Matrix Graph</div>
+            <div class="article-nav-title">Various surfaces</div>
         </a>
     
 </nav>
