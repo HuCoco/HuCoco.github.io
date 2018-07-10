@@ -3,14 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Archive | HuCoco</title>
+    <title>Theory of PBR | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://HuCoco.com/archives/page/2/index.html">
+    <meta name="description" content="OverviewPBR (Physically Base Rendering) is a rendering technique that are more or less based on the same underlying theory which more closely matches that of the physical world. the biggest differenc">
+<meta name="keywords" content="Graphics,PBR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Theory of PBR">
+<meta property="og:url" content="http://HuCoco.com/2018/07/10/Theory-of-PBR/index.html">
 <meta property="og:site_name" content="HuCoco">
+<meta property="og:description" content="OverviewPBR (Physically Base Rendering) is a rendering technique that are more or less based on the same underlying theory which more closely matches that of the physical world. the biggest differenc">
+<meta property="og:image" content="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_00.png">
+<meta property="og:updated_time" content="2018-07-10T15:15:37.795Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HuCoco">
+<meta name="twitter:title" content="Theory of PBR">
+<meta name="twitter:description" content="OverviewPBR (Physically Base Rendering) is a rendering technique that are more or less based on the same underlying theory which more closely matches that of the physical world. the biggest differenc">
+<meta name="twitter:image" content="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_00.png">
     
 
     
@@ -193,388 +200,178 @@
 </aside>
 
             
-            <section id="main"><div class="timeline timeline-wrap">
-    
-            <div class="timeline-row timeline-row-major">
-                <span class="node"><i class="fa fa-calendar"></i></span>
-                <h1 class="title">2018</h1>
-            </div>
+            <section id="main"><article id="post-Theory-of-PBR" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/09/N-Queens-Problem/">N-Queens Problem</a>
+        <h1 class="article-title" itemprop="name">
+            Theory of PBR
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/03/09/N-Queens-Problem/">
-            <time datetime="2018-03-09T13:51:43.000Z" itemprop="datePublished">2018-03-09</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">394</span>&nbsp;|&nbsp;Time: <span class="post-count">2</span>&nbsp;Mins <br>
+        <a href="/2018/07/10/Theory-of-PBR/">
+            <time datetime="2018-07-10T14:16:57.000Z" itemprop="datePublished">2018-07-10</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">1,087</span>&nbsp;|&nbsp;Time: <span class="post-count">7</span>&nbsp;Mins <br>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Problems/">Problems</a>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/PBR/">PBR</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/Backtracking/">Backtracking</a>, <a class="tag-link" href="/tags/C/">C++</a>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/PBR/">PBR</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/08/Topological-Sort/">Topological Sort</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_00.png" alt=""></p>
+<h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>PBR (<strong>Physically Base Rendering</strong>) is a rendering technique that are more or less based on the same underlying theory which more closely matches that of the physical world. the biggest difference between the physical rendering model and the traditional rendering method is that it can more accurately describe and draw the interaction between the light and the surface of the object.</p>
+<a id="more"></a>
+<h2 id="Diffusion-and-Reflection"><a href="#Diffusion-and-Reflection" class="headerlink" title="Diffusion and Reflection"></a>Diffusion and Reflection</h2><p>Diffusion and Reflection are two words that describe the most basic differences in light and surface interaction.</p>
+<p>When light hits the edge of the surface of the object, some of the light will reflect from the surface. On a smooth surface, which makes the surface looks like a mirror. <strong>Specular Reflection</strong> is often used to describe this effect.</p>
+<p>But not all of light will reflect form the surface, Usually some light will penetrate into the inside of the object.</p>
+<p>In this case, the light is either absorbed by the object (converted to heat) or scattered within the object. Some scattered light may return to the surface and be captured by the eye or camera. This is the well-known <strong>Diffuse</strong>.</p>
+<p>By the way, Diffuse and Subsurface Scattering are all describe the same phenomenon.</p>
+<p>Scattering is usually random in the direction, so <strong>albedo</strong> is a color that describes which color is most easily scattered back.</p>
+<h2 id="Translucency-and-Transparency"><a href="#Translucency-and-Transparency" class="headerlink" title="Translucency and Transparency"></a>Translucency and Transparency</h2><p>In some cases, diffuse reflections become more complicated—in materials with longer scattering distances, such as skin, wax, jade, and so on.In this case a simple color usually does not determine everything, and it also must consider the shape and thickness of the object.If these objects are thin enough, these objects usually have some light scattered from one surface and the nemitted from the other side. This phenomenon is called Translucent. If the scattering intensity is lower (such as glass), so that the scattered part is almost negligible, then the landscape on the other side of the object can directly enter the human eye through the object. This phenomenon is very far from the typical “difficulty near the surface” of the diffuse reflection, so a special shader is usually needed to simulate them.</p>
+<h2 id="Mircofacet-Model"><a href="#Mircofacet-Model" class="headerlink" title="Mircofacet Model"></a>Mircofacet Model</h2><p>All the PBR techniques are based on the theory of microfacets. The theory describes that any surface at a microscopic scale can be described by tiny little perfectly reflective mirrors called microfacets. According to the roughness of a surface the alignment of these tiny little mirrors can differ quite a lot:</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_03.png" alt=""></p>
+<p>The rougher a surface is, the more chaotically aligned each microfacet will be along the surface. The effect of these tiny-like mirror alignments is that when specifically talking about specular lighting/reflection the incoming light rays are more likely to scatter along completely different directions on rougher surfaces, resulting in a more widespread specular reflection. In contrast, on a smooth surface the light rays are more likely to reflect in roughly the same direction, giving us smaller and sharper reflections:</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_04.png" alt=""></p>
+<h2 id="Energy-Conservation"><a href="#Energy-Conservation" class="headerlink" title="Energy Conservation"></a>Energy Conservation</h2><p>Energy Conservation is describe a phenomenon: outgoing light energy should never exceed the incoming light energy (excluding emissive surfaces). </p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_02.png" alt="roughness increase form left to right"></p>
+<p>Looking at the above image we see the specular reflection area increase, but also its brightness decrease at increasing roughness levels. If the specular intensity were to be the same at each pixel regardless of the size of the specular shape the rougher surfaces would emit much more energy, violating the energy conservation principle. This is why we see specular reflections more intensely on smooth surfaces and more dimly on rough surfaces.</p>
+<p>For energy conservation to hold we need to make a clear distinction between diffuse and specular light. The moment a light ray hits a surface, it gets split in both a refraction part and a reflection part. The reflection part is light that directly gets reflected and doesn’t enter the surface; this is what we know as specular lighting. The refraction part is the remaining light that enters the surface and gets absorbed; this is what we know as diffuse lighting.</p>
+<p>From physics, we know that light can effectively be considered a beam of energy that keeps moving forward until it loses all of its energy, the way a light beam loses energy is by collision. Each material consists of tiny little particles that can collide with the light ray as illustrated below. The particles absorb some or all of the light’s energy at each collision which is converted into heat.</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_01.png" alt=""></p>
+<h2 id="PBR-materials"><a href="#PBR-materials" class="headerlink" title="PBR materials"></a>PBR materials</h2><p><img src="http://hucoco.com/img/Graphics/PBR/Threoy_of_PBR_00.png" alt=""></p>
+<p><strong>Albedo:</strong> the albedo texture specifies for each texel the color of the surface, or the base reflectivity if that texel is metallic. This is largely similar to what we’ve been using before as a diffuse texture, but all lighting information is extracted from the texture. Diffuse textures often have slight shadows or darkened crevices inside the image which is something you don’t want in an albedo texture; it should only contain the color (or refracted absorption coefficients) of the surface.</p>
+<p><strong>Normal:</strong> the normal map texture is exactly as we’ve been using before in the normal mapping tutorial. The normal map allows us to specify per fragment a unique normal to give the illusion that a surface is bumpier than its flat counterpart.</p>
+<p><strong>Metallic:</strong> the metallic map specifies per texel whether a texel is either metallic or it isn’t. Based on how the PBR engine is set up, artists can author metalness as either grayscale values or as binary black or white.</p>
+<p><strong>Roughness:</strong> the roughness map specifies how rough a surface is on a per texel basis. The sampled roughness value of the roughness influences the statistical microfacet orientations of the surface. A rougher surface gets wider and blurrier reflections, while a smooth surface gets focused and clear reflections. Some PBR engines expect a smoothness map instead of a roughness map which some artists find more intuitive, but these values get translated (1.0 - smoothness) to roughness the moment they’re sampled.</p>
+<p><strong>AO:</strong> the ambient occlusion or AO map specifies an extra shadowing factor of the surface and potentially surrounding geometry. If we have a brick surface for instance, the albedo texture should have no shadowing information inside the brick’s crevices. The AO map however does specify these darkened edges as it’s more difficult for light to escape. Taking ambient occlusion in account at the end of the lighting stage can significantly boost the visual quality of your scene. The ambient occlusion map of a mesh/surface is either manually generated or pre-calculated in 3D modeling programs.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><strong><a href="https://learnopengl.com/PBR/Theory" target="_blank" rel="noopener">Learn OpenGL PBR Theory</a> </strong></p>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/08/Topological-Sort/">
-            <time datetime="2018-03-08T12:14:15.000Z" itemprop="datePublished">2018-03-08</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">484</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Sort/">Sort</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/07/Breadth-First-Search/">Breadth First Search</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/07/Breadth-First-Search/">
-            <time datetime="2018-03-07T15:18:11.000Z" itemprop="datePublished">2018-03-07</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">457</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
-        </a>
-    </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
 
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Search/">Search</a>
-    </div>
 
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/07/Depth-First-Search/">Depth First Search</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/07/Depth-First-Search/">
-            <time datetime="2018-03-07T14:47:44.000Z" itemprop="datePublished">2018-03-07</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">433</span>&nbsp;|&nbsp;Time: <span class="post-count">3</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Algorithm/Search/">Search</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Algorithm/">Algorithm</a>, <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/06/Adjacency-List-Graph/">Adjacency List Graph</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/06/Adjacency-List-Graph/">
-            <time datetime="2018-03-05T16:40:11.000Z" itemprop="datePublished">2018-03-06</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">291</span>&nbsp;|&nbsp;Time: <span class="post-count">2</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Graph/">Graph</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/06/Adjacency-Matrix-Graph/">Adjacency Matrix Graph</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/06/Adjacency-Matrix-Graph/">
-            <time datetime="2018-03-05T16:40:02.000Z" itemprop="datePublished">2018-03-06</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">216</span>&nbsp;|&nbsp;Time: <span class="post-count">1</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Graph/">Graph</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/04/Basic-Graph-Theory/">Basic Graph Theory</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/04/Basic-Graph-Theory/">
-            <time datetime="2018-03-04T14:09:57.000Z" itemprop="datePublished">2018-03-04</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">844</span>&nbsp;|&nbsp;Time: <span class="post-count">5</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Graph/">Graph</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Graph/">Graph</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-III/">RedBlackTree_III</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-III/">
-            <time datetime="2018-03-02T15:38:19.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">1,254</span>&nbsp;|&nbsp;Time: <span class="post-count">8</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-II/">RedBlackTree_II</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-II/">
-            <time datetime="2018-03-02T15:38:16.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">1,119</span>&nbsp;|&nbsp;Time: <span class="post-count">7</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-I/">RedBlackTree I</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-I/">
-            <time datetime="2018-03-02T15:38:12.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">660</span>&nbsp;|&nbsp;Time: <span class="post-count">4</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
 </div>
 
-    <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/archives/">&laquo; Préc</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </nav>
+    <a data-url="http://HuCoco.com/2018/07/10/Theory-of-PBR/" data-id="cjjfu89bx000r38b928fdm68v" class="article-share-link"><i class="fa fa-share"></i>Partager</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/07/10/Do-Ray-Tracing/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Plus ancien</strong>
+            <div class="article-nav-title">Do Ray Tracing</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
 </section>
             
                 
