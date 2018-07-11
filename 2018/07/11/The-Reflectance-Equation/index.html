@@ -3,14 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Category: Tree | HuCoco</title>
+    <title>The Reflection Equation | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="HuCoco">
-<meta property="og:url" content="http://HuCoco.com/categories/Data-Structure/Tree/index.html">
+    <meta name="description" content="OverviewPhysically based rendering strongly follows a more specialized version of the render equation known as the reflectance equation, which is the best model we have for simulating the visuals of l">
+<meta name="keywords" content="Graphics,PBR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Reflection Equation">
+<meta property="og:url" content="http://HuCoco.com/2018/07/11/The-Reflectance-Equation/index.html">
 <meta property="og:site_name" content="HuCoco">
+<meta property="og:description" content="OverviewPhysically based rendering strongly follows a more specialized version of the render equation known as the reflectance equation, which is the best model we have for simulating the visuals of l">
+<meta property="og:image" content="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_00.png">
+<meta property="og:updated_time" content="2018-07-11T15:01:28.138Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HuCoco">
+<meta name="twitter:title" content="The Reflection Equation">
+<meta name="twitter:description" content="OverviewPhysically based rendering strongly follows a more specialized version of the render equation known as the reflectance equation, which is the best model we have for simulating the visuals of l">
+<meta name="twitter:image" content="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_00.png">
     
 
     
@@ -193,125 +200,175 @@
 </aside>
 
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-folder"></i></span>
-        <h1 class="title">Tree</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-The-Reflectance-Equation" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-III/">RedBlackTree_III</a>
+        <h1 class="article-title" itemprop="name">
+            The Reflection Equation
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-III/">
-            <time datetime="2018-03-02T15:38:19.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">1,254</span>&nbsp;|&nbsp;Time: <span class="post-count">8</span>&nbsp;Mins <br>
+        <a href="/2018/07/11/The-Reflectance-Equation/">
+            <time datetime="2018-07-11T13:46:22.000Z" itemprop="datePublished">2018-07-11</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">1,046</span>&nbsp;|&nbsp;Time: <span class="post-count">7</span>&nbsp;Mins <br>
         </a>
     </div>
 
 
-                    
+                        
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/PBR/">PBR</a>
     </div>
 
-                    
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/PBR/">PBR</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-II/">RedBlackTree_II</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Physically based rendering strongly follows a more specialized version of the render equation known as the reflectance equation, which is the best model we have for simulating the visuals of light:</p>
+<script type="math/tex; mode=display">L_o(p,\omega_o) = \int_\Omega f_r(p,\omega_i,\omega_o)L_i(p,\omega_i)n \cdot \omega_id\omega_i</script><p>To understand the equation, we have to delve into a bit of <strong>radiometry</strong>. Radiometry is the measurement of electromagnetic radiation (including visible light). There are several radiometric quantities we can use to measure light over surfaces and directions, but we will only discuss a single one that’s relevant to the reflectance equation known as <strong>radiance</strong>, denoted here as $L$. Radiance is used to quantify the magnitude or strength of light coming from a single direction.</p>
+<h2 id="Radiant-flux"><a href="#Radiant-flux" class="headerlink" title="Radiant flux"></a>Radiant flux</h2><p>radiant flux $\Phi$ is the transmitted energy of a light source measured in Watts. Light is a collective sum of energy over multiple different wavelengths, each wavelength associated with a particular (visible) color. The emitted energy of a light source can therefore be thought of as a function of all its different wavelengths. Wavelengths between 390nm to 700nm (nanometers) are considered part of the visible light spectrum i.e. wavelengths the human eye is able to perceive. Below you’ll find an image of the different energies per wavelength of daylight:</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_01.png" alt=""></p>
+<p>The radiant flux measures the total area of this function of different wavelengths. Directly taking this measure of wavelengths as input in computer graphics is slightly impractical so we often make the simplification of representing radiant flux not as a function of varying wavelength strengths, but as a light color triplet encoded as <strong>RGB</strong> This encoding does come at quite a loss of information, but this is generally negligible for visual aspects.</p>
+<h2 id="Solid-angle"><a href="#Solid-angle" class="headerlink" title="Solid angle"></a>Solid angle</h2><p>the solid angle denoted as $\omega$ tells us the size or area of a shape projected onto a unit sphere. The area of the projected shape onto this unit sphere is known as the <strong>solid angle</strong>; you can visualize the solid angle as a direction with volume:</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_03.png" alt=""></p>
+<h2 id="Radiant-intensity"><a href="#Radiant-intensity" class="headerlink" title="Radiant intensity"></a>Radiant intensity</h2><p>radiant intensity measures the amount of radiant flux per solid angle or the strength of a light source over a projected area onto the unit sphere. For instance, given an omnidirectional light that radiates equally in all directions the radiant intensity can give us its energy over a specific area (solid angle):</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_02.png" alt=""></p>
+<p>The equation to describe the radiant intensity is defined as follows:</p>
+<script type="math/tex; mode=display">I = \frac{d\Phi}{d\omega}</script><p>Where $I$ is the radiant flux $\Phi$ over the solid angle $\omega$.</p>
+<p>With knowledge of radiant flux, radiant intensity and the solid angle we can finally describe the equation for <strong>radiance</strong>, which is described as the total observed energy over an area $A$ over the solid angle $\omega$ of a light of radiant intensity $\Phi$:</p>
+<script type="math/tex; mode=display">L = \frac{d^2\Phi}{dAd\omega cos\theta}</script><p><img src="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_00.png" alt=""></p>
+<p>Radiance is a radiometric measure of the amount of light in an area scaled by the <strong>incident</strong> (or incoming) angle $\theta$ of the light to the surface’s normal as $cos\theta$: light is weaker the less it directly radiates onto the surface and strongest when it is directly perpendicular to the surface. This is similar to our perception of diffuse lighting from the basic lighting tutorials as $cos\theta$ directly corresponds to the dot product between the light’s direction vector and the surface’s normal:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> cosTheta = dot(lightDir, N);</span><br></pre></td></tr></table></figure>
+<h2 id="The-Reflection-Equation"><a href="#The-Reflection-Equation" class="headerlink" title="The Reflection Equation"></a>The Reflection Equation</h2><p>The radiance equation is quite useful as it consists of most physical quantities we’re interested in. If we consider the solid angle ω and the area A to be infinitely small, we can use radiance to measure the flux of a single ray of light hitting a single point in space. This relation allows us to calculate the radiance of a single light ray influencing a single (fragment) point; we effectively translate the solid angle ω into a direction vector ω, and A into a point p. This way we can directly use radiance in our shaders to calculate a single light ray’s per-fragment contribution.</p>
+<p>In fact, when it comes to radiance we generally care about all incoming light onto a point p which is the sum of all radiance known as irradiance. With knowledge of both radiance and irradiance we can get back to the reflectance equation:</p>
+<script type="math/tex; mode=display">L_o(p,\omega_o) = \int_\Omega f_r(p,\omega_i,\omega_o)L_i(p,\omega_i)n \cdot \omega_id\omega_i</script><p>We now know that $L$ in the render equation represents the radiance of some point p and some incoming infinitely small solid angle $\omega_i$ which can be thought of as an incoming direction vector $\omega_i$. Remember that $cos\theta$ scales the energy based on the light’s incident angle to the surface which we find in the reflectance equation as $n\cdot \omega_o$. The reflectance equation calculates the sum of reflected radiance $L_o(p,\omega_o)$ of a point $p$ in direction $\omega_o$ which is the outgoing direction to the viewer. Or to put it differently: $Lo$ measures the reflected sum of the lights’ irradiance onto point $p$ as viewed from $\omega_o$.</p>
+<p>As the reflectance equation is based around irradiance which is the sum of all incoming radiance we measure light of not just a single incoming light direction, but of all incoming light directions within a hemisphere $\Omega$ centered around point $p$. A <strong>hemisphere</strong> can be described as half a sphere aligned around a surface’s normal $n$:</p>
+<p><img src="http://hucoco.com/img/Graphics/PBR/The_Reflection_Equation_04.png" alt=""></p>
+<p>To calculate the total of values inside an area or, in the case of a hemisphere, a volume we use a mathematical construct called an integral denoted in the reflectance equation as $\int$ over all incoming directions $d\omega_i$ within the hemisphere $\Omega$. An integral measures the area of a function, which can either be calculated <strong>analytically</strong> or <strong>numerically</strong>. As there is no analytical solution to both the render and reflectance equation we’ll want to numerically solve the integral discretely. This translates to taking the result of small discrete steps of the reflectance equation over the hemisphere $\Omega$ and averaging their results over the step size.</p>
+<p>The reflectance equation sums up the radiance of all incoming light directions $\omega_i$ over the hemisphere $\Omega$ scaled by $f_r$ that hit point $p$ and returns the sum of reflected light $L_o$ in the viewer’s direction. The incoming radiance can come from light sources.</p>
+<p>Now the only unknown left is the $f_r$ symbol known as the <strong>BRDF</strong> or <strong>Bidirectional Reflective Distribution Function</strong> that scales or weighs the incoming radiance based on the surface’s material properties.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><strong><a href="https://learnopengl.com/PBR/Theory" target="_blank" rel="noopener">Learn OpenGL PBR Theory</a> </strong></p>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-II/">
-            <time datetime="2018-03-02T15:38:16.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">1,119</span>&nbsp;|&nbsp;Time: <span class="post-count">7</span>&nbsp;Mins <br>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/2018/03/02/RedBlackTree-I/">RedBlackTree I</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2018/03/02/RedBlackTree-I/">
-            <time datetime="2018-03-02T15:38:12.000Z" itemprop="datePublished">2018-03-02</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">660</span>&nbsp;|&nbsp;Time: <span class="post-count">4</span>&nbsp;Mins <br>
-        </a>
-    </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
 
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Data-Structure/">Data Structure</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Data-Structure/Tree/">Tree</a>
-    </div>
 
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/C/">C++</a>, <a class="tag-link" href="/tags/Data-Structure/">Data Structure</a>, <a class="tag-link" href="/tags/Tree/">Tree</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
 </div>
+
+    <a data-url="http://HuCoco.com/2018/07/11/The-Reflectance-Equation/" data-id="cjjh964rw002rzob9vyb9eggk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/07/10/Theory-of-PBR/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Theory of PBR</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
 </section>
             
                 
