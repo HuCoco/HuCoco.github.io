@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Lighting and Materials | HuCoco</title>
+    <title>BRDF | HuCoco</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="LightingCaculate lighting effect is extremely complicated and it depends on way too many factors in real world, therefore we use a method based on approximations of reality using simplified models tha">
-<meta name="keywords" content="Graphics,Ray Tracing">
+    <meta name="description" content="The BRDF, or Bidirectional Reflective Distribution Function is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n">
+<meta name="keywords" content="Graphics,PBR">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lighting and Materials">
-<meta property="og:url" content="http://HuCoco.com/2018/07/09/Lighting_and_Materials/index.html">
+<meta property="og:title" content="BRDF">
+<meta property="og:url" content="http://HuCoco.com/2018/07/12/BRDF/index.html">
 <meta property="og:site_name" content="HuCoco">
-<meta property="og:description" content="LightingCaculate lighting effect is extremely complicated and it depends on way too many factors in real world, therefore we use a method based on approximations of reality using simplified models tha">
-<meta property="og:image" content="http://hucoco.com/img/Graphics/RayTracing/lighting_and_matrials_00.png">
-<meta property="og:updated_time" content="2018-07-10T07:29:02.512Z">
+<meta property="og:description" content="The BRDF, or Bidirectional Reflective Distribution Function is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n">
+<meta property="og:image" content="http://hucoco.com/img/Graphics/PBR/BRDF_00.png">
+<meta property="og:updated_time" content="2018-07-12T14:45:07.297Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lighting and Materials">
-<meta name="twitter:description" content="LightingCaculate lighting effect is extremely complicated and it depends on way too many factors in real world, therefore we use a method based on approximations of reality using simplified models tha">
-<meta name="twitter:image" content="http://hucoco.com/img/Graphics/RayTracing/lighting_and_matrials_00.png">
+<meta name="twitter:title" content="BRDF">
+<meta name="twitter:description" content="The BRDF, or Bidirectional Reflective Distribution Function is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n">
+<meta name="twitter:image" content="http://hucoco.com/img/Graphics/PBR/BRDF_00.png">
     
 
     
@@ -200,7 +200,7 @@
 </aside>
 
             
-            <section id="main"><article id="post-Lighting_and_Materials" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-BRDF" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -208,7 +208,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Lighting and Materials
+            BRDF
         </h1>
     
 
@@ -217,9 +217,9 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2018/07/09/Lighting_and_Materials/">
-            <time datetime="2018-07-09T12:59:05.000Z" itemprop="datePublished">2018-07-09</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">598</span>&nbsp;|&nbsp;Time: <span class="post-count">4</span>&nbsp;Mins <br>
+        <a href="/2018/07/12/BRDF/">
+            <time datetime="2018-07-12T14:07:13.000Z" itemprop="datePublished">2018-07-12</time>&nbsp;|&nbsp;
+            WORDS:&nbsp;<span class="post-count">591</span>&nbsp;|&nbsp;Time: <span class="post-count">4</span>&nbsp;Mins <br>
         </a>
     </div>
 
@@ -227,13 +227,13 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/Ray-Tracing/">Ray Tracing</a>
+        <a class="article-category-link" href="/categories/Graphics/">Graphics</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Graphics/PBR/">PBR</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/Ray-Tracing/">Ray Tracing</a>
+        <a class="tag-link" href="/tags/Graphics/">Graphics</a>, <a class="tag-link" href="/tags/PBR/">PBR</a>
     </div>
 
                     </div>
@@ -244,37 +244,21 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <h2 id="Lighting"><a href="#Lighting" class="headerlink" title="Lighting"></a>Lighting</h2><p>Caculate lighting effect is extremely complicated and it depends on way too many factors in real world, therefore we use a method based on approximations of reality using simplified models that are much easier to process and look relatively similar. These lighting models are based on the physics of light as we understand it. One of those models is called the <strong>Phong lighting model</strong>. </p>
-<p>Phong lighting is a great and very efficient approximation of lighting, but its specular reflections break down in certain conditions, specifically when the shininess property is low resulting in a large (rough) specular area.</p>
-<p><img src="http://hucoco.com/img/Graphics/RayTracing/lighting_and_matrials_01.png" alt=""></p>
-<a id="more"></a>
-<p>In 1977 the <strong>Blinn-Phong lighting model</strong> was introduced by James F. Blinn as an extension to the Phong shading we’ve used so far. The Blinn-Phong model is largely similar, but approaches the specular model slightly different which as a result overcomes our problem. Instead of relying on a reflection vector we’re using a so called halfway vector that is a unit vector exactly halfway between the view direction and the light direction. The closer this halfway vector aligns with the surface’s normal vector, the higher the specular contribution.</p>
-<p><img src="http://hucoco.com/img/Graphics/RayTracing/lighting_and_matrials_02.png" alt=""></p>
-<p>Getting the halfway vector is easy, we add the light’s direction vector and view vector together and normalize the result:</p>
-<script type="math/tex; mode=display">
-\overline{H} = \frac{\overline{V} + \overline{H}}
-{\begin{Vmatrix}
-\overline{V} + \overline{H}
-\end{Vmatrix}}</script><h2 id="Matrials"><a href="#Matrials" class="headerlink" title="Matrials"></a>Matrials</h2><p>The major building blocks of the Phong model consist of 3 components: ambient, diffuse and specular lighting. Below you can see what these lighting components actually look like:</p>
-<p><img src="http://hucoco.com/img/Graphics/RayTracing/lighting_and_matrials_00.png" alt=""></p>
+            <p>The <strong>BRDF</strong>, or <strong>Bidirectional Reflective Distribution Function</strong> is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n$ and a surface parameter a that represents the microsurface’s roughness. The BRDF approximates how much each individual light ray $\omega_i$ contributes to the final reflected light of an opaque surface given its material properties. For instance, if the surface has a perfectly smooth surface (like a mirror) the BRDF function would return 0.0 for all incoming light rays $\omega_i$ except the one ray that has the same (reflected) angle as the outgoing ray $\omega_o$ at which the function returns 1.0.</p>
+<p>A BRDF approximates the material’s reflective and refractive properties based on the previously discussed microfacet theory. For a BRDF to be physically plausible it has to respect the law of energy conservation i.e. the sum of reflected light should never exceed the amount of incoming light. Technically, Blinn-Phong is considered a BRDF taking the same $\omega_i$ and $\omega_o$ as inputs. However, Blinn-Phong is not considered physically based as it doesn’t adhere to the energy conservation principle. There are several physically based BRDFs out there to approximate the surface’s reaction to light. However, almost all real-time render pipelines use a BRDF known as the <strong>Cook-Torrance BRDF</strong>.</p>
+<p>The Cook-Torrance BRDF contains both a diffuse and specular part:</p>
+<script type="math/tex; mode=display">f_r = k_d f_{lambert} + k_s f_{cook-torrance}</script><h2 id="Diffuse-Part"><a href="#Diffuse-Part" class="headerlink" title="Diffuse Part"></a>Diffuse Part</h2><p>Here kd is the earlier mentioned ratio of incoming light energy that gets refracted with ks being the ratio that gets reflected. The left side of the BRDF states the diffuse part of the equation denoted here as flambert. This is known as Lambertian diffuse similar to what we used for diffuse shading which is a constant factor denoted as:</p>
+<script type="math/tex; mode=display">f_{lambert} = \frac{c}{\pi}</script><p>With c being the albedo or surface color (think of the diffuse surface texture). The divide by pi is there to normalize the diffuse light as the earlier denoted integral that contains the BRDF is scaled by $\pi$</p>
+<p>You might wonder how this Lambertian diffuse relates to the diffuse term we’ve been using before: the surface color multiplied by the dot product between the surface’s normal and the light direction. The dot product is still there, but moved out of the BRDF as we find $n \cdot \omega_i$ at the end of the $L_o$ integral.</p>
+<p>There exist different equations for the diffuse part of the BRDF which tend to look more realistic, but are also more computationally expensive. As concluded by Epic Games however, the Lambertian diffuse is sufficient enough for most real-time rendering purposes.</p>
+<h2 id="Specluar-Part"><a href="#Specluar-Part" class="headerlink" title="Specluar Part"></a>Specluar Part</h2><p>The specular part of the BRDF is a bit more advanced and is described as:</p>
+<script type="math/tex; mode=display">f_{cook-torrance} = \frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}</script><p>he Cook-Torrance specular BRDF consists of three functions and a normalization factor in the denominator. Each of the D, F and G symbols represent a type of function that approximates a specific part of the surface’s reflective properties. These are defined as the normal <strong>D</strong>istribution function, the <strong>F</strong>resnel equation and the <strong>G</strong>eometry function:</p>
 <ul>
-<li><strong>Ambient lighting:</strong> even when it is dark there is usually still some light somewhere in the world (the moon, a distant light) so objects are almost never completely dark. To simulate this we use an ambient lighting constant that always gives the object some color.</li>
-<li><p><strong>Diffuse lighting:</strong> simulates the directional impact a light object has on an object. This is the most visually significant component of the lighting model. The more a part of an object faces the light source, the brighter it becomes.</p>
-  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ptLight.I_source * mat-&gt;k_d * NL</span><br></pre></td></tr></table></figure>
-</li>
+<li><strong>Normal distribution function:</strong> approximates the amount the surface’s microfacets are aligned to the halfway vector influenced by the roughness of the surface; this is the primary function approximating the microfacets.</li>
+<li><strong>Geometry function:</strong> describes the self-shadowing property of the microfacets. When a surface is relatively rough the surface’s microfacets can overshadow other microfacets thereby reducing the light the surface reflects.</li>
+<li><strong>Fresnel equation:</strong> The Fresnel equation describes the ratio of surface reflection at different surface angles.</li>
 </ul>
-<ul>
-<li><p><strong>Specular lighting:</strong> simulates the bright spot of a light that appears on shiny objects. Specular highlights are often more inclined to the color of the light than the color of the object.</p>
-  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> RVn = <span class="built_in">pow</span>( (<span class="keyword">float</span>) dot( V, R ), (<span class="keyword">float</span>) mat-&gt;n);  \\Phong lighting model</span><br><span class="line"><span class="keyword">float</span> RVn = <span class="built_in">pow</span>( (<span class="keyword">float</span>) dot( N, H ), (<span class="keyword">float</span>) mat-&gt;n);  \\Blinn-Phong lighting model</span><br><span class="line">ptLight.I_source * mat-&gt;k_r * RVn);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Phong-lighting-model"><a href="#Phong-lighting-model" class="headerlink" title="Phong lighting model"></a>Phong lighting model</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Color <span class="title">computePhongLighting</span><span class="params">( <span class="keyword">const</span> Vector3d &amp;L, <span class="keyword">const</span> Vector3d &amp;N, <span class="keyword">const</span> Vector3d &amp;V,</span></span></span><br><span class="line"><span class="function"><span class="params">								   <span class="keyword">const</span> EMPMaterial* mat, <span class="keyword">const</span> PointLightSource &amp;ptLight )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Vector3d NN = ( dot( L, N ) &gt;= <span class="number">0.0</span> )?  N : -N;</span><br><span class="line"></span><br><span class="line">	Vector3d R = mirrorReflect( L, NN );</span><br><span class="line">	<span class="keyword">float</span> NL = (<span class="keyword">float</span>) dot( NN, L );</span><br><span class="line">	<span class="keyword">float</span> RVn = <span class="built_in">pow</span>( (<span class="keyword">float</span>) dot( V, R ), (<span class="keyword">float</span>) mat-&gt;n );</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ptLight.I_source * ( mat-&gt;k_d * NL  +  mat-&gt;k_r * RVn );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Blinn-Phong-lighting-model"><a href="#Blinn-Phong-lighting-model" class="headerlink" title="Blinn-Phong lighting model"></a>Blinn-Phong lighting model</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Color <span class="title">computeBlinnPhongLighting</span><span class="params">(<span class="keyword">const</span> Vector3d &amp;L, <span class="keyword">const</span> Vector3d &amp;N, <span class="keyword">const</span> Vector3d &amp;V,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> EMPMaterial* mat, <span class="keyword">const</span> PointLightSource &amp;ptLight)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3d NN = (dot(L, N) &gt;= <span class="number">0.0</span>) ? N : -N;</span><br><span class="line"></span><br><span class="line">    Vector3d R = mirrorReflect(L, NN);</span><br><span class="line">    Vector3d H = L + V;</span><br><span class="line">    H = H.makeUnitVector();</span><br><span class="line">    <span class="keyword">float</span> NL = (<span class="keyword">float</span>)dot(NN, L);</span><br><span class="line">    <span class="keyword">float</span> RVn = <span class="built_in">pow</span>((<span class="keyword">float</span>)dot(N, H), (<span class="keyword">float</span>)mat-&gt;n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ptLight.I_source * (mat-&gt;k_d * NL + mat-&gt;k_r * RVn);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>those lighting models are experience model, it is not base on physically visual effect. </p>
-<p>physically based rendering is a collection of render techniques, these techniques will be introduced in other series of articles. </p>
-<p><a href="http://hucoco.com/2018/07/04/Physically-Based-Rendering-Catalogue/">Physically Based Rendering Series Catalogue</a>, and  the series is in progress.</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><strong><a href="https://learnopengl.com/" target="_blank" rel="noopener">Learn OpenGL</a> </strong></p>
-
+<h3 id="Normal-distribution-function"><a href="#Normal-distribution-function" class="headerlink" title="Normal distribution function"></a>Normal distribution function</h3><h3 id="Geometry-function"><a href="#Geometry-function" class="headerlink" title="Geometry function"></a>Geometry function</h3><h3 id="Fresnel-equation"><a href="#Fresnel-equation" class="headerlink" title="Fresnel equation"></a>Fresnel equation</h3>
         
         </div>
         <footer class="article-footer">
@@ -284,7 +268,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/09/Lighting_and_Materials/" data-id="cjjio12tm002ktsb927ibnxsw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/12/BRDF/" data-id="cjjio12rh0000tsb9poriaef2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -359,19 +343,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2018/07/10/Do-Ray-Tracing/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    Do Ray Tracing
-                
-            </div>
-        </a>
     
-    
-        <a href="/2018/07/07/Ray-and-Camera/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/07/11/The-Reflectance-Equation/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">Ray and Camera</div>
+            <div class="article-nav-title">The Reflection Equation</div>
         </a>
     
 </nav>
