@@ -213,7 +213,7 @@
         <i class="fa fa-calendar"></i>
         <a href="/2018/07/12/BRDF/">
             <time datetime="2018-07-12T14:07:13.000Z" itemprop="datePublished">2018-07-12</time>&nbsp;|&nbsp;
-            WORDS:&nbsp;<span class="post-count">591</span>&nbsp;|&nbsp;Time: <span class="post-count">4</span>&nbsp;Mins <br>
+            WORDS:&nbsp;<span class="post-count">1,855</span>&nbsp;|&nbsp;Time: <span class="post-count">12</span>&nbsp;Mins <br>
         </a>
     </div>
 
@@ -237,22 +237,13 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <p>The <strong>BRDF</strong>, or <strong>Bidirectional Reflective Distribution Function</strong> is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n$ and a surface parameter a that represents the microsurface’s roughness. The BRDF approximates how much each individual light ray $\omega_i$ contributes to the final reflected light of an opaque surface given its material properties. For instance, if the surface has a perfectly smooth surface (like a mirror) the BRDF function would return 0.0 for all incoming light rays $\omega_i$ except the one ray that has the same (reflected) angle as the outgoing ray $\omega_o$ at which the function returns 1.0.</p>
+            <p><p>The <strong>BRDF</strong>, or <strong>Bidirectional Reflective Distribution Function</strong> is a function that takes as input the incoming (light) direction $\omega_i$, the outgoing (view) direction $\omega_o$, the surface normal $n$ and a surface parameter a that represents the microsurface’s roughness. The BRDF approximates how much each individual light ray $\omega_i$ contributes to the final reflected light of an opaque surface given its material properties. For instance, if the surface has a perfectly smooth surface (like a mirror) the BRDF function would return 0.0 for all incoming light rays $\omega_i$ except the one ray that has the same (reflected) angle as the outgoing ray $\omega_o$ at which the function returns 1.0.</p>
 <p>A BRDF approximates the material’s reflective and refractive properties based on the previously discussed microfacet theory. For a BRDF to be physically plausible it has to respect the law of energy conservation i.e. the sum of reflected light should never exceed the amount of incoming light. Technically, Blinn-Phong is considered a BRDF taking the same $\omega_i$ and $\omega_o$ as inputs. However, Blinn-Phong is not considered physically based as it doesn’t adhere to the energy conservation principle. There are several physically based BRDFs out there to approximate the surface’s reaction to light. However, almost all real-time render pipelines use a BRDF known as the <strong>Cook-Torrance BRDF</strong>.</p>
 <p>The Cook-Torrance BRDF contains both a diffuse and specular part:</p>
-<script type="math/tex; mode=display">f_r = k_d f_{lambert} + k_s f_{cook-torrance}</script><h2 id="Diffuse-Part"><a href="#Diffuse-Part" class="headerlink" title="Diffuse Part"></a>Diffuse Part</h2><p>Here kd is the earlier mentioned ratio of incoming light energy that gets refracted with ks being the ratio that gets reflected. The left side of the BRDF states the diffuse part of the equation denoted here as flambert. This is known as Lambertian diffuse similar to what we used for diffuse shading which is a constant factor denoted as:</p>
-<script type="math/tex; mode=display">f_{lambert} = \frac{c}{\pi}</script><p>With c being the albedo or surface color (think of the diffuse surface texture). The divide by pi is there to normalize the diffuse light as the earlier denoted integral that contains the BRDF is scaled by $\pi$</p>
-<p>You might wonder how this Lambertian diffuse relates to the diffuse term we’ve been using before: the surface color multiplied by the dot product between the surface’s normal and the light direction. The dot product is still there, but moved out of the BRDF as we find $n \cdot \omega_i$ at the end of the $L_o$ integral.</p>
-<p>There exist different equations for the diffuse part of the BRDF which tend to look more realistic, but are also more computationally expensive. As concluded by Epic Games however, the Lambertian diffuse is sufficient enough for most real-time rendering purposes.</p>
-<h2 id="Specluar-Part"><a href="#Specluar-Part" class="headerlink" title="Specluar Part"></a>Specluar Part</h2><p>The specular part of the BRDF is a bit more advanced and is described as:</p>
-<script type="math/tex; mode=display">f_{cook-torrance} = \frac{DFG}{4(\omega_o \cdot n)(\omega_i \cdot n)}</script><p>he Cook-Torrance specular BRDF consists of three functions and a normalization factor in the denominator. Each of the D, F and G symbols represent a type of function that approximates a specific part of the surface’s reflective properties. These are defined as the normal <strong>D</strong>istribution function, the <strong>F</strong>resnel equation and the <strong>G</strong>eometry function:</p>
-<ul>
-<li><strong>Normal distribution function:</strong> approximates the amount the surface’s microfacets are aligned to the halfway vector influenced by the roughness of the surface; this is the primary function approximating the microfacets.</li>
-<li><strong>Geometry function:</strong> describes the self-shadowing property of the microfacets. When a surface is relatively rough the surface’s microfacets can overshadow other microfacets thereby reducing the light the surface reflects.</li>
-<li><strong>Fresnel equation:</strong> The Fresnel equation describes the ratio of surface reflection at different surface angles.</li>
-</ul>
-<h3 id="Normal-distribution-function"><a href="#Normal-distribution-function" class="headerlink" title="Normal distribution function"></a>Normal distribution function</h3><h3 id="Geometry-function"><a href="#Geometry-function" class="headerlink" title="Geometry function"></a>Geometry function</h3><h3 id="Fresnel-equation"><a href="#Fresnel-equation" class="headerlink" title="Fresnel equation"></a>Fresnel equation</h3>
+<script type="math/tex; mode=display">f_r = k_d f_{lambert} + k_s f_{cook-torrance}</script></p>
+            <p class="article-more-link">
+                <a href="/2018/07/12/BRDF/#more">Read More</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -262,7 +253,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/12/BRDF/" data-id="cjjio12rh0000tsb9poriaef2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/12/BRDF/" data-id="cjjmukdg100000gb9j5mnxx9n" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -395,7 +386,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/11/The-Reflectance-Equation/" data-id="cjjio12th002ctsb9w6ybh8r0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/11/The-Reflectance-Equation/" data-id="cjjmukdh1000w0gb94o1yozbz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -528,7 +519,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/10/Theory-of-PBR/" data-id="cjjio12zs004ftsb9okz7nmww" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/10/Theory-of-PBR/" data-id="cjjmukdh200100gb9sngc9gkn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -668,7 +659,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/10/Do-Ray-Tracing/" data-id="cjjio12t4001utsb9h88342l8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/10/Do-Ray-Tracing/" data-id="cjjmukdgp000e0gb9ux0h026x" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -802,7 +793,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/09/Lighting_and_Materials/" data-id="cjjio12tm002ktsb927ibnxsw" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/09/Lighting_and_Materials/" data-id="cjjmukdh8001b0gb9z3kpfxcl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -947,7 +938,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/07/Ray-and-Camera/" data-id="cjjio12t1001mtsb9hjbaxg3l" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/07/Ray-and-Camera/" data-id="cjjmukdgr000g0gb9es5r6fkl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1090,7 +1081,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/06/Various-surfaces/" data-id="cjjio12zl0042tsb90qd7n3xm" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/06/Various-surfaces/" data-id="cjjmukdh9001e0gb96gpp9pm2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1229,7 +1220,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/05/Theory-of-Ray-Tracing/" data-id="cjjio12zi003ztsb9ndf3ibq0" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/05/Theory-of-Ray-Tracing/" data-id="cjjmukdh600160gb9l1dm2s6d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1368,7 +1359,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/04/Physically-Based-Rendering-Catalogue/" data-id="cjjio12sx001itsb9pczi80qt" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/04/Physically-Based-Rendering-Catalogue/" data-id="cjjmukdgm000b0gb9r2m9rbgk" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1512,7 +1503,7 @@
 
 </div>
 
-    <a data-url="http://HuCoco.com/2018/07/04/Ray-Tracing-Catalogue/" data-id="cjjio12sz001ktsb9udbm8oeo" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://HuCoco.com/2018/07/04/Ray-Tracing-Catalogue/" data-id="cjjmukdgz000t0gb942gs8tal" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1765,7 +1756,7 @@
         <div id="footer-info" class="inner">
             &copy; 2018 Hu Ke<br>
             Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a><br>
-            Visited:&nbsp;<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span></span>&nbsp;|&nbsp;Total Words:&nbsp;<span class="post-count">13.2k</span>
+            Visited:&nbsp;<span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv"></span></span>&nbsp;|&nbsp;Total Words:&nbsp;<span class="post-count">14.4k</span>
         </div>
     </div>
 </footer>
