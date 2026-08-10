@@ -6,25 +6,25 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#f5efe6">
+    <meta name="theme-color" content="#f0f7ec">
     <title>婚礼宾客导航</title>
     <!-- iOS PWA icon -->
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>💒</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         :root {
-            --gold: #c9a96e;
-            --gold-light: #f5efe6;
-            --gold-dark: #a8864e;
+            --gold: #5e8c4a;
+            --gold-light: #edf5e8;
+            --gold-dark: #3d6b2e;
             --blue: #1976d2;
             --blue-light: #e3f2fd;
-            --text: #1a1a2e;
-            --text-sub: #666;
-            --bg: #f5f5f5;
+            --text: #2c3a2c;
+            --text-sub: #5f7a5f;
+            --bg: #f2f8ef;
             --card: #ffffff;
-            --border: #eee;
+            --border: #ddebd5;
             --radius: 14px;
-            --shadow: 0 2px 12px rgba(0,0,0,0.04);
+            --shadow: 0 2px 12px rgba(94,140,74,0.06);
             /* iOS safe areas */
             --sat: env(safe-area-inset-top, 0px);
             --sab: env(safe-area-inset-bottom, 0px);
@@ -284,7 +284,7 @@
             font-size: 11px;
             color: var(--text-sub);
         }
-        .footer .hearts { color: var(--gold); font-size: 13px; margin-bottom: 4px; }
+        .footer .hearts { color: #e25555; font-size: 13px; margin-bottom: 4px; }
 
         /* === Responsive === */
         @media (max-width: 375px) {
@@ -303,15 +303,18 @@
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
             :root {
-                --text: #e8e8e8;
-                --text-sub: #aaa;
-                --bg: #121212;
-                --card: #1e1e1e;
-                --border: #333;
+                --text: #e0e8dc;
+                --text-sub: #9ab08e;
+                --bg: #0f1a0f;
+                --card: #1a261a;
+                --border: #2a3d28;
+                --gold: #7fa862;
+                --gold-light: #1a261a;
+                --gold-dark: #5a7e4a;
             }
-            .header { background: linear-gradient(160deg, #1e1e1e 0%, #2a2420 100%); }
-            .dest-tab:not(.active) { background: #1e1e1e; }
-            .nav-item { background: #1e1e1e; }
+            .header { background: linear-gradient(160deg, #1a261a 0%, #1f2e1c 100%); }
+            .dest-tab:not(.active) { background: #1a261a; }
+            .nav-item { background: #1a261a; }
         }
     </style>
     <script type="text/javascript">
