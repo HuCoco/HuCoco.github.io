@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#f5efe6">
+<title>成都美食地图</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🍜</text></svg>">
+<script src="https://map.qq.com/api/gljs?v=1.exp&key=7YXBZ-GWOKW-LT5R4-YNLT2-262T2-REB2N"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --gold: #c9a96e;
+  --gold-light: #f5efe6;
+  --gold-dark: #a8864e;
+  --text: #1a1a2e;
+  --text-sub: #666;
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --border: #eee;
+  --radius: 14px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.04);
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+html { -webkit-text-size-adjust:100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* === Header === */
+.header {
+  text-align: center;
+  padding: 36px 20px 24px;
+  background: linear-gradient(160deg, #fff 0%, var(--gold-light) 100%);
+}
+.header .pre {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.header h1 {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 4px;
+  color: var(--text);
+}
+.header .sub {
+  font-size: 12px;
+  color: var(--text-sub);
+}
+
+/* === Container === */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 12px 32px;
+}
+
+/* === Filter === */
+.filter-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  margin: 20px 0 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.filter-title {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tag-btn {
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-sub);
+  font-weight: 500;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.tag-btn:active { transform: scale(0.95); }
+.tag-btn.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.tag-btn.active-all {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+
+/* === Results === */
+.results-count {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  padding-left: 4px;
+}
+
+/* === Food Grid === */
+.food-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* === Food Card === */
+.food-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.food-card:active { transform: scale(0.98); }
+.food-card.expanded {
+  border: 2px solid var(--gold);
+  box-shadow: 0 2px 12px rgba(201,169,110,0.15);
+}
+.food-card .card-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0;
+}
+.food-card .card-images img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+.food-card .card-images.single img {
+  height: 180px;
+}
+.food-card .card-images.double img {
+  height: 140px;
+}
+.food-card .card-content {
+  padding: 14px 16px;
+}
+.food-card .name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.food-card .spicy {
+  font-size: 12px;
+}
+.food-card .desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.food-card .card-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.food-card .card-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-dark);
+}
+.food-card .card-address {
+  font-size: 11px;
+  color: var(--text-sub);
+}
+.food-card .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.food-card .meta-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: var(--gold-light);
+  color: var(--gold-dark);
+  font-weight: 500;
+}
+.food-card .recommend {
+  font-size: 12px;
+  color: var(--gold-dark);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.food-card .recommend::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+.food-card .link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: var(--gold);
+  color: #fff;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.food-card .link-btn:active { transform: scale(0.95); opacity: 0.8; }
+.food-card .link-btn svg {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+
+/* === Navigation Panel === */
+.food-card .nav-panel {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+.food-card.expanded .nav-panel {
+  display: block;
+}
+.food-card .nav-panel .map-container {
+  width: 100%;
+  height: 200px;
+}
+.food-card .nav-go-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.food-card .nav-go-overlay:active { opacity: 0.8; }
+.food-card .nav-go-overlay svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* === Expand Hint === */
+.food-card .expand-hint {
+  font-size: 10px;
+  color: #bbb;
+  text-align: center;
+  padding: 6px 02px;
+}
+.food-card.expanded .expand-hint { display: none; }
+
+/* === No Results === */
+.no-results {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--text-sub);
+}
+.no-results .emoji {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* === Tips === */
+.tips-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
+  margin-top: 20px;
+}
+.tips-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.tips-section ul {
+  list-style: none;
+  padding: 0;
+}
+.tips-section li {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.8;
+  padding-left: 14px;
+  position: relative;
+}
+.tips-section li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* === Footer === */
+.footer {
+  text-align: center;
+  padding: 20px 16px;
+  font-size: 11px;
+  color: var(--text-sub);
+}
+.footer .hearts {
+  color: var(--gold);
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* === Responsive === */
+@media (max-width: 375px) {
+  .header h1 { font-size: 20px; }
+  .food-card .card-images.single img { height: 140px; }
+}
+/* === Dark Mode === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e8e8e8;
+    --text-sub: #aaa;
+    --bg: #121212;
+    --card: #1e1e1e;
+    --border: #333;
+  }
+  .header { background: linear-gradient(160deg, #1e1e1e 0%, #2a2420 100%); }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="pre">Chengdu Food Guide</div>
+  <h1>成都美食地图</h1>
+  <div class="sub">为远道而来的朋友们精心准备</div>
+</div>
+
+<div class="container">
+  <!-- Filter -->
+  <div class="filter-section">
+    <div class="filter-title">按标签筛选</div>
+    <div class="tags-row" id="tagsRow"></div>
+  </div>
+
+  <div class="results-count" id="resultsCount"></div>
+  <div class="food-grid" id="foodGrid"></div>
+  <div class="no-results" id="noResults" style="display:none;">
+    <div class="emoji">🍜</div>
+    <p>没有匹配的美食，试试其他标签？</p>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-section">
+    <h3>温馨提示</h3>
+    <ul>
+      <li>成都大部分餐厅可以用微信/支付宝扫码点餐</li>
+      <li>热门餐厅建议提前在大众点评/美团上排号</li>
+      <li>微辣在成都 ≈ 其他城市的中辣，请酌情点单</li>
+      <li>大部分火锅店有鸳鸯锅可选，不必担心</li>
+      <li>春熙路/太古里周边美食集中，方便逛吃</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="hearts">♥ ♥ ♥</div>
+    <p>祝大家在成都吃好喝好，我们婚礼见！</p>
+  </div>
+</div>
+
+<script>
+/**
+ * ============================================
+ * 美食数据
+ * ============================================
+ * {
+ *   name: "店名",
+ *   spicy: 0-3,
+ *   desc: "一句话描述",
+ *   tags: ["标签1", "标签2"],
+ *   recommend: "推荐菜品",
+ *   link: "大众点评链接",
+ *   price: "¥37/人",
+ *   address: "地址",
+ *   images: ["url1", "url2"],
+ *   lat: 30.666,
+ *   lng: 104.035,
+ * }
+ * ============================================
+ */
+
+const foods = [
+  {
+    name: "乐山鲜知味钵钵鸡(草堂北路店)",
+    spicy: 1,
+    desc: "20年老店，5毛一串性价比拉满。红油香辣、藤椒清爽两种口味，配碗鸡汤饭绝了。",
+    tags: ["必吃", "微辣/不辣", "串串"],
+    recommend: "必点：牛肉、鸡爪",
+    link: "https://m.dianping.com/shopinfo/G9XZHwthGtkG1dnW",
+    price: "¥37/人",
+    address: "杜甫草堂 · 草堂北路16号附18号",
+    images: ["https://th.bing.com/th/id/R.9bc5c23e3f423b405d008982cc8b098c?rik=L1%2bDrXYLc0P%2fBw&riu=http%3a%2f%2fn.sinaimg.cn%2fsinakd20230410s%2f749%2fw1080h1269%2f20230410%2fb802-743225f4caace9936af82802b0b91349.jpg&ehk=tF7Qt%2fm%2bPwlWlPj6IQ%2bmrjkkxrbsatb%2fiRLFRrUarx4%3d&risl=&pid=ImgRaw&r=0"],
+    lat: 30.6596,
+    lng: 104.0340
+  }
+];
+
+// Auto extract tags
+const allTags = [...new Set(foods.flatMap(f => f.tags))].sort((a, b) => {
+  const order = ["必吃", "辣", "微辣/不辣", "火锅", "串串", "经典川菜", "街头小吃", "聚餐", "一人食", "快餐", "夜宵", "本地特色", "甜品", "解辣", "米饭杀手", "休闲体验", "凉菜"];
+  return (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 99 : order.indexOf(b));
+});
+
+let activeTags = new Set();
+
+function renderTags() {
+  const row = document.getElementById("tagsRow");
+  let html = '<button class="tag-btn active-all" onclick="clearFilter()">全部</button>';
+  allTags.forEach(tag => {
+    html += '<button class="tag-btn' + (activeTags.has(tag) ? ' active' : '') + '" onclick="toggleTag(\'' + tag + '\')">' + tag + '</button>';
+  });
+  row.innerHTML = html;
+}
+
+function toggleTag(tag) {
+  if (activeTags.has(tag)) activeTags.delete(tag);
+  else activeTags.add(tag);
+  renderTags();
+  renderFoods();
+}
+
+function clearFilter() {
+  activeTags.clear();
+  renderTags();
+  renderFoods();
+}
+
+function getSpicyLevel(n) {
+  if (n === 0) return "";
+  return "\u{1F336}\u{FE0F}".repeat(n);
+}
+
+function renderFoods() {
+  const grid = document.getElementById("foodGrid");
+  const noResults = document.getElementById("noResults");
+  const countEl = document.getElementById("resultsCount");
+
+  let filtered = foods;
+  if (activeTags.size > 0) {
+    filtered = foods.filter(f => [...activeTags].every(t => f.tags.includes(t)));
+  }
+
+  countEl.textContent = "\u5171 " + filtered.length + " \u9879\u7F8E\u98DF";
+
+  if (filtered.length === 0) {
+    grid.innerHTML = "";
+    noResults.style.display = "block";
+    return;
+  }
+  noResults.style.display = "none";
+
+  let html = "";
+  filtered.forEach(function(f, idx) {
+    const spicy = getSpicyLevel(f.spicy);
+    const linkHtml = f.link ? '<a class="link-btn" href="' + f.link + '" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7H12z"/></svg>\u5927\u4F17\u70B9\u8BC4</a>' : "";
+    const priceHtml = f.price ? '<span class="card-price">' + f.price + '</span>' : "";
+    const addressHtml = f.address ? '<div class="card-address">' + f.address + '</div>' : "";
+
+    let imagesHtml = "";
+    if (f.images && f.images.length > 0) {
+      const cls = f.images.length === 1 ? "single" : f.images.length === 2 ? "double" : "";
+      imagesHtml = '<div class="card-images ' + cls + '">' + f.images.map(function(url) { return '<img src="' + url + '" alt="' + f.name + '" loading="lazy">'; }).join("") + '</div>';
+    }
+
+    let navHtml = "";
+    if (f.lat && f.lng) {
+      const dname = encodeURIComponent(f.name);
+      const navUrl = 'https://apis.map.qq.com/uri/v1/marker?marker=coord:' + f.lat + ',' + f.lng + ';title:' + dname + '&referer=chengdu_food_map';
+      navHtml = '<div class="nav-panel"><div class="map-container" id="map-' + idx + '" data-lat="' + f.lat + '" data-lng="' + f.lng + '" data-name="' + f.name + '"></div><a class="nav-go-overlay" href="' + navUrl + '" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>\u70B9\u51FB\u5BFC\u822A\u5230\u8FD9\u91CC</a></div>';
+    }
+
+    const hintHtml = (f.lat && f.lng) ? '<div class="expand-hint">\u70B9\u51FB\u5361\u7247\u5C55\u5F00\u5BFC\u822A</div>' : "";
+
+    html += '<div class="food-card" onclick="toggleCard(this)">' +
+      imagesHtml +
+      '<div class="card-content">' +
+        '<div class="name">' + f.name + ' <span class="spicy">' + spicy + '</span></div>' +
+        '<div class="desc">' + f.desc + '</div>' +
+        '<div class="card-info-row">' + priceHtml + addressHtml + '</div>' +
+        '<div class="meta">' + f.tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join("") + '</div>' +
+        (f.recommend ? '<div class="recommend">' + f.recommend + '</div>' : "") +
+        linkHtml +
+        hintHtml +
+      '</div>' +
+      navHtml +
+    '</div>';
+  });
+  grid.innerHTML = html;
+}
+
+renderTags();
+renderFoods();
+
+function toggleCard(el) {
+  var wasExpanded = el.classList.contains("expanded");
+  el.classList.toggle("expanded");
+
+  if (!wasExpanded) {
+    var mapEl = el.querySelector(".map-container");
+    if (mapEl && !mapEl.dataset.inited) {
+      mapEl.dataset.inited = "1";
+      var lat = parseFloat(mapEl.dataset.lat);
+      var lng = parseFloat(mapEl.dataset.lng);
+      setTimeout(function() {
+        var center = new TMap.LatLng(lat, lng);
+        var map = new TMap.Map(mapEl, {
+          center: center,
+          zoom: 16,
+          draggable: true,
+          scrollable: true,
+          doubleClickZoom: true,
+        });
+        new TMap.MultiMarker({
+          map: map,
+          geometries: [{ id: "shop", position: center }]
+        });
+        mapEl.addEventListener("click", function(e) { e.stopPropagation(); });
+        mapEl.addEventListener("touchstart", function(e) { e.stopPropagation(); }, { passive: true });
+      }, 150);
+    }
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#f5efe6">
+    <title>婚礼宾客导航</title>
+    <!-- iOS PWA icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>💒</text></svg>">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --gold: #c9a96e;
+            --gold-light: #f5efe6;
+            --gold-dark: #a8864e;
+            --blue: #1976d2;
+            --blue-light: #e3f2fd;
+            --text: #1a1a2e;
+            --text-sub: #666;
+            --bg: #f5f5f5;
+            --card: #ffffff;
+            --border: #eee;
+            --radius: 14px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.04);
+            /* iOS safe areas */
+            --sat: env(safe-area-inset-top, 0px);
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sal: env(safe-area-inset-left, 0px);
+            --sar: env(safe-area-inset-right, 0px);
+        }
+        html { -webkit-text-size-adjust:100%; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: var(--sat);
+            padding-bottom: var(--sab);
+            padding-left: var(--sal);
+            padding-right: var(--sar);
+            /* Smooth scroll for iOS */
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: none;
+        }
+
+        /* === Header === */
+        .header {
+            text-align: center;
+            padding: 36px 20px 24px;
+            background: linear-gradient(160deg, #fff 0%, var(--gold-light) 100%);
+        }
+        .header .pre { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+        .header h1 { font-size: 24px; font-weight: 300; margin-bottom: 4px; }
+        .header .sub { font-size: 12px; color: var(--text-sub); }
+
+        /* === Container === */
+        .container { max-width: 640px; margin: 0 auto; padding: 0 12px 32px; }
+
+        /* === Destination Tabs === */
+        .dest-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0 16px;
+        }
+        .dest-tab {
+            flex: 1;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .dest-tab::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.2s;
+            z-index: 1;
+        }
+        .dest-tab.active { border-color: var(--gold); box-shadow: 0 2px 12px rgba(201,169,110,0.15); }
+        .dest-tab.active::before { transform: scaleX(1); }
+        .dest-tab:active { transform: scale(0.97); }
+        .dest-tab .tab-photo {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(135deg, #e8e0d4, #d4c5b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .dest-tab .tab-photo .ph-text {
+            font-size: 9px;
+            color: #999;
+            background: rgba(255,255,255,0.8);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .dest-tab .tab-info {
+            padding: 10px;
+            text-align: center;
+        }
+        .dest-tab .tab-name { font-size: 13px; font-weight: 600; color: var(--text); }
+        .dest-tab .tab-addr { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
+
+        /* === Card === */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .card-header {
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-body { padding: 0; }
+
+        /* === Map === */
+        #map { width: 100%; height: 300px; touch-action: pan-x pan-y; }
+
+        /* === Action Buttons === */
+        .actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+        }
+        .act-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            /* Touch feedback */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .act-btn:active { transform: scale(0.96); }
+        .act-btn.primary { background: var(--gold); color: #fff; }
+        .act-btn.secondary { background: var(--blue-light); color: var(--blue); }
+        .act-btn .spinner {
+            width: 14px; height: 14px;
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+        .act-btn.loading .spinner { display: inline-block; }
+        .act-btn.loading { opacity: 0.6; pointer-events: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* === Route Info === */
+        .route-info {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .route-info.visible { display: block; }
+        .ri-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .ri-row:last-child { margin-bottom: 0; }
+        .ri-icon { font-size: 14px; min-width: 18px; text-align: center; }
+        .ri-label { font-size: 11px; color: var(--text-sub); min-width: 52px; }
+        .ri-value { font-size: 13px; font-weight: 600; color: var(--text); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* === Steps === */
+        .steps { list-style: none; padding: 14px 16px; }
+        .step-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .step-item:last-child { border-bottom: none; }
+        .step-top {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 26px; height: 26px; min-width: 26px;
+            background: var(--gold);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .step-text { flex: 1; }
+        .step-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+        .step-text p { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+        .step-photo {
+            width: 100%;
+            height: 160px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e8e0d4, #d4c5b0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #999;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .step-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* === External Nav Grid === */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 14px 16px;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 8px;
+            background: var(--bg);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.15s;
+            -webkit-touch-callout: none;
+        }
+        .nav-item:active { transform: scale(0.95); background: var(--gold-light); }
+        .nav-item .ni-icon { font-size: 28px; }
+        .nav-item .ni-sub { font-size: 9px; color: var(--text-sub); }
+
+        /* === Location Permission Hint === */
+        .perm-hint {
+            display: none;
+            padding: 10px 16px;
+            background: #fff3e0;
+            border-top: 1px solid #ffe0b2;
+            font-size: 11px;
+            color: #e65100;
+            line-height: 1.5;
+        }
+        .perm-hint.visible { display: block; }
+
+        /* === Footer === */
+        .footer {
+            text-align: center;
+            padding: 20px 16px calc(20px + var(--sab));
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+        .footer .hearts { color: var(--gold); font-size: 13px; margin-bottom: 4px; }
+
+        /* === Responsive === */
+        @media (max-width: 375px) {
+            .header h1 { font-size: 20px; }
+            #map { height: 260px; }
+            .dest-tab .tab-photo { height: 80px; }
+            .dest-tab .tab-info { padding: 8px 6px; }
+            .nav-grid { gap: 6px; }
+            .nav-item { padding: 10px 6px; }
+            .step-photo { height: 120px; }
+        }
+        @media (min-width: 768px) {
+            #map { height: 380px; }
+            .container { padding: 0 20px 40px; }
+        }
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text: #e8e8e8;
+                --text-sub: #aaa;
+                --bg: #121212;
+                --card: #1e1e1e;
+                --border: #333;
+            }
+            .header { background: linear-gradient(160deg, #1e1e1e 0%, #2a2420 100%); }
+            .dest-tab:not(.active) { background: #1e1e1e; }
+            .nav-item { background: #1e1e1e; }
+        }
+    </style>
+    <script type="text/javascript">
+        window._TMapSecurityConfig = {
+            serviceHost: 'http://127.0.0.1:__WB_HTTP_PORT__/_TMapService/_wbt/__WB_TMAP_SECRET__',
+        };
+    </script>
+    <script src="https://map.qq.com/api/gljs?v=1.exp&libraries=service"></script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <div class="pre">Wedding Guest Guide</div>
+    <h1>宾客导航</h1>
+    <div class="sub">选择目的地，一键获取步行路线</div>
+</div>
+
+<div class="container">
+
+    <!-- Destination Tabs -->
+    <div class="dest-tabs">
+        <div class="dest-tab active" id="tabWedding" onclick="switchDest('wedding')">
+            <div class="tab-photo"><span class="ph-text">酒店实景照片</span></div>
+            <div class="tab-info">
+                <div class="tab-name">🎊婚礼酒店</div>
+                <div class="tab-addr">JW万豪 · 东御街19号</div>
+            </div>
+        </div>
+        <div class="dest-tab" id="tabStay" onclick="switchDest('stay')">
+            <div class="tab-photo"><span class="ph-text">酒店实景照片</span></div>
+            <div class="tab-info">
+                <div class="tab-name">🛏住宿酒店</div>
+                <div class="tab-addr">桔子酒店 · 顺城大街88号</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step-by-Step Card (步行指引在前) -->
+    <div class="card">
+        <div class="card-header">
+            <span>👣</span>
+            <span>步行指引</span>
+        </div>
+        <div class="card-body">
+            <!-- Wedding Steps -->
+            <ul class="steps" id="stepsWedding">
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">1</span>
+                        <div class="step-text">
+                            <h4>获取当前位置</h4>
+                            <p>点击下方"定位并导航"，允许位置权限后自动规划路线</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">2</span>
+                        <div class="step-text">
+                            <h4>跟随蓝色路线前往东御街</h4>
+                            <p>按地图蓝色虚线指引方向步行</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">3</span>
+                        <div class="step-text">
+                            <h4>找到茂业中心大楼</h4>
+                            <p>东御街19号，高层玻璃幕墙建筑</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">4</span>
+                        <div class="step-text">
+                            <h4>进入JW万豪酒店大堂</h4>
+                            <p>一楼正门进入，乘电梯至婚宴楼层（留意指引牌）</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+            </ul>
+            <!-- Stay Steps -->
+            <ul class="steps" id="stepsStay" style="display:none;">
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">1</span>
+                        <div class="step-text">
+                            <h4>从JW万豪正门出发</h4>
+                            <p>东御街侧正门出来，面朝北方</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">2</span>
+                        <div class="step-text">
+                            <h4>沿东御街向北步行200米</h4>
+                            <p>出门左转，沿人行道直行</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">3</span>
+                        <div class="step-text">
+                            <h4>顺城大街路口左转</h4>
+                            <p>到达路口后左转进入顺城大街</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+                <li class="step-item">
+                    <div class="step-top">
+                        <span class="step-num">4</span>
+                        <div class="step-text">
+                            <h4>抵达桔子酒店</h4>
+                            <p>步行约100米，右侧即为桔子酒店（88号）</p>
+                        </div>
+                    </div>
+                    <div class="step-photo">请替换为实景照片</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Map Card -->
+    <div class="card">
+        <div class="card-header">
+            <span>🗺</span>
+            <span>实时路线</span>
+        </div>
+        <div class="card-body">
+            <div id="map"></div>
+        </div>
+        <!-- Route Info -->
+        <div class="route-info" id="routeInfo">
+            <div class="ri-row">
+                <span class="ri-icon">📍</span>
+                <span class="ri-label">目的地</span>
+                <span class="ri-value" id="riDest">--</span>
+            </div>
+            <div class="ri-row">
+                <span class="ri-icon">📏</span>
+                <span class="ri-label">距离</span>
+                <span class="ri-value" id="riDist">--</span>
+            </div>
+            <div class="ri-row">
+                <span class="ri-icon">⏱</span>
+                <span class="ri-label">步行</span>
+                <span class="ri-value" id="riTime">--</span>
+            </div>
+        </div>
+        <!-- Permission Hint -->
+        <div class="perm-hint" id="permHint"></div>
+        <!-- Actions -->
+        <div class="actions">
+            <button class="act-btn primary" id="locBtn" onclick="locateAndRoute()">
+                <span class="spinner"></span>
+                <span class="btn-label">📍 定位并导航</span>
+            </button>
+            <button class="act-btn secondary" onclick="openNativeMap()">
+                📱 打开地图
+            </button>
+        </div>
+    </div>
+
+    <!-- External Map Apps Card -->
+    <div class="card">
+        <div class="card-header">
+            <span>📱</span>
+            <span>选择地图App导航</span>
+        </div>
+        <div class="nav-grid">
+            <a class="nav-item" id="linkTencent" href="#">
+                <span class="ni-icon">🟢</span>
+                腾讯地图
+                <span class="ni-sub">推荐</span>
+            </a>
+            <a class="nav-item" id="linkGaode" href="#">
+                <span class="ni-icon">🔵</span>
+                高德地图
+                <span class="ni-sub">推荐</span>
+            </a>
+            <a class="nav-item" id="linkBaidu" href="#">
+                <span class="ni-icon">🔴</span>
+                百度地图
+            </a>
+            <a class="nav-item" id="linkApple" href="#" style="display:none;">
+                <span class="ni-icon">🍎</span>
+                Apple地图
+                <span class="ni-sub">iOS</span>
+            </a>
+            <a class="nav-item" id="linkPetal" href="#" style="display:none;">
+                <span class="ni-icon">🌺</span>
+                花瓣地图
+                <span class="ni-sub">鸿蒙</span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <div class="hearts">♥ ♥ ♥</div>
+    <p>感谢您参加我们的婚礼，祝您愉快！</p>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    // === Configuration ===
+    var PLACES = {
+        wedding: {
+            name: 'JW万豪酒店',
+            fullName: '成都茂业JW万豪酒店',
+            address: '东御街19号',
+            lat: 30.656986,
+            lng: 104.069933
+        },
+        stay: {
+            name: '桔子酒店',
+            fullName: '桔子酒店(成都春熙路天府广场店)',
+            address: '顺城大街88号',
+            lat: 30.65898,
+            lng: 104.071308
+        }
+    };
+
+    // === Platform Detection ===
+    var UA = navigator.userAgent.toLowerCase();
+    var platform = {
+        isIOS: /iphone|ipad|ipod/.test(UA),
+        isAndroid: /android/.test(UA),
+        isHarmony: /harmonyos|hmos/.test(UA) || /huawei/.test(UA),
+        isWechat: /micromessenger/.test(UA),
+        isMobile: /mobile|android|iphone/.test(UA)
+    };
+
+    // === State===
+    var currentDest = 'wedding';
+    var map, livePolyline, presetPolyline, myMarker;
+    var lastUserLatLng = null;
+    var watchId = null;
+
+    // === Init ===
+    document.addEventListener('DOMContentLoaded', function() {
+        initPlatform();
+        initMap();
+        updateLinks();
+    });
+
+    function initPlatform() {
+        // Show Apple Maps for iOS
+        if (platform.isIOS) {
+            document.getElementById('linkApple').style.display = '';
+        }
+        // Show Petal Maps for HarmonyOS
+        if (platform.isHarmony) {
+            document.getElementById('linkPetal').style.display = '';
+        }
+        // Adjust map height on small screens
+        if (window.innerHeight < 700) {
+            document.getElementById('map').style.height = '240px';
+        }
+    }
+
+    function initMap() {
+        var centerLat = (PLACES.wedding.lat + PLACES.stay.lat) / 2;
+        var centerLng = (PLACES.wedding.lng + PLACES.stay.lng) / 2;
+
+        map = new TMap.Map('map', {
+            zoom: 16,
+            center: new TMap.LatLng(centerLat, centerLng),
+            control: {
+                zoom: { position: 'bottomRight' },
+                scale: {}
+            }
+        });
+
+        // Markers
+        new TMap.MultiMarker({
+            map: map,
+            geometries: [
+                { id: 'wedding', position: new TMap.LatLng(PLACES.wedding.lat, PLACES.wedding.lng) },
+                { id: 'stay', position: new TMap.LatLng(PLACES.stay.lat, PLACES.stay.lng) }
+            ]
+        });
+
+        // Labels
+        new TMap.MultiLabel({
+            map: map,
+            styles: {
+                'lbl': new TMap.LabelStyle({
+                    color: '#333',
+                    size: 11,
+                    offset: { x: 0, y: -32 },
+                    backgroundColor: 'rgba(255,255,255,0.92)',
+                    borderRadius: 4,
+                    padding: { top: 3, right: 6, bottom: 3, left: 6 },
+                })
+            },
+            geometries: [
+                { id: 'l1', styleId: 'lbl', position: new TMap.LatLng(PLACES.wedding.lat, PLACES.wedding.lng), content: '🎊 婚礼酒店' },
+                { id: 'l2', styleId: 'lbl', position: new TMap.LatLng(PLACES.stay.lat, PLACES.stay.lng), content: '🛏 住宿酒店' }
+            ]
+        });
+
+        // Preset route (gold line)
+        var walking = new TMap.service.Walking();
+        walking.search({
+            from: new TMap.LatLng(PLACES.wedding.lat, PLACES.wedding.lng),
+            to: new TMap.LatLng(PLACES.stay.lat, PLACES.stay.lng)
+        }).then(function(res) {
+            if (res && res.routes && res.routes[0]) {
+                var path = res.routes[0].steps.reduce(function(a, s) { return a.concat(s.path); }, []);
+                presetPolyline = new TMap.MultiPolyline({
+                    map: map,
+                    styles: { 'preset': new TMap.PolylineStyle({ color: '#c9a96e', width: 4, borderWidth: 1, borderColor: '#a8864e', lineCap: 'round' }) },
+                    geometries: [{ id: 'preset', styleId: 'preset', paths: path }]
+                });
+            }
+        });
+    }
+
+    // === Destination Switch ===
+    window.switchDest = function(dest) {
+        currentDest = dest;
+        document.getElementById('tabWedding').classList.toggle('active', dest === 'wedding');
+        document.getElementById('tabStay').classList.toggle('active', dest === 'stay');
+        document.getElementById('stepsWedding').style.display = dest === 'wedding' ? '' : 'none';
+        document.getElementById('stepsStay').style.display = dest === 'stay' ? '' : 'none';
+        updateLinks();
+        if (lastUserLatLng) planRoute(lastUserLatLng);
+    };
+
+    // === Update External Map Links (multi-platform) ===
+    function updateLinks() {
+        var p = PLACES[currentDest];
+        var name = encodeURIComponent(p.fullName);
+
+        // Tencent Maps (works on all platforms)
+        document.getElementById('linkTencent').href =
+            'https://apis.map.qq.com/uri/v1/routeplan?type=walk&to=' + name +
+            '&tocoord=' + p.lat + ',' + p.lng + '&referer=wedding-guide';
+
+        // Gaode/AMap
+        document.getElementById('linkGaode').href =
+            platform.isIOS
+                ? 'iosamap://path?dlat=' + p.lat + '&dlon=' + p.lng + '&dname=' + name + '&t=2'
+                : 'https://uri.amap.com/navigation?to=' + p.lng + ',' + p.lat + ',' + name + '&mode=walk';
+
+        // Baidu Maps
+        document.getElementById('linkBaidu').href =
+            'https://api.map.baidu.com/direction?destination=latlng:' + p.lat + ',' + p.lng +
+            '|name:' + name + '&coord_type=gcj02&mode=walking&output=html';
+
+        // Apple Maps (iOS only)
+        if (platform.isIOS) {
+            document.getElementById('linkApple').href =
+                'https://maps.apple.com/?daddr=' + p.lat + ',' + p.lng + '&dirflg=w';
+        }
+
+        // Petal Maps (HarmonyOS)
+        if (platform.isHarmony) {
+            document.getElementById('linkPetal').href =
+                'petalmaps://navigation?dlat=' + p.lat + '&dlon=' + p.lng + '&dname=' + name + '&type=walk';
+        }
+
+        // Handle link clicks with fallbacks
+        var links = document.querySelectorAll('.nav-item');
+        for (var i = 0; i < links.length; i++) {
+            links[i].onclick = handleMapLink;
+        }
+    }
+
+    // === Handle Map App Link with Fallback ===
+    function handleMapLink(e) {
+        var href = this.getAttribute('href');
+        if (!href || href === '#') { e.preventDefault(); return; }
+
+        // For scheme-based links (native apps), try to open and fallback
+        if (href.indexOf('iosamap://') === 0 || href.indexOf('petalmaps://') === 0) {
+            e.preventDefault();
+            var p = PLACES[currentDest];
+            var fallback = 'https://uri.amap.com/navigation?to=' + p.lng + ',' + p.lat + ',' + encodeURIComponent(p.fullName) + '&mode=walk';
+
+            // Try native app, fallback to web after timeout
+            var timer = setTimeout(function() { window.location.href = fallback; }, 2000);
+            window.location.href = href;
+
+            // If page didn't leave, use fallback
+            window.addEventListener('pagehide', function() { clearTimeout(timer); }, { once: true });
+        }
+    }
+
+    // === Open Native Map (smart selection) ===
+    window.openNativeMap = function() {
+        var p = PLACES[currentDest];
+        var name = encodeURIComponent(p.fullName);
+
+        if (platform.isIOS) {
+            // Try Apple Maps first
+            window.location.href = 'https://maps.apple.com/?daddr=' + p.lat + ',' + p.lng + '&dirflg=w';
+        } else if (platform.isHarmony) {
+            // Try Petal Maps
+            window.location.href = 'petalmaps://navigation?dlat=' + p.lat + '&dlon=' + p.lng + '&dname=' + name + '&type=walk';
+            setTimeout(function() {
+                window.location.href = 'https://apis.map.qq.com/uri/v1/routeplan?type=walk&to=' + name + '&tocoord=' + p.lat + ',' + p.lng + '&referer=wedding-guide';
+            }, 2000);
+        } else {
+            // Android / others -> Tencent Maps web
+            window.location.href = 'https://apis.map.qq.com/uri/v1/routeplan?type=walk&to=' + name + '&tocoord=' + p.lat + ',' + p.lng + '&referer=wedding-guide';
+        }
+    };
+
+    // === Locate & Route ===
+    window.locateAndRoute = function() {
+        var btn = document.getElementById('locBtn');
+        btn.classList.add('loading');
+        btn.querySelector('.btn-label').textContent = '定位中...';
+        hidePermHint();
+
+        if (!navigator.geolocation) {
+            showPermHint('您的浏览器不支持定位功能，请点击右侧"打开地图"使用地图App导航。');
+            resetBtn();
+            return;
+        }
+
+        // iOS WebView / WeChat may block geolocation
+        var timeoutMs = platform.isWechat ? 15000 : 10000;
+
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                lastUserLatLng = new TMap.LatLng(pos.coords.latitude, pos.coords.longitude);
+                showMyLocation(lastUserLatLng);
+                planRoute(lastUserLatLng);
+                resetBtn();
+
+                // Start watching position for real-time updates
+                startWatching();
+            },
+            function(err) {
+                var hint = '';
+                switch (err.code) {
+                    case 1:
+                        if (platform.isIOS) {
+                            hint = '请前往 设置 → Safari → 位置 → 允许，或点击地址栏左侧 "Aa" → 网站设置 → 位置 → 允许';
+                        } else if (platform.isHarmony) {
+                            hint = '请前往 设置 → 隐私 → 定位服务 → 开启浏览器定位权限';
+                        } else {
+                            hint = '请点击浏览器地址栏的锁🔒图标，将位置权限改为"允许"';
+                        }
+                        break;
+                    case 2:
+                        hint = '无法获取位置信息，请确保已开启GPS/位置服务，或到室外开阔处重试';
+                        break;
+                    case 3:
+                        hint = '定位超时，可能GPS信号弱，请重试或使用"打开地图"进行导航';
+                        break;
+                    default:
+                        hint = '定位失败，请使用右侧"打开地图"进行导航';
+                }
+                showPermHint(hint);
+                resetBtn();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: timeoutMs,
+                maximumAge: 60000
+            }
+        );
+    };
+
+    // === Watch Position (real-time update) ===
+    function startWatching() {
+        if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+        watchId = navigator.geolocation.watchPosition(
+            function(pos) {
+                lastUserLatLng = new TMap.LatLng(pos.coords.latitude, pos.coords.longitude);
+                showMyLocation(lastUserLatLng);
+                // Don't replan route on every update to save bandwidth
+            },
+            function() {},
+            { enableHighAccuracy: true, maximumAge: 5000 }
+        );
+    }
+
+    // === Show My Location Marker ===
+    function showMyLocation(latLng) {
+        if (myMarker) {
+            myMarker.setGeometries([{ id: 'me', styleId: 'me', position: latLng }]);
+        } else {
+            myMarker = new TMap.MultiMarker({
+                map: map,
+                styles: {
+                    'me': new TMap.MarkerStyle({
+                        width: 22, height: 22,
+                        anchor: { x: 11, y: 11 },
+                        src: 'data:image/svg+xml,' + encodeURIComponent(
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22">' +
+                            '<circle cx="11" cy="11" r="10" fill="rgba(25,118,210,0.15)"/>' +
+                            '<circle cx="11" cy="11" r="6" fill="#1976d2" stroke="#fff" stroke-width="2.5"/>' +
+                            '</svg>'
+                        )
+                    })
+                },
+                geometries: [{ id: 'me', styleId: 'me', position: latLng }]
+            });
+        }
+    }
+
+    // === Plan Walking Route ===
+    function planRoute(fromLatLng) {
+        var p = PLACES[currentDest];
+        var toLatLng = new TMap.LatLng(p.lat, p.lng);
+
+        var walking = new TMap.service.Walking();
+        walking.search({ from: fromLatLng, to: toLatLng }).then(function(res) {
+            if (res && res.routes && res.routes[0]) {
+                var route = res.routes[0];
+                var path = route.steps.reduce(function(a, s) { return a.concat(s.path); }, []);
+
+                if (livePolyline) livePolyline.setMap(null);
+
+                livePolyline = new TMap.MultiPolyline({
+                    map: map,
+                    styles: { 'live': new TMap.PolylineStyle({ color: '#1976d2', width: 5, borderWidth: 2, borderColor: '#0d47a1', lineCap: 'round', dashArray: [10, 6] }) },
+                    geometries: [{ id: 'live', styleId: 'live', paths: path }]
+                });
+
+                var bounds = new TMap.LatLngBounds();
+                bounds.extend(fromLatLng);
+                bounds.extend(toLatLng);
+                map.fitBounds(bounds, { padding: { top: 50, bottom: 50, left: 40, right: 40 } });
+
+                // Update info
+                var dist = route.distance;
+                var dur = route.duration;
+                document.getElementById('riDest').textContent = p.name;
+                document.getElementById('riDist').textContent = dist >= 1000 ? (dist / 1000).toFixed(1) + ' km' : dist + ' m';
+                document.getElementById('riTime').textContent = dur >= 60 ? Math.ceil(dur / 60) + '分钟' : '不到1分钟';
+                document.getElementById('routeInfo').classList.add('visible');
+            }
+        }).catch(function() {
+            showPermHint('路线规划失败，请使用"打开地图"进行导航');
+        });
+    }
+
+    // === Permission Hint ===
+    function showPermHint(msg) {
+        var el = document.getElementById('permHint');
+        el.textContent = msg;
+        el.classList.add('visible');
+    }
+    function hidePermHint() {
+        document.getElementById('permHint').classList.remove('visible');
+    }
+
+    // === Reset Button ===
+    function resetBtn() {
+        var btn = document.getElementById('locBtn');
+        btn.classList.remove('loading');
+        btn.querySelector('.btn-label').textContent = lastUserLatLng ? '🔄 刷新位置' : '📍 定位并导航';
+    }
+
+    // === Prevent iOS rubber-band on the map ===
+    document.getElementById('map').addEventListener('touchmove', function(e) {
+        e.stopPropagation();
+    }, { passive: true });
+
+})();
+</script>
+</body>
+</html>
