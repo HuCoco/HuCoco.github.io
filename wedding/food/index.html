@@ -238,7 +238,7 @@ body {
   gap: 4px;
   margin-top: 8px;
   padding: 6px 12px;
-  background: var(--gold);
+  background: #ff6633;
   color: #fff;
   border-radius: 14px;
   font-size: 11px;
@@ -251,6 +251,43 @@ body {
   width: 11px;
   height: 11px;
   fill: currentColor;
+}
+
+/* === Branch Tabs === */
+.food-card .branch-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.food-card .branch-tab {
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--text-sub);
+  font-weight: 500;
+  transition: all 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.food-card .branch-tab:active { transform: scale(0.95); }
+.food-card .branch-tab.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.food-card .branch-info {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-bottom: 4px;
+}
+.food-card .branch-price {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold-dark);
 }
 
 /* === Navigation Panel === */
@@ -439,17 +476,369 @@ body {
 
 const foods = [
   {
-    name: "乐山鲜知味钵钵鸡(草堂北路店)",
+    name: "乐山鲜知味钵钵鸡",
     spicy: 1,
     desc: "20年老店，5毛一串性价比拉满。红油香辣、藤椒清爽两种口味，配碗鸡汤饭绝了。",
     tags: ["必吃", "微辣/不辣", "串串"],
-    recommend: "必点：牛肉、鸡爪",
+    recommend: "必点：去骨鸡爪、鸡汤烫饭、藤椒串串",
     link: "https://m.dianping.com/shopinfo/G9XZHwthGtkG1dnW",
     price: "¥37/人",
-    address: "杜甫草堂 · 草堂北路16号附18号",
-    images: ["https://th.bing.com/th/id/R.9bc5c23e3f423b405d008982cc8b098c?rik=L1%2bDrXYLc0P%2fBw&riu=http%3a%2f%2fn.sinaimg.cn%2fsinakd20230410s%2f749%2fw1080h1269%2f20230410%2fb802-743225f4caace9936af82802b0b91349.jpg&ehk=tF7Qt%2fm%2bPwlWlPj6IQ%2bmrjkkxrbsatb%2fiRLFRrUarx4%3d&risl=&pid=ImgRaw&r=0"],
-    lat: 30.6596,
-    lng: 104.0340
+    images: [],
+    branches: [
+      {
+        name: "草堂北路店",
+        address: "青羊区 · 草堂北路16号附18号",
+        link: "https://m.dianping.com/shopinfo/G9XZHwthGtkG1dnW",
+        lat: 30.666412,
+        lng: 104.029417
+      }
+    ]
+  },
+  {
+    name: "龙森园火锅",
+    spicy: 2,
+    desc: "成都28年老牌火锅，连续三年入选米其林指南。卤牛油锅底是看家本领，9种香料手工炒制5小时，蘸碟只配秘制香油蒜碟。",
+    tags: ["必吃", "辣", "火锅", "聚餐"],
+    recommend: "必点：卤牛油锅底、极品毛肚、手切吊龙、红糖糍粑、嫩牛肉、黄辣丁",
+    link: "https://m.dianping.com/shopinfo/kaaDbniEYgc3JC9l",
+    price: "¥133-228/人",
+    images: [],
+    branches: [
+      {
+        name: "琴台路店（老店）",
+        address: "青羊区 · 琴台路60号（近宽窄巷子）",
+        price: "¥133/人",
+        link: "https://m.dianping.com/shopinfo/kaaDbniEYgc3JC9l",
+        lat: 30.658766,
+        lng: 104.045474
+      },
+      {
+        name: "中国华商店",
+        address: "高新区 · 交子大道33号中国华商金融中心3楼319号",
+        price: "¥228/人",
+        link: "https://m.dianping.com/shopinfo/G7C5SbdMfWavFVUc",
+        lat: 30.5855,
+        lng: 104.0655
+      }
+    ]
+  },
+  {
+    name: "周丹丹原味烧烤",
+    spicy: 1,
+    desc: "烧烤界的爱马仕，不使用任何添加剂，不同食材用不同炭烤。原味牛肉鲜嫩多汁，吃完口不干舌不燥，高空露台环境绝佳。",
+    tags: ["聚餐", "微辣/不辣", "夜宵"],
+    recommend: "必点：原味牛肉、安格斯牛肉、牛胸膘、烤鼻筋、非遗豆腐干、排骨",
+    link: "https://m.dianping.com/shopinfo/k9vt5wTEcQ7DGZjd",
+    price: "¥112/人",
+    images: [],
+    branches: [
+      {
+        name: "银泰in99店",
+        address: "高新区 · 天府大道银泰in99八楼",
+        link: "https://m.dianping.com/shopinfo/k9vt5wTEcQ7DGZjd",
+        lat: 30.5785,
+        lng: 104.0657
+      }
+    ]
+  },
+  {
+    name: "柒·炭火烧鸟",
+    spicy: 0,
+    desc: "藏在桐梓林的日式烧鸟专门店，深夜食堂氛围感满分。食材新鲜，简单调味凸显炭火风味，甲鱼鸡汤和烧鸟系列是招牌。",
+    tags: ["微辣/不辣", "聚餐", "夜宵", "本地特色"],
+    recommend: "必点：鸡腿一夜干、甲鱼鸡汤、鸡颈肉、牛排三明治、提灯",
+    link: "https://m.dianping.com/shopinfo/Ha2uHryP2Nhsskq3",
+    price: "¥169/人",
+    images: [],
+    branches: [
+      {
+        name: "桐梓林店",
+        address: "武侯区 · 人民南路四段48号附31号1层",
+        link: "https://m.dianping.com/shopinfo/Ha2uHryP2Nhsskq3",
+        lat: 30.612812,
+        lng: 104.066266
+      }
+    ]
+  },
+  {
+    name: "胡二哥药膳蹄花",
+    spicy: 1,
+    desc: "开了20多年的深夜食堂，米其林必比登推荐。药膳蹄花炖煮8小时入口即化，10多种药材汤鲜味浓，是成都夜猫子的经典宵夜。",
+    tags: ["必吃", "微辣/不辣", "夜宵", "本地特色"],
+    recommend: "必点：药膳蹄花、火爆肥肠、小青椒拱嘴炒饭、煮凉粉",
+    link: "https://m.dianping.com/shopinfo/H2qdTVQSnvrLdMVl",
+    price: "¥53/人",
+    images: [],
+    branches: [
+      {
+        name: "一环路西一段店",
+        address: "青羊区 · 一环路西一段146号附19（地铁5号线省骨科医院站A口）",
+        link: "https://m.dianping.com/shopinfo/H2qdTVQSnvrLdMVl",
+        lat: 30.6605,
+        lng: 104.0445
+      }
+    ]
+  },
+  {
+    name: "嘉州叶婆婆钵钵鸡",
+    spicy: 1,
+    desc: "乐山钵钵鸡41年老字号，太古里人气爆棚。红油香辣芝麻满满、藤椒清爽不油腻，人均50吃到扶墙走，春熙路逛吃首选。",
+    tags: ["必吃", "微辣/不辣", "串串", "一人食"],
+    recommend: "必点：红油/藤椒钵钵鸡、芽菜肉沫炒饭、鸡汤饭、醪糟汤圆冰粉、无骨鸡爪",
+    link: "https://m.dianping.com/shopinfo/k3IBGStOHIexCW4x",
+    price: "¥50/人",
+    images: [],
+    branches: [
+      {
+        name: "太古里店",
+        address: "锦江区 · 油篓街48号附1号（太古里博舍酒店对面）",
+        link: "https://m.dianping.com/shopinfo/k3IBGStOHIexCW4x",
+        lat: 30.651066,
+        lng: 104.084302
+      }
+    ]
+  },
+  {
+    name: "庆妹·寻签记砂锅串串",
+    spicy: 2,
+    desc: "本地人私藏的砂锅串串，牛油卤香锅底温和不燥。牛肉品种超多，藿香牛肉和糖蒜牛肉是特色，食材新鲜码料够味，烟火气十足。",
+    tags: ["辣", "串串", "聚餐", "本地特色"],
+    recommend: "必点：藿香牛肉、糖蒜牛肉、卤肥肠、兔腰、土豆片、茼蒿",
+    link: "https://m.dianping.com/shopinfo/l88qJMTKeWglZgVN",
+    price: "¥77/人",
+    images: [],
+    branches: [
+      {
+        name: "三瓦窑店",
+        address: "武侯区 · 三瓦窑商业广场一楼（地铁7号线三瓦窑站A口）",
+        link: "https://m.dianping.com/shopinfo/l88qJMTKeWglZgVN",
+        lat: 30.6085,
+        lng: 104.0595
+      }
+    ]
+  },
+  {
+    name: "王记锅魁白家肥肠粉",
+    spicy: 1,
+    desc: "武侯区肥肠粉热门榜第1名，地道成都早午餐。手工水粉软糯滑爽，冒节子一口爆汁鲜到飞起，锅魁外酥里嫩咬开有肉汁。",
+    tags: ["微辣/不辣", "街头小吃", "一人食", "快餐"],
+    recommend: "必点：白家肥肠粉、特色冒节子、牛肉锅魁、豆芽汤",
+    link: "https://m.dianping.com/shopinfo/G8eJwQpnj1jKlknS",
+    price: "¥20/人",
+    images: [],
+    branches: [
+      {
+        name: "倪家桥路店",
+        address: "武侯区 · 倪家桥路11号附8号（地铁8号线芳草街站D口）",
+        link: "https://m.dianping.com/shopinfo/G8eJwQpnj1jKlknS",
+        lat: 30.6340,
+        lng: 104.0555
+      }
+    ]
+  },
+  {
+    name: "宋·川菜",
+    spicy: 1,
+    desc: "米其林指南入选餐厅，太古里独栋三层川式美学空间。蝉联6次米其林一星团队打造，地道老成都味川菜，环境绝美适合宴请。",
+    tags: ["必吃", "经典川菜", "聚餐", "微辣/不辣"],
+    recommend: "必点：蒜泥白肉、开水白菜、干烧江团、水煮沸腾乌鱼片、锅巴肉片、宫爆虾球",
+    link: "https://m.dianping.com/shopinfo/G2D21IQzQPM1tx81",
+    price: "¥170/人",
+    images: [],
+    branches: [
+      {
+        name: "太古里店",
+        address: "锦江区 · 中纱帽街8号成都太古里23栋（大慈寺旁）",
+        link: "https://m.dianping.com/shopinfo/G2D21IQzQPM1tx81",
+        lat: 30.6515,
+        lng: 104.0835
+      }
+    ]
+  },
+  {
+    name: "明婷饭店",
+    spicy: 2,
+    desc: "成都最出名的苍蝇馆子之一，开了29年，BBC纪录片专题报道，2026年大众点评必吃榜。环境朴素但味道绝顶，地道江湖川菜。",
+    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    recommend: "必点：脑花豆腐、奇香排骨、香葱腰花、荷叶酱肉、回锅肉、番茄丸子汤",
+    link: "https://m.dianping.com/shopinfo/G1xaQv4zLflSlGTr",
+    price: "¥72/人",
+    images: [],
+    branches: [
+      {
+        name: "外曹家巷店（总店）",
+        address: "成华区 · 外曹家巷26号附15号（地铁3号线红星桥站C口）",
+        link: "https://m.dianping.com/shopinfo/G1xaQv4zLflSlGTr",
+        lat: 30.6720,
+        lng: 104.0830
+      }
+    ]
+  },
+  {
+    name: "陈麻婆豆腐",
+    spicy: 2,
+    desc: "始创于1862年的百年老字号，米其林必比登推荐。麻婆豆腐麻辣烫香酥嫩鲜活，是川菜中的金字招牌，正宗吃法配白米饭。",
+    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    recommend: "必点：陈麻婆豆腐、夫妻肺片、宫保鸡丁、回锅肉、担担面",
+    link: "https://m.dianping.com/shopinfo/H1yqgLALQBLiEB2G",
+    price: "¥61-71/人",
+    images: [],
+    branches: [
+      {
+        name: "旗舰店（草堂）",
+        address: "青羊区 · 青华路10号附10-12号（杜甫草堂旁）",
+        link: "https://m.dianping.com/shopinfo/H1yqgLALQBLiEB2G",
+        lat: 30.660,
+        lng: 104.030
+      },
+      {
+        name: "总店（骡马市）",
+        address: "青羊区 · 东华门街51号富力中心B座底商",
+        link: "https://m.dianping.com/shopinfo/k6TrGI3VMxXYfuCR",
+        lat: 30.664,
+        lng: 104.069
+      },
+      {
+        name: "春熙店",
+        address: "锦江区 · 城守街63号2层",
+        link: "https://m.dianping.com/shopinfo/l3y1Lov4rXg1y5XB",
+        lat: 30.652,
+        lng: 104.079
+      }
+    ]
+  },
+  {
+    name: "南堂館川菜文化餐厅",
+    spicy: 2,
+    desc: "高端文化川菜，主打三椒五味烹饪哲学，食材考究出品精致。环境雅致有格调，适合重要宴请和品质聚餐。",
+    tags: ["经典川菜", "聚餐", "辣"],
+    recommend: "必点：招牌南堂鸡、椒麻鱼片、干烧大虾、口水鸡、毛血旺",
+    link: "https://m.dianping.com/shopinfo/k61rNIcWpVBVCWyO",
+    price: "¥328/人",
+    images: [],
+    branches: [
+      {
+        name: "天府店",
+        address: "高新区 · 天顺路151号",
+        link: "https://m.dianping.com/shopinfo/k61rNIcWpVBVCWyO",
+        lat: 30.575,
+        lng: 104.063
+      }
+    ]
+  },
+  {
+    name: "龙户人家串串香火锅",
+    spicy: 2,
+    desc: "20年老牌串串香，醇厚牛油红锅底料足味正。春熙路商圈位置方便，菜品新鲜种类丰富，性价比高，本地人回头率极高。",
+    tags: ["辣", "串串", "火锅", "聚餐"],
+    recommend: "必点：牛油锅底、嫩牛肉、毛肚、鹅肠、小郡肝、土豆片",
+    link: "https://m.dianping.com/shopinfo/G4Qbqljs5TP3jFLr",
+    price: "¥90/人",
+    images: [],
+    branches: [
+      {
+        name: "春熙路店",
+        address: "锦江区 · 红星路四段265号附1号",
+        link: "https://m.dianping.com/shopinfo/G4Qbqljs5TP3jFLr",
+        lat: 30.651,
+        lng: 104.078
+      }
+    ]
+  },
+  {
+    name: "永乐饭店",
+    spicy: 2,
+    desc: "1985年开业的老派川菜馆，米其林必比登推荐，40年无分店。藏在社区深处，菜品扎实味道地道，本地人私藏的宝藏小店。",
+    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    recommend: "必点：肝腰合炒、糯米排骨、回锅肉、粉蒸牛肉、蒜泥白肉",
+    link: "https://m.dianping.com/shopinfo/laO8gFTojHrPqKfT",
+    price: "¥65/人",
+    images: [],
+    branches: [
+      {
+        name: "肖家河店（唯一）",
+        address: "武侯区 · 肖家河中街36号",
+        link: "https://m.dianping.com/shopinfo/laO8gFTojHrPqKfT",
+        lat: 30.631,
+        lng: 104.044
+      }
+    ]
+  },
+  {
+    name: "明红蹄花·老店",
+    spicy: 0,
+    desc: "开了20多年的深夜蹄花店，营业到凌晨4点。蹄花炖得稀烂入味，雪豆绵软汤汁浓白，是春熙路逛完夜宵的绝佳归宿。",
+    tags: ["微辣/不辣", "夜宵", "街头小吃"],
+    recommend: "必点：招牌蹄花、凉拌猪耳朵、蒜泥白肉、炒饭",
+    link: "https://m.dianping.com/shopinfo/G2UZcRba7sABh0Oe",
+    price: "¥44/人",
+    images: [],
+    branches: [
+      {
+        name: "慈惠堂街老店",
+        address: "锦江区 · 慈惠堂街8号附8号（近春熙路）",
+        link: "https://m.dianping.com/shopinfo/G2UZcRba7sABh0Oe",
+        lat: 30.641,
+        lng: 104.093
+      }
+    ]
+  },
+  {
+    name: "华兴街煎蛋面",
+    spicy: 0,
+    desc: "百年老字号面馆，成都人的早餐记忆。番茄煎蛋面是经典中的经典，汤鲜面滑蛋香，人均15元吃到满足，路过必打卡。",
+    tags: ["微辣/不辣", "街头小吃", "一人食", "快餐"],
+    recommend: "必点：番茄煎蛋面、红烧牛肉面、抄手",
+    link: "https://m.dianping.com/shopinfo/G5B6Hney3r8nlhvq",
+    price: "¥15/人",
+    images: [],
+    branches: [
+      {
+        name: "总店（梓潼桥）",
+        address: "锦江区 · 梓潼桥正街45号附6号（正成财富1楼）",
+        link: "https://m.dianping.com/shopinfo/G5B6Hney3r8nlhvq",
+        lat: 30.660,
+        lng: 104.081
+      }
+    ]
+  },
+  {
+    name: "SHAKE'S OFFICE·哆嗦事务所",
+    spicy: 0,
+    desc: "成都50大酒吧之一，日咖夜酒概念。白天是精品咖啡馆，晚上变身鸡尾酒吧，铁象寺水街环境优美，适合休闲放松。",
+    tags: ["微辣/不辣", "休闲体验"],
+    recommend: "推荐：特调鸡尾酒、手冲咖啡、Dirty",
+    link: "https://m.dianping.com/shopshare/k5dkOuAMCAIgnGVJ",
+    price: "¥80/人",
+    images: [],
+    branches: [
+      {
+        name: "铁象寺水街店",
+        address: "高新区 · 铁象寺水街",
+        link: "https://m.dianping.com/shopshare/k5dkOuAMCAIgnGVJ",
+        lat: 30.558,
+        lng: 104.049
+      }
+    ]
+  },
+  {
+    name: "鑫御隆斑鱼庄",
+    spicy: 0,
+    desc: "清汤斑鱼火锅，主打养生涮鱼片。鱼肉鲜嫩无刺，汤底清鲜不油腻，非常适合不吃辣的朋友，老少皆宜。",
+    tags: ["微辣/不辣", "火锅", "聚餐"],
+    recommend: "必点：斑鱼片、鱼头、鱼泡、豆腐、时蔬",
+    link: "https://m.dianping.com/shopinfo/G8HzTLfg5rZdQGEs",
+    price: "¥86/人",
+    images: [],
+    branches: [
+      {
+        name: "紫荆店",
+        address: "武侯区 · 紫薇东路151-157号（桐梓林）",
+        link: "https://m.dianping.com/shopinfo/G8HzTLfg5rZdQGEs",
+        lat: 30.618,
+        lng: 104.052
+      }
+    ]
   }
 ];
 
@@ -510,9 +899,12 @@ function renderFoods() {
   let html = "";
   filtered.forEach(function(f, idx) {
     const spicy = getSpicyLevel(f.spicy);
-    const linkHtml = f.link ? '<a class="link-btn" href="' + f.link + '" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7H12z"/></svg>\u5927\u4F17\u70B9\u8BC4</a>' : "";
+    const hasBranches = f.branches && f.branches.length > 0;
+    const defaultBranch = hasBranches ? f.branches[0] : null;
+    const linkUrl = hasBranches ? defaultBranch.link : f.link;
+    const linkHtml = linkUrl ? '<a class="link-btn" href="' + linkUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7H12z"/></svg>\u5927\u4F17\u70B9\u8BC4</a>' : "";
     const priceHtml = f.price ? '<span class="card-price">' + f.price + '</span>' : "";
-    const addressHtml = f.address ? '<div class="card-address">' + f.address + '</div>' : "";
+    const addressHtml = (!hasBranches && f.address) ? '<div class="card-address">' + f.address + '</div>' : "";
 
     let imagesHtml = "";
     if (f.images && f.images.length > 0) {
@@ -520,20 +912,39 @@ function renderFoods() {
       imagesHtml = '<div class="card-images ' + cls + '">' + f.images.map(function(url) { return '<img src="' + url + '" alt="' + f.name + '" loading="lazy">'; }).join("") + '</div>';
     }
 
-    let navHtml = "";
-    if (f.lat && f.lng) {
-      const dname = encodeURIComponent(f.name);
-      const navUrl = 'https://apis.map.qq.com/uri/v1/marker?marker=coord:' + f.lat + ',' + f.lng + ';title:' + dname + '&referer=chengdu_food_map';
-      navHtml = '<div class="nav-panel"><div class="map-container" id="map-' + idx + '" data-lat="' + f.lat + '" data-lng="' + f.lng + '" data-name="' + f.name + '"></div><a class="nav-go-overlay" href="' + navUrl + '" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>\u70B9\u51FB\u5BFC\u822A\u5230\u8FD9\u91CC</a></div>';
+    // 分店标签
+    let branchHtml = "";
+    if (hasBranches) {
+      branchHtml = '<div class="branch-tabs">';
+      f.branches.forEach(function(b, bi) {
+        branchHtml += '<button class="branch-tab' + (bi === 0 ? ' active' : '') + '" onclick="switchBranch(event,' + idx + ',' + bi + ')">' + b.name + '</button>';
+      });
+      branchHtml += '</div>';
+      branchHtml += '<div class="branch-info" id="branch-addr-' + idx + '">' + defaultBranch.address + '</div>';
     }
 
-    const hintHtml = (f.lat && f.lng) ? '<div class="expand-hint">\u70B9\u51FB\u5361\u7247\u5C55\u5F00\u5BFC\u822A</div>' : "";
+    // 导航面板
+    let navHtml = "";
+    if (hasBranches) {
+      const b = defaultBranch;
+      const dname = encodeURIComponent(f.name + ' ' + b.name);
+      const navUrl = 'https://apis.map.qq.com/uri/v1/marker?marker=coord:' + b.lat + ',' + b.lng + ';title:' + dname + '&referer=chengdu_food_map';
+      navHtml = '<div class="nav-panel"><div class="map-container" id="map-' + idx + '" data-lat="' + b.lat + '" data-lng="' + b.lng + '" data-name="' + f.name + '"></div><a class="nav-go-overlay" id="nav-link-' + idx + '" href="' + navUrl + '" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>\u70B9\u51FB\u5BFC\u822A\u5230\u8FD9\u91CC</a></div>';
+    } else if (f.lat && f.lng) {
+      const dname = encodeURIComponent(f.name);
+      const navUrl = 'https://apis.map.qq.com/uri/v1/marker?marker=coord:' + f.lat + ',' + f.lng + ';title:' + dname + '&referer=chengdu_food_map';
+      navHtml = '<div class="nav-panel"><div class="map-container" id="map-' + idx + '" data-lat="' + f.lat + '" data-lng="' + f.lng + '" data-name="' + f.name + '"></div><a class="nav-go-overlay" id="nav-link-' + idx + '" href="' + navUrl + '" target="_blank" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>\u70B9\u51FB\u5BFC\u822A\u5230\u8FD9\u91CC</a></div>';
+    }
 
-    html += '<div class="food-card" onclick="toggleCard(this)">' +
+    const hasNav = hasBranches || (f.lat && f.lng);
+    const hintHtml = hasNav ? '<div class="expand-hint">\u70B9\u51FB\u5361\u7247\u5C55\u5F00\u5BFC\u822A</div>' : "";
+
+    html += '<div class="food-card" data-idx="' + idx + '" onclick="toggleCard(this)">' +
       imagesHtml +
       '<div class="card-content">' +
         '<div class="name">' + f.name + ' <span class="spicy">' + spicy + '</span></div>' +
         '<div class="desc">' + f.desc + '</div>' +
+        branchHtml +
         '<div class="card-info-row">' + priceHtml + addressHtml + '</div>' +
         '<div class="meta">' + f.tags.map(function(t) { return '<span class="meta-tag">' + t + '</span>'; }).join("") + '</div>' +
         (f.recommend ? '<div class="recommend">' + f.recommend + '</div>' : "") +
@@ -568,14 +979,55 @@ function toggleCard(el) {
           scrollable: true,
           doubleClickZoom: true,
         });
-        new TMap.MultiMarker({
+        var marker = new TMap.MultiMarker({
           map: map,
           geometries: [{ id: "shop", position: center }]
         });
+        mapEl._mapInstance = map;
+        mapEl._markerInstance = marker;
         mapEl.addEventListener("click", function(e) { e.stopPropagation(); });
         mapEl.addEventListener("touchstart", function(e) { e.stopPropagation(); }, { passive: true });
       }, 150);
     }
+  }
+}
+
+// 切换分店
+function switchBranch(event, foodIdx, branchIdx) {
+  event.stopPropagation();
+  var f = foods[foodIdx];
+  if (!f.branches) return;
+  var b = f.branches[branchIdx];
+
+  // 更新分店标签高亮
+  var card = event.target.closest(".food-card");
+  var tabs = card.querySelectorAll(".branch-tab");
+  tabs.forEach(function(t, i) {
+    t.classList.toggle("active", i === branchIdx);
+  });
+
+  // 更新地址
+  var addrEl = document.getElementById("branch-addr-" + foodIdx);
+  if (addrEl) addrEl.textContent = b.address;
+
+  // 更新导航链接
+  var navLink = document.getElementById("nav-link-" + foodIdx);
+  if (navLink) {
+    var dname = encodeURIComponent(f.name + " " + b.name);
+    navLink.href = "https://apis.map.qq.com/uri/v1/marker?marker=coord:" + b.lat + "," + b.lng + ";title:" + dname + "&referer=chengdu_food_map";
+  }
+
+  // 更新地图位置
+  var mapEl = document.getElementById("map-" + foodIdx);
+  if (mapEl && mapEl._mapInstance) {
+    var newCenter = new TMap.LatLng(b.lat, b.lng);
+    mapEl._mapInstance.setCenter(newCenter);
+    mapEl._markerInstance.setGeometries([{ id: "shop", position: newCenter }]);
+  } else if (mapEl) {
+    // 地图还没初始化，更新 data 属性
+    mapEl.dataset.lat = b.lat;
+    mapEl.dataset.lng = b.lng;
+    mapEl.dataset.inited = "";
   }
 }
 </script>
