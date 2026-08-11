@@ -292,7 +292,7 @@ body {
   gap: 6px;
 }
 .hall-body {
-  padding: 24px 16px;
+  padding: 16px 10px;
   position: relative;
 }
 
@@ -301,7 +301,7 @@ body {
 /* === Room Outline === */
 .room-outline {
   position: relative;
-  padding: 20px 12px;
+  padding: 16px 8px;
   border: 2.5px solid var(--bamboo);
   border-radius: 12px;
   margin-bottom: 0;
@@ -333,8 +333,8 @@ body {
 .tables-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  gap: 12px 6px;
-  padding: 0 4px;
+  gap: 6px 2px;
+  padding: 0;
 }
 
 /* === Single Table === */
@@ -349,12 +349,11 @@ body {
   transform: scale(0.9);
 }
 .table-item.highlighted {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .round-table-svg {
   width: 100%;
-  max-width: 60px;
   height: auto;
   transition: all 0.3s;
 }
@@ -474,18 +473,11 @@ body {
 @media (max-width: 375px) {
   .header { padding: 36px 20px 24px; }
   .header h1 { font-size: 22px; }
-  .select-tab .tab-icon { font-size: 26px; }
-  .select-tab .tab-name { font-size: 14px; }
-  .round-table-svg { max-width: 40px; }
-  .tables-grid { gap: 8px 3px; }
-  .table-number { font-size: 9px; }
-  .table-label { font-size: 8px; }
+  .tables-grid { gap: 4px 1px; }
 }
 
 @media (min-width: 768px) {
-  .tables-grid { gap: 16px 10px; }
-  .round-table-svg { max-width: 80px; }
-  .table-number { font-size: 14px; }
+  .tables-grid { gap: 10px 6px; }
 }
 
 /* === Dark Mode === */
@@ -653,12 +645,12 @@ body {
     var tableFill = isHighlighted ? '#edf5e8' : '#f5f5f2';
     var tableStroke = isHighlighted ? '#5e8c4a' : '#d0d0c8';
     var tableStrokeW = isHighlighted ? '2.5' : '1.5';
-    var textFill = isHighlighted ? '#2c3a2c' : '#666';
+    var textFill = isHighlighted ? '#2c3a2c' : '#555';
 
     return '<svg class="round-table-svg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">' +
       seatCircles +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + tableR + '" fill="' + tableFill + '" stroke="' + tableStroke + '" stroke-width="' + tableStrokeW + '"/>' +
-      '<text x="' + cx + '" y="' + (cy + 6) + '" text-anchor="middle" fill="' + textFill + '" font-size="18" font-weight="800">' + tableNum + '</text>' +
+      '<text x="' + cx + '" y="' + (cy + 7) + '" text-anchor="middle" fill="' + textFill + '" font-size="20" font-weight="800">' + tableNum + '</text>' +
       '</svg>';
   }
 
