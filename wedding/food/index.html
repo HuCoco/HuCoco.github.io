@@ -423,8 +423,10 @@ body {
 <div class="container">
   <!-- Filter -->
   <div class="filter-section">
-    <div class="filter-title">按标签筛选</div>
-    <div class="tags-row" id="tagsRow"></div>
+    <div class="filter-title">辣度</div>
+    <div class="tags-row" id="spicyRow"></div>
+    <div class="filter-title" style="margin-top:12px;">类别</div>
+    <div class="tags-row" id="categoryRow"></div>
   </div>
 
   <div class="results-count" id="resultsCount"></div>
@@ -462,7 +464,7 @@ body {
  *   name: "店名",
  *   spicy: 0-3,
  *   desc: "一句话描述",
- *   tags: ["标签1", "标签2"],
+ *   tags: ["不辣/微微辣/微辣/中辣", "串串"],
  *   recommend: "推荐菜品",
  *   link: "大众点评链接",
  *   price: "¥37/人",
@@ -479,7 +481,7 @@ const foods = [
     name: "乐山鲜知味钵钵鸡",
     spicy: 1,
     desc: "20年老店，5毛一串性价比拉满。红油香辣、藤椒清爽两种口味，配碗鸡汤饭绝了。",
-    tags: ["必吃", "微辣/不辣", "串串"],
+    tags: ["微微辣", "串串"],
     recommend: "必点：去骨鸡爪、鸡汤烫饭、藤椒串串",
     link: "https://m.dianping.com/shopinfo/G9XZHwthGtkG1dnW",
     price: "¥37/人",
@@ -498,7 +500,7 @@ const foods = [
     name: "龙森园火锅",
     spicy: 2,
     desc: "成都28年老牌火锅，连续三年入选米其林指南。卤牛油锅底是看家本领，9种香料手工炒制5小时，蘸碟只配秘制香油蒜碟。",
-    tags: ["必吃", "辣", "火锅", "聚餐"],
+    tags: ["不辣/微微辣/微辣/中辣", "火锅"],
     recommend: "必点：卤牛油锅底、极品毛肚、手切吊龙、红糖糍粑、嫩牛肉、黄辣丁",
     link: "https://m.dianping.com/shopinfo/kaaDbniEYgc3JC9l",
     price: "¥133-228/人",
@@ -526,7 +528,7 @@ const foods = [
     name: "周丹丹原味烧烤",
     spicy: 1,
     desc: "烧烤界的爱马仕，不使用任何添加剂，不同食材用不同炭烤。原味牛肉鲜嫩多汁，吃完口不干舌不燥，高空露台环境绝佳。",
-    tags: ["聚餐", "微辣/不辣", "夜宵"],
+    tags: ["微微辣", "烧烤"],
     recommend: "必点：原味牛肉、安格斯牛肉、牛胸膘、烤鼻筋、非遗豆腐干、排骨",
     link: "https://m.dianping.com/shopinfo/k9vt5wTEcQ7DGZjd",
     price: "¥112/人",
@@ -545,7 +547,7 @@ const foods = [
     name: "柒·炭火烧鸟",
     spicy: 0,
     desc: "藏在桐梓林的日式烧鸟专门店，深夜食堂氛围感满分。食材新鲜，简单调味凸显炭火风味，甲鱼鸡汤和烧鸟系列是招牌。",
-    tags: ["微辣/不辣", "聚餐", "夜宵", "本地特色"],
+    tags: ["不辣", "烧烤"],
     recommend: "必点：鸡腿一夜干、甲鱼鸡汤、鸡颈肉、牛排三明治、提灯",
     link: "https://m.dianping.com/shopinfo/Ha2uHryP2Nhsskq3",
     price: "¥169/人",
@@ -564,7 +566,7 @@ const foods = [
     name: "胡二哥药膳蹄花",
     spicy: 1,
     desc: "开了20多年的深夜食堂，米其林必比登推荐。药膳蹄花炖煮8小时入口即化，10多种药材汤鲜味浓，是成都夜猫子的经典宵夜。",
-    tags: ["必吃", "微辣/不辣", "夜宵", "本地特色"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：药膳蹄花、火爆肥肠、小青椒拱嘴炒饭、煮凉粉",
     link: "https://m.dianping.com/shopinfo/H2qdTVQSnvrLdMVl",
     price: "¥53/人",
@@ -583,7 +585,7 @@ const foods = [
     name: "嘉州叶婆婆钵钵鸡",
     spicy: 1,
     desc: "乐山钵钵鸡41年老字号，太古里人气爆棚。红油香辣芝麻满满、藤椒清爽不油腻，人均50吃到扶墙走，春熙路逛吃首选。",
-    tags: ["必吃", "微辣/不辣", "串串", "一人食"],
+    tags: ["不辣/微微辣/微辣/中辣", "串串"],
     recommend: "必点：红油/藤椒钵钵鸡、芽菜肉沫炒饭、鸡汤饭、醪糟汤圆冰粉、无骨鸡爪",
     link: "https://m.dianping.com/shopinfo/k3IBGStOHIexCW4x",
     price: "¥50/人",
@@ -602,7 +604,7 @@ const foods = [
     name: "庆妹·寻签记砂锅串串",
     spicy: 2,
     desc: "本地人私藏的砂锅串串，牛油卤香锅底温和不燥。牛肉品种超多，藿香牛肉和糖蒜牛肉是特色，食材新鲜码料够味，烟火气十足。",
-    tags: ["辣", "串串", "聚餐", "本地特色"],
+    tags: ["不辣/微微辣/微辣/中辣", "串串"],
     recommend: "必点：藿香牛肉、糖蒜牛肉、卤肥肠、兔腰、土豆片、茼蒿",
     link: "https://m.dianping.com/shopinfo/l88qJMTKeWglZgVN",
     price: "¥77/人",
@@ -621,7 +623,7 @@ const foods = [
     name: "王记锅魁白家肥肠粉",
     spicy: 1,
     desc: "武侯区肥肠粉热门榜第1名，地道成都早午餐。手工水粉软糯滑爽，冒节子一口爆汁鲜到飞起，锅魁外酥里嫩咬开有肉汁。",
-    tags: ["微辣/不辣", "街头小吃", "一人食", "快餐"],
+    tags: ["微辣", "小吃"],
     recommend: "必点：白家肥肠粉、特色冒节子、牛肉锅魁、豆芽汤",
     link: "https://m.dianping.com/shopinfo/G8eJwQpnj1jKlknS",
     price: "¥20/人",
@@ -640,7 +642,7 @@ const foods = [
     name: "宋·川菜",
     spicy: 1,
     desc: "米其林指南入选餐厅，太古里独栋三层川式美学空间。蝉联6次米其林一星团队打造，地道老成都味川菜，环境绝美适合宴请。",
-    tags: ["必吃", "经典川菜", "聚餐", "微辣/不辣"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：蒜泥白肉、开水白菜、干烧江团、水煮沸腾乌鱼片、锅巴肉片、宫爆虾球",
     link: "https://m.dianping.com/shopinfo/G2D21IQzQPM1tx81",
     price: "¥170/人",
@@ -659,7 +661,7 @@ const foods = [
     name: "明婷饭店",
     spicy: 2,
     desc: "成都最出名的苍蝇馆子之一，开了29年，BBC纪录片专题报道，2026年大众点评必吃榜。环境朴素但味道绝顶，地道江湖川菜。",
-    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：脑花豆腐、奇香排骨、香葱腰花、荷叶酱肉、回锅肉、番茄丸子汤",
     link: "https://m.dianping.com/shopinfo/G1xaQv4zLflSlGTr",
     price: "¥72/人",
@@ -678,7 +680,7 @@ const foods = [
     name: "陈麻婆豆腐",
     spicy: 2,
     desc: "始创于1862年的百年老字号，米其林必比登推荐。麻婆豆腐麻辣烫香酥嫩鲜活，是川菜中的金字招牌，正宗吃法配白米饭。",
-    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：陈麻婆豆腐、夫妻肺片、宫保鸡丁、回锅肉、担担面",
     link: "https://m.dianping.com/shopinfo/H1yqgLALQBLiEB2G",
     price: "¥61-71/人",
@@ -711,7 +713,7 @@ const foods = [
     name: "南堂館川菜文化餐厅",
     spicy: 2,
     desc: "高端文化川菜，主打三椒五味烹饪哲学，食材考究出品精致。环境雅致有格调，适合重要宴请和品质聚餐。",
-    tags: ["经典川菜", "聚餐", "辣"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：招牌南堂鸡、椒麻鱼片、干烧大虾、口水鸡、毛血旺",
     link: "https://m.dianping.com/shopinfo/k61rNIcWpVBVCWyO",
     price: "¥328/人",
@@ -730,7 +732,7 @@ const foods = [
     name: "龙户人家串串香火锅",
     spicy: 2,
     desc: "20年老牌串串香，醇厚牛油红锅底料足味正。春熙路商圈位置方便，菜品新鲜种类丰富，性价比高，本地人回头率极高。",
-    tags: ["辣", "串串", "火锅", "聚餐"],
+    tags: ["不辣/微微辣/微辣/中辣", "串串"],
     recommend: "必点：牛油锅底、嫩牛肉、毛肚、鹅肠、小郡肝、土豆片",
     link: "https://m.dianping.com/shopinfo/G4Qbqljs5TP3jFLr",
     price: "¥90/人",
@@ -749,7 +751,7 @@ const foods = [
     name: "永乐饭店",
     spicy: 2,
     desc: "1985年开业的老派川菜馆，米其林必比登推荐，40年无分店。藏在社区深处，菜品扎实味道地道，本地人私藏的宝藏小店。",
-    tags: ["必吃", "辣", "经典川菜", "本地特色"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：肝腰合炒、糯米排骨、回锅肉、粉蒸牛肉、蒜泥白肉",
     link: "https://m.dianping.com/shopinfo/laO8gFTojHrPqKfT",
     price: "¥65/人",
@@ -768,7 +770,7 @@ const foods = [
     name: "明红蹄花·老店",
     spicy: 0,
     desc: "开了20多年的深夜蹄花店，营业到凌晨4点。蹄花炖得稀烂入味，雪豆绵软汤汁浓白，是春熙路逛完夜宵的绝佳归宿。",
-    tags: ["微辣/不辣", "夜宵", "街头小吃"],
+    tags: ["不辣/微微辣/微辣/中辣", "川菜"],
     recommend: "必点：招牌蹄花、凉拌猪耳朵、蒜泥白肉、炒饭",
     link: "https://m.dianping.com/shopinfo/G2UZcRba7sABh0Oe",
     price: "¥44/人",
@@ -787,7 +789,7 @@ const foods = [
     name: "华兴街煎蛋面",
     spicy: 0,
     desc: "百年老字号面馆，成都人的早餐记忆。番茄煎蛋面是经典中的经典，汤鲜面滑蛋香，人均15元吃到满足，路过必打卡。",
-    tags: ["微辣/不辣", "街头小吃", "一人食", "快餐"],
+    tags: ["不辣", "小吃"],
     recommend: "必点：番茄煎蛋面、红烧牛肉面、抄手",
     link: "https://m.dianping.com/shopinfo/G5B6Hney3r8nlhvq",
     price: "¥15/人",
@@ -806,7 +808,7 @@ const foods = [
     name: "SHAKE'S OFFICE·哆嗦事务所",
     spicy: 0,
     desc: "成都50大酒吧之一，日咖夜酒概念。白天是精品咖啡馆，晚上变身鸡尾酒吧，铁象寺水街环境优美，适合休闲放松。",
-    tags: ["微辣/不辣", "休闲体验"],
+    tags: ["不辣", "酒"],
     recommend: "推荐：特调鸡尾酒、手冲咖啡、Dirty",
     link: "https://m.dianping.com/shopshare/k5dkOuAMCAIgnGVJ",
     price: "¥80/人",
@@ -825,7 +827,7 @@ const foods = [
     name: "鑫御隆斑鱼庄",
     spicy: 0,
     desc: "清汤斑鱼火锅，主打养生涮鱼片。鱼肉鲜嫩无刺，汤底清鲜不油腻，非常适合不吃辣的朋友，老少皆宜。",
-    tags: ["微辣/不辣", "火锅", "聚餐"],
+    tags: ["不辣/微微辣/微辣/中辣", "汤锅"],
     recommend: "必点：斑鱼片、鱼头、鱼泡、豆腐、时蔬",
     link: "https://m.dianping.com/shopinfo/G8HzTLfg5rZdQGEs",
     price: "¥86/人",
@@ -842,21 +844,27 @@ const foods = [
   }
 ];
 
-// Auto extract tags
-const allTags = [...new Set(foods.flatMap(f => f.tags))].sort((a, b) => {
-  const order = ["必吃", "辣", "微辣/不辣", "火锅", "串串", "经典川菜", "街头小吃", "聚餐", "一人食", "快餐", "夜宵", "本地特色", "甜品", "解辣", "米饭杀手", "休闲体验", "凉菜"];
-  return (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) - (order.indexOf(b) === -1 ? 99 : order.indexOf(b));
-});
+// Tag categories
+const spicyTags = ["不辣", "微微辣", "微辣", "中辣", "特辣"];
+const categoryTags = ["火锅", "串串", "川菜", "小吃", "烧烤", "汤锅", "酒"];
 
 let activeTags = new Set();
 
 function renderTags() {
-  const row = document.getElementById("tagsRow");
-  let html = '<button class="tag-btn active-all" onclick="clearFilter()">全部</button>';
-  allTags.forEach(tag => {
-    html += '<button class="tag-btn' + (activeTags.has(tag) ? ' active' : '') + '" onclick="toggleTag(\'' + tag + '\')">' + tag + '</button>';
+  const spicyRow = document.getElementById("spicyRow");
+  const categoryRow = document.getElementById("categoryRow");
+
+  let spicyHtml = '';
+  spicyTags.forEach(tag => {
+    spicyHtml += '<button class="tag-btn' + (activeTags.has(tag) ? ' active' : '') + '" onclick="toggleTag(\'' + tag + '\')">' + tag + '</button>';
   });
-  row.innerHTML = html;
+  spicyRow.innerHTML = spicyHtml;
+
+  let categoryHtml = '';
+  categoryTags.forEach(tag => {
+    categoryHtml += '<button class="tag-btn' + (activeTags.has(tag) ? ' active' : '') + '" onclick="toggleTag(\'' + tag + '\')">' + tag + '</button>';
+  });
+  categoryRow.innerHTML = categoryHtml;
 }
 
 function toggleTag(tag) {
@@ -884,7 +892,14 @@ function renderFoods() {
 
   let filtered = foods;
   if (activeTags.size > 0) {
-    filtered = foods.filter(f => [...activeTags].every(t => f.tags.includes(t)));
+    var activeSpicy = [...activeTags].filter(t => spicyTags.includes(t));
+    var activeCategory = [...activeTags].filter(t => categoryTags.includes(t));
+    filtered = foods.filter(f => {
+      // 辣度匹配：检查食物的辣度标签（可能是斜杠组合）是否包含选中的辣度
+      var matchSpicy = activeSpicy.length === 0 || activeSpicy.some(t => f.tags.some(ft => ft.split('/').includes(t)));
+      var matchCategory = activeCategory.length === 0 || activeCategory.some(t => f.tags.includes(t));
+      return matchSpicy && matchCategory;
+    });
   }
 
   countEl.textContent = "\u5171 " + filtered.length + " \u9879\u7F8E\u98DF";
