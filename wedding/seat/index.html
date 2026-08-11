@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#f0f7ec">
+<title>宾客座位指引</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🪑</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+:root {
+  --green: #5e8c4a;
+  --green-light: #edf5e8;
+  --green-dark: #3d6b2e;
+  --bamboo: #7a9e5e;
+  --text: #2c3a2c;
+  --text-sub: #5f7a5f;
+  --bg: #f2f8ef;
+  --card: #ffffff;
+  --border: #ddebd5;
+  --radius: 16px;
+  --shadow: 0 2px 16px rgba(94,140,74,0.08);
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+html { -webkit-text-size-adjust: 100%; height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+}
+
+/* === Header === */
+.header {
+  text-align: center;
+  padding: 48px 24px 32px;
+  background: linear-gradient(160deg, #fff 0%, var(--green-light) 100%);
+}
+.header .icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header .icon span {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.5) translateY(10px);
+  animation: iconSwitch 12s ease-in-out infinite;
+}
+.header .icon span:nth-child(1) { animation-delay: 0s; }
+.header .icon span:nth-child(2) { animation-delay: 3s; }
+.header .icon span:nth-child(3) { animation-delay: 6s; }
+.header .icon span:nth-child(4) { animation-delay: 9s; }
+@keyframes iconSwitch {
+  0% { opacity: 0; transform: scale(0.5) translateY(10px); }
+  5% { opacity: 1; transform: scale(1) translateY(0); }
+  20% { opacity: 1; transform: scale(1) translateY(-4px); }
+  25% { opacity: 0; transform: scale(0.5) translateY(-10px); }
+  100% { opacity: 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.header .pre {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.header h1 {
+  font-size: 26px;
+  font-weight: 300;
+  margin-bottom: 6px;
+}
+.header .sub {
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+/* === Container === */
+.container {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px 32px;
+}
+
+/* === Divider === */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 20px;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--bamboo), transparent);
+}
+.divider span {
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* === Select Tabs === */
+.select-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.select-tab {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 20px 12px;
+  text-align: center;
+}
+.select-tab::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--green);
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+.select-tab.active {
+  border-color: var(--green);
+  box-shadow: 0 4px 20px rgba(94,140,74,0.18);
+  transform: scale(1.02);
+}
+.select-tab.active::before { transform: scaleX(1); }
+.select-tab:active { transform: scale(0.97); }
+.select-tab .tab-icon { font-size: 32px; margin-bottom: 8px; }
+.select-tab .tab-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.select-tab .tab-desc { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+
+/* === Sub Categories === */
+.sub-categories {
+  margin-bottom: 20px;
+  animation: slideUp 0.3s ease;
+}
+.sub-categories .sub-title {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.sub-categories .sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.sub-btn {
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.sub-btn:active { transform: scale(0.96); }
+.sub-btn.active {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+  box-shadow: 0 2px 12px rgba(94,140,74,0.2);
+}
+.sub-btn .sub-btn-table {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 3px;
+}
+
+/* === Result Banner === */
+.result-banner {
+  background: linear-gradient(135deg, var(--green-light), #d8eace);
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.result-banner.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.result-banner .banner-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+  animation: float 2s ease-in-out infinite;
+}
+.result-banner .banner-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+.result-banner .banner-sub {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+/* === Hall Card === */
+.hall-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.hall-header {
+  padding: 14px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hall-body {
+  padding: 24px 16px;
+  position: relative;
+}
+
+/* === Stage === (removed) */
+
+/* === Room Outline === */
+.room-outline {
+  position: relative;
+  padding: 20px 12px;
+  border: 2.5px solid var(--bamboo);
+  border-radius: 12px;
+  margin-bottom: 0;
+}
+/* 底部三道门（用间断边框模拟） */
+.room-doors {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 16px;
+  padding: 0 10%;
+}
+.room-door {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-sub);
+}
+.room-door::before,
+.room-door::after {
+  content: '';
+  width: 12px;
+  height: 1.5px;
+  background: var(--bamboo);
+}
+
+/* === Tables Grid === */
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 12px 6px;
+  padding: 0 4px;
+}
+
+/* === Single Table === */
+.table-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.7) translateY(20px);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.table-item.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.table-item.dimmed {
+  opacity: 0.3;
+  transform: scale(0.85);
+  filter: grayscale(0.6);
+}
+.table-item.highlighted {
+  animation: pulse-table 2s ease-in-out infinite;
+}
+@keyframes pulse-table {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.round-table-svg {
+  width: 100%;
+  max-width: 60px;
+  height: auto;
+  transition: all 0.3s;
+}
+.table-item.highlighted .round-table-svg {
+  filter: drop-shadow(0 4px 12px rgba(94,140,74,0.3));
+}
+
+.table-number {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-top: 6px;
+}
+.table-item.highlighted .table-number {
+  color: var(--green-dark);
+}
+.table-label {
+  font-size: 11px;
+  color: var(--text-sub);
+  margin-top: 2px;
+}
+
+/* === Side Labels === */
+.side-labels {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 8px;
+  margin-bottom: 16px;
+}
+.side-label {
+  font-size: 11px;
+  color: var(--text-sub);
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--green-light);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+.side-label.active {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+/* === Direction Arrow === */
+.direction-arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-top: 20px;
+  background: var(--green-light);
+  border: 1px dashed var(--bamboo);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--green-dark);
+  font-weight: 500;
+}
+.direction-arrow.visible {
+  display: flex;
+  animation: slideUp 0.4s ease;
+}
+.direction-arrow .arrow-icon {
+  font-size: 20px;
+  animation: bounce-arrow 1.5s ease-in-out infinite;
+}
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+.direction-arrow.left .arrow-icon {
+  animation: bounce-arrow-left 1.5s ease-in-out infinite;
+}
+@keyframes bounce-arrow-left {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-8px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Reset Button === */
+.btn-reset {
+  display: none;
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: all 0.2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.btn-reset:active { transform: scale(0.97); background: var(--green-light); }
+.btn-reset.visible { display: block; animation: slideUp 0.4s ease; }
+
+/* === Footer === */
+.footer {
+  text-align: center;
+  padding: 24px 16px calc(24px + var(--sab));
+  font-size: 11px;
+  color: var(--text-sub);
+}
+.footer .hearts { color: #e25555; font-size: 14px; margin-bottom: 4px; }
+
+/* === Responsive === */
+@media (max-width: 375px) {
+  .header { padding: 36px 20px 24px; }
+  .header h1 { font-size: 22px; }
+  .select-tab .tab-icon { font-size: 26px; }
+  .select-tab .tab-name { font-size: 14px; }
+  .round-table-svg { max-width: 40px; }
+  .tables-grid { gap: 8px 3px; }
+  .table-number { font-size: 9px; }
+  .table-label { font-size: 8px; }
+}
+
+@media (min-width: 768px) {
+  .tables-grid { gap: 16px 10px; }
+  .round-table-svg { max-width: 80px; }
+  .table-number { font-size: 14px; }
+}
+
+/* === Dark Mode === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e0e8dc;
+    --text-sub: #9ab08e;
+    --bg: #0f1a0f;
+    --card: #1a261a;
+    --border: #2a3d28;
+    --green: #7fa862;
+    --green-light: #1a261a;
+    --green-dark: #a0c88a;
+    --bamboo: #5a7e4a;
+  }
+  .header { background: linear-gradient(160deg, #1a261a 0%, #1f2e1c 100%); }
+  .result-banner { background: linear-gradient(135deg, #1f2e1c, #253520); border-color: var(--green); }
+  .result-banner .banner-text { color: var(--green); }
+  .side-label { background: #1f2e1c; }
+  .side-label.active { background: var(--green); color: #fff; }
+  .room-outline { border-color: var(--bamboo); }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="icon" style="position:relative;">
+    <span>💒</span>
+    <span>🪑</span>
+    <span>🍽</span>
+    <span>🎊</span>
+  </div>
+  <div class="pre">Seating Guide</div>
+  <h1>宾客座位指引</h1>
+  <div class="sub">选择宾客类别，快速找到您的桌位</div>
+</div>
+
+<div class="container">
+  <div class="divider"><span>请选择</span></div>
+
+  <!-- Select Tabs (一级选择) -->
+  <div class="select-tabs">
+    <div class="select-tab" id="tab-bride" onclick="selectSide('bride')">
+      <div class="tab-icon">👰</div>
+      <div class="tab-name">任任宾客</div>
+      <div class="tab-desc">第 1 ~ 11 桌</div>
+    </div>
+    <div class="select-tab" id="tab-groom" onclick="selectSide('groom')">
+      <div class="tab-icon">🤵</div>
+      <div class="tab-name">小胡宾客</div>
+      <div class="tab-desc">第 12 ~ 35 桌</div>
+    </div>
+  </div>
+
+  <!-- 子分类选择 -->
+  <div class="sub-categories" id="sub-categories" style="display:none;"></div>
+
+  <!-- Result Banner -->
+  <div class="result-banner" id="result-banner">
+    <div class="banner-icon" id="banner-icon">👰</div>
+    <div class="banner-text" id="banner-text"></div>
+    <div class="banner-sub" id="banner-sub"></div>
+  </div>
+
+  <!-- Hall Card -->
+  <div class="hall-card" id="hall-card">
+    <div class="hall-header">
+      <span>🍽</span>
+      <span>宴会厅桌位分布</span>
+    </div>
+    <div class="hall-body">
+      <!-- Side Labels -->
+      <div class="side-labels">
+        <span class="side-label" id="label-left">← 左侧</span>
+        <span class="side-label" id="label-right">右侧 →</span>
+      </div>
+
+      <!-- Room Outline -->
+      <div class="room-outline">
+        <!-- Tables -->
+        <div class="tables-grid" id="tables-grid"></div>
+
+        <!-- Doors at bottom -->
+        <div class="room-doors">
+          <span class="room-door">门</span>
+          <span class="room-door">门</span>
+          <span class="room-door">门</span>
+        </div>
+      </div>
+
+      <!-- Direction Arrow -->
+      <div class="direction-arrow" id="direction-arrow">
+        <span class="arrow-icon" id="arrow-icon">👈</span>
+        <span id="arrow-text">您的桌位在左侧</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reset Button -->
+  <button class="btn-reset" id="btn-reset" onclick="resetSelection()">🔄 重新选择</button>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="hearts">♥ ♥ ♥</div>
+  <p>祝您用餐愉快，感谢莅临！</p>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // === 分类配置 ===
+  var CATEGORIES = {
+    bride: {
+      name: '任任',
+      icon: '👰',
+      groups: [
+        { name: '任任大学好友', tables: [1, 2] },
+        { name: '任任初中好友', tables: [3] },
+        { name: '任任高中好友\n弟弟妹妹', tables: [4] },
+        { name: '任任领导\n同事', tables: [5] },
+        { name: '任任成都家人', tables: [6] },
+        { name: '任任垫江家人', tables: [7, 8, 9, 10, 11] }
+      ]
+    },
+    groom: {
+      name: '小胡',
+      icon: '🤵',
+      groups: [
+        { name: '小胡好友', tables: [12] },
+        { name: '小胡胡家家人', tables: [13, 14, 15, 16, 17] },
+        { name: '小胡邹家家人', tables: [18, 19, 20, 21, 22] },
+        { name: '小胡马家寺家人', tables: [23, 24, 25, 26, 27] },
+        { name: '小胡爸爸同学', tables: [28] },
+        { name: '小胡爸爸朋友', tables: [29, 30, 31, 32] },
+        { name: '小胡爸爸同事', tables: [33, 34, 35] }
+      ]
+    }
+  };
+
+  var totalTables = 35;
+  var currentSide = null;
+  var currentGroup = null;
+
+  // === 生成圆桌 SVG ===
+  function createTableSVG(tableNum, isHighlighted) {
+    var seats = 10;
+    var cx = 55, cy = 55, tableR = 22, seatR = 7, orbitR = 40;
+    var seatCircles = '';
+
+    for (var i = 0; i < seats; i++) {
+      var angle = (2 * Math.PI / seats) * i - Math.PI / 2;
+      var sx = cx + orbitR * Math.cos(angle);
+      var sy = cy + orbitR * Math.sin(angle);
+      var seatFill = isHighlighted ? '#5e8c4a' : '#c8d8c0';
+      var seatOpacity = isHighlighted ? '0.85' : '0.5';
+      seatCircles += '<circle cx="' + sx.toFixed(1) + '" cy="' + sy.toFixed(1) + '" r="' + seatR + '" fill="' + seatFill + '" opacity="' + seatOpacity + '" stroke="#fff" stroke-width="1.5"/>';
+    }
+
+    var tableFill = isHighlighted ? '#edf5e8' : '#f5f5f2';
+    var tableStroke = isHighlighted ? '#5e8c4a' : '#d0d0c8';
+    var tableStrokeW = isHighlighted ? '2.5' : '1.5';
+    var textFill = isHighlighted ? '#3d6b2e' : '#999';
+
+    return '<svg class="round-table-svg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">' +
+      seatCircles +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="' + tableR + '" fill="' + tableFill + '" stroke="' + tableStroke + '" stroke-width="' + tableStrokeW + '"/>' +
+      '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" fill="' + textFill + '" font-size="14" font-weight="700">' + tableNum + '</text>' +
+      '</svg>';
+  }
+
+  // === 渲染桌位 ===
+  function renderTables(highlightTables) {
+    var grid = document.getElementById('tables-grid');
+    grid.innerHTML = '';
+
+    // 8列布局，左4列+右4列
+    // 左侧先编号，右侧后编号
+    // 17桌 → 左侧9桌(3行×3 + 不足补空)，右侧8桌(2行×4)
+    // 为保持左右相近：左9右8
+    var leftCount = Math.ceil(totalTables / 2); // 9
+    var rightCount = totalTables - leftCount;    // 8
+    var colsPerSide = 4;
+
+    // 左侧桌号按行填充(每行4个)
+    var leftRows = [];
+    for (var i = 0; i < leftCount; i += colsPerSide) {
+      var row = [];
+      for (var c = 0; c < colsPerSide; c++) {
+        var idx = i + c;
+        row.push(idx < leftCount ? idx + 1 : null);
+      }
+      leftRows.push(row);
+    }
+
+    // 右侧桌号按行填充(每行4个)
+    var rightRows = [];
+    for (var j = 0; j < rightCount; j += colsPerSide) {
+      var row2 = [];
+      for (var c2 = 0; c2 < colsPerSide; c2++) {
+        var idx2 = j + c2;
+        row2.push(idx2 < rightCount ? leftCount + idx2 + 1 : null);
+      }
+      rightRows.push(row2);
+    }
+
+    // 逐行渲染：每行 = 左4格 + 右4格
+    var maxRows = Math.max(leftRows.length, rightRows.length);
+    for (var row3 = 0; row3 < maxRows; row3++) {
+      var leftCols = leftRows[row3] || [null, null, null, null];
+      var rightCols = rightRows[row3] || [null, null, null, null];
+      var fullRow = leftCols.concat(rightCols);
+
+      fullRow.forEach(function(tNum) {
+        appendTableCell(grid, tNum, highlightTables);
+      });
+    }
+
+    // 动画
+    var items = grid.querySelectorAll('.table-item');
+    for (var k = 0; k < items.length; k++) {
+      (function(el, idx) {
+        if (el.style.visibility === 'hidden') return;
+        setTimeout(function() {
+          el.classList.add('show');
+          var numEl = el.querySelector('.table-number');
+          if (numEl) {
+            var num = parseInt(numEl.textContent.replace(/[^0-9]/g, ''));
+            if (highlightTables !== null) {
+              if (highlightTables.indexOf(num) !== -1) el.classList.add('highlighted');
+              else el.classList.add('dimmed');
+            }
+          }
+        }, 50 + idx * 25);
+      })(items[k], k);
+    }
+  }
+
+  function appendTableCell(grid, tNum, highlightTables) {
+    var div = document.createElement('div');
+    if (tNum !== null) {
+      var isH = (highlightTables !== null && highlightTables.indexOf(tNum) !== -1);
+      var label = getGroupName(tNum);
+      div.className = 'table-item';
+      div.innerHTML = createTableSVG(tNum, isH) +
+        '<div class="table-number">第' + tNum + '桌</div>' +
+        '<div class="table-label">' + label + '</div>';
+    } else {
+      div.className = 'table-item';
+      div.style.visibility = 'hidden';
+    }
+    grid.appendChild(div);
+  }
+
+  // === 获取桌号对应的分类名（简短版） ===
+  function getGroupName(tableNum) {
+    for (var side in CATEGORIES) {
+      var groups = CATEGORIES[side].groups;
+      for (var i = 0; i < groups.length; i++) {
+        if (groups[i].tables.indexOf(tableNum) !== -1) {
+          var name = groups[i].name;
+          var prefix = CATEGORIES[side].name;
+          var shortName = name.indexOf(prefix) === 0 ? name.substring(prefix.length) : name;
+          return shortName.replace(/\n/g, '/');
+        }
+      }
+    }
+    return '';
+  }
+
+  // === 初始化：页面加载时渲染全部桌位 ===
+  renderTables(null);
+
+  // === 选择大分类 ===
+  window.selectSide = function(side) {
+    currentSide = side;
+    currentGroup = null;
+
+    document.getElementById('tab-bride').classList.toggle('active', side === 'bride');
+    document.getElementById('tab-groom').classList.toggle('active', side === 'groom');
+
+    // 渲染子分类按钮
+    var container = document.getElementById('sub-categories');
+    var cat = CATEGORIES[side];
+    var html = '<div class="sub-title">请选择您的分类：</div><div class="sub-grid">';
+    cat.groups.forEach(function(g) {
+      var tableText = g.tables.length === 1 ? '第 ' + g.tables[0] + ' 桌' : '第 ' + g.tables[0] + '~' + g.tables[g.tables.length-1] + ' 桌';
+      var displayName = g.name.replace(cat.name, '').replace(/\n/g, '<br>');
+      html += '<button class="sub-btn" onclick="selectGroup(event,\'' + side + '\',' + JSON.stringify(g.tables) + ')">' +
+        displayName +
+        '<div class="sub-btn-table">' + tableText + '</div>' +
+        '</button>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+    container.style.display = 'block';
+
+    // 重置桌位高亮（显示全部，不高亮）
+    renderTables(null);
+    document.getElementById('result-banner').classList.remove('visible');
+    document.getElementById('direction-arrow').classList.remove('visible');
+    document.getElementById('btn-reset').classList.remove('visible');
+
+    // 滚动到子分类
+    setTimeout(function() {
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  // === 选择子分类 ===
+  window.selectGroup = function(e, side, tables) {
+    currentGroup = tables;
+    var cat = CATEGORIES[side];
+    var group = cat.groups.find(function(g) { return JSON.stringify(g.tables) === JSON.stringify(tables); });
+
+    // 高亮按钮
+    var btns = document.querySelectorAll('.sub-btn');
+    btns.forEach(function(btn) { btn.classList.remove('active'); });
+    e.target.closest('.sub-btn').classList.add('active');
+
+    // 渲染桌位（高亮选中的桌）
+    renderTables(tables);
+
+    // 更新横幅
+    var banner = document.getElementById('result-banner');
+    document.getElementById('banner-icon').textContent = cat.icon;
+    var tableText = tables.length === 1 ? '第 ' + tables[0] + ' 桌' : '第 ' + tables[0] + '~' + tables[tables.length-1] + ' 桌';
+    document.getElementById('banner-text').textContent = group.name.replace(/\n/g, '、') + ' · ' + tableText;
+    var leftCount = Math.ceil(totalTables / 2);
+    var isLeft = tables[tables.length - 1] <= leftCount;
+    document.getElementById('banner-sub').textContent = isLeft ? '请前往左侧桌位就座' : '请前往右侧桌位就座';
+    banner.classList.add('visible');
+
+    // 更新侧标签
+    document.getElementById('label-left').classList.toggle('active', isLeft);
+    document.getElementById('label-right').classList.toggle('active', !isLeft);
+
+    // 方向箭头
+    var dirArrow = document.getElementById('direction-arrow');
+    var arrowIcon = document.getElementById('arrow-icon');
+    var arrowText = document.getElementById('arrow-text');
+    if (isLeft) {
+      arrowIcon.textContent = '👈';
+      arrowText.textContent = '您的桌位在左侧（' + tableText + '）';
+      dirArrow.classList.add('left');
+    } else {
+      arrowIcon.textContent = '👉';
+      arrowText.textContent = '您的桌位在右侧（' + tableText + '）';
+      dirArrow.classList.remove('left');
+    }
+    dirArrow.classList.add('visible');
+
+    // 显示重置按钮
+    document.getElementById('btn-reset').classList.add('visible');
+
+    // 滚动到结果
+    setTimeout(function() {
+      banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  };
+
+  // === 重置 ===
+  window.resetSelection = function() {
+    currentSide = null;
+    currentGroup = null;
+    document.getElementById('tab-bride').classList.remove('active');
+    document.getElementById('tab-groom').classList.remove('active');
+    document.getElementById('sub-categories').style.display = 'none';
+    document.getElementById('result-banner').classList.remove('visible');
+    document.getElementById('direction-arrow').classList.remove('visible');
+    document.getElementById('btn-reset').classList.remove('visible');
+    document.getElementById('label-left').classList.remove('active');
+    document.getElementById('label-right').classList.remove('active');
+    // 重新渲染全部桌位（无高亮）
+    renderTables(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+})();
+</script>
+</body>
+</html>
