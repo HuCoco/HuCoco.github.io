@@ -127,65 +127,71 @@ body {
   white-space: nowrap;
 }
 
-/* === Select Tabs === */
-.select-tabs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.select-tab {
-  flex: 1;
-  background: var(--card);
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  -webkit-user-select: none;
-  user-select: none;
-  padding: 20px 12px;
-  text-align: center;
-}
-.select-tab::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--green);
-  transform: scaleX(0);
-  transition: transform 0.25s;
-}
-.select-tab.active {
-  border-color: var(--green);
-  box-shadow: 0 4px 20px rgba(94,140,74,0.18);
-  transform: scale(1.02);
-}
-.select-tab.active::before { transform: scaleX(1); }
-.select-tab:active { transform: scale(0.97); }
-.select-tab .tab-icon { font-size: 32px; margin-bottom: 8px; }
-.select-tab .tab-name { font-size: 16px; font-weight: 700; color: var(--text); }
-.select-tab .tab-desc { font-size: 11px; color: var(--text-sub); margin-top: 4px; }
+/* === Select Tabs (removed, moved to sidebar) === */
 
-/* === Sub Categories === */
-.sub-categories {
-  margin-bottom: 20px;
-  animation: slideUp 0.3s ease;
+/* === Sidebar Panel === */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
 }
-.sub-categories .sub-title {
+.sidebar-overlay.visible { display: block; }
+.sidebar {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 280px;
+  max-width: 80vw;
+  background: var(--card);
+  z-index: 1001;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--sat) + 16px) 16px calc(var(--sab) + 16px);
+}
+.sidebar-overlay.visible .sidebar { transform: translateX(0); }
+.sidebar-close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.sidebar-close .sidebar-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.sidebar-close button {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-section {
+  margin-bottom: 20px;
+}
+.sidebar-section-title {
   font-size: 12px;
   color: var(--text-sub);
-  margin-bottom: 10px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-left: 2px;
 }
-.sub-categories .sub-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.sidebar-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
-.sub-btn {
-  padding: 14px 12px;
-  border-radius: 12px;
+.sidebar-item {
+  padding: 12px 14px;
+  border-radius: 10px;
   border: 1.5px solid var(--border);
   background: var(--card);
   font-size: 13px;
@@ -193,23 +199,47 @@ body {
   color: var(--text);
   cursor: pointer;
   transition: all 0.2s;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   -webkit-user-select: none;
   user-select: none;
 }
-.sub-btn:active { transform: scale(0.96); }
-.sub-btn.active {
+.sidebar-item:active { transform: scale(0.97); }
+.sidebar-item.active {
   background: var(--green);
   color: #fff;
   border-color: var(--green);
-  box-shadow: 0 2px 12px rgba(94,140,74,0.2);
 }
-.sub-btn .sub-btn-table {
+.sidebar-item .item-tables {
   font-size: 10px;
   font-weight: 400;
-  opacity: 0.8;
-  margin-top: 3px;
+  opacity: 0.7;
 }
+
+/* === Open Sidebar Button === */
+.open-sidebar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  margin-top: 16px;
+  border-radius: 12px;
+  border: none;
+  background: var(--green);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.open-sidebar-btn:active { transform: scale(0.97); opacity: 0.85; }
+
+/* === Sub Categories (removed, moved to sidebar) === */
 
 /* === Result Banner === */
 .result-banner {
@@ -312,25 +342,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: 0;
-  transform: scale(0.7) translateY(20px);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.table-item.show {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+  transition: opacity 0.3s, transform 0.3s;
 }
 .table-item.dimmed {
-  opacity: 0.3;
-  transform: scale(0.85);
-  filter: grayscale(0.6);
+  opacity: 0.25;
+  transform: scale(0.9);
 }
 .table-item.highlighted {
-  animation: pulse-table 2s ease-in-out infinite;
-}
-@keyframes pulse-table {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  transform: scale(1.08);
 }
 
 .round-table-svg {
@@ -488,6 +507,10 @@ body {
   .side-label { background: #1f2e1c; }
   .side-label.active { background: var(--green); color: #fff; }
   .room-outline { border-color: var(--bamboo); }
+  .sidebar { background: #1a261a; }
+  .sidebar-close button { background: #0f1a0f; }
+  .sidebar-item { background: #0f1a0f; border-color: #2a3d28; }
+  .sidebar-item.active { background: var(--green); border-color: var(--green); }
 }
 </style>
 </head>
@@ -507,34 +530,9 @@ body {
 </div>
 
 <div class="container">
-  <div class="divider"><span>请选择</span></div>
 
-  <!-- Select Tabs (一级选择) -->
-  <div class="select-tabs">
-    <div class="select-tab" id="tab-bride" onclick="selectSide('bride')">
-      <div class="tab-icon">👰</div>
-      <div class="tab-name">任任宾客</div>
-      <div class="tab-desc">第 1 ~ 11 桌</div>
-    </div>
-    <div class="select-tab" id="tab-groom" onclick="selectSide('groom')">
-      <div class="tab-icon">🤵</div>
-      <div class="tab-name">小胡宾客</div>
-      <div class="tab-desc">第 12 ~ 35 桌</div>
-    </div>
-  </div>
-
-  <!-- 子分类选择 -->
-  <div class="sub-categories" id="sub-categories" style="display:none;"></div>
-
-  <!-- Result Banner -->
-  <div class="result-banner" id="result-banner">
-    <div class="banner-icon" id="banner-icon">👰</div>
-    <div class="banner-text" id="banner-text"></div>
-    <div class="banner-sub" id="banner-sub"></div>
-  </div>
-
-  <!-- Hall Card -->
-  <div class="hall-card" id="hall-card">
+  <!-- Hall Card (视觉重心，置顶) -->
+  <div class="hall-card" id="hall-card" style="margin-top:20px;">
     <div class="hall-header">
       <span>🍽</span>
       <span>宴会厅桌位分布</span>
@@ -567,6 +565,18 @@ body {
     </div>
   </div>
 
+  <div class="divider"><span>查找您的桌位</span></div>
+
+  <!-- Open Sidebar Button -->
+  <button class="open-sidebar-btn" onclick="openSidebar()">🪑 点击查找我的桌位</button>
+
+  <!-- Result Banner -->
+  <div class="result-banner" id="result-banner">
+    <div class="banner-icon" id="banner-icon">👰</div>
+    <div class="banner-text" id="banner-text"></div>
+    <div class="banner-sub" id="banner-sub"></div>
+  </div>
+
   <!-- Reset Button -->
   <button class="btn-reset" id="btn-reset" onclick="resetSelection()">🔄 重新选择</button>
 </div>
@@ -575,6 +585,17 @@ body {
 <div class="footer">
   <div class="hearts">♥ ♥ ♥</div>
   <p>祝您用餐愉快，感谢莅临！</p>
+</div>
+
+<!-- Sidebar Panel -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()">
+  <div class="sidebar" onclick="event.stopPropagation()">
+    <div class="sidebar-close">
+      <span class="sidebar-title">查找我的桌位</span>
+      <button onclick="closeSidebar()">✕</button>
+    </div>
+    <div id="sidebarContent"></div>
+  </div>
 </div>
 
 <script>
@@ -632,91 +653,87 @@ body {
     var tableFill = isHighlighted ? '#edf5e8' : '#f5f5f2';
     var tableStroke = isHighlighted ? '#5e8c4a' : '#d0d0c8';
     var tableStrokeW = isHighlighted ? '2.5' : '1.5';
-    var textFill = isHighlighted ? '#3d6b2e' : '#999';
+    var textFill = isHighlighted ? '#2c3a2c' : '#666';
 
     return '<svg class="round-table-svg" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">' +
       seatCircles +
       '<circle cx="' + cx + '" cy="' + cy + '" r="' + tableR + '" fill="' + tableFill + '" stroke="' + tableStroke + '" stroke-width="' + tableStrokeW + '"/>' +
-      '<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" fill="' + textFill + '" font-size="14" font-weight="700">' + tableNum + '</text>' +
+      '<text x="' + cx + '" y="' + (cy + 6) + '" text-anchor="middle" fill="' + textFill + '" font-size="18" font-weight="800">' + tableNum + '</text>' +
       '</svg>';
   }
 
   // === 渲染桌位 ===
+  var tablesCached = false;
+
   function renderTables(highlightTables) {
     var grid = document.getElementById('tables-grid');
-    grid.innerHTML = '';
 
-    // 8列布局，左4列+右4列
-    // 左侧先编号，右侧后编号
-    // 17桌 → 左侧9桌(3行×3 + 不足补空)，右侧8桌(2行×4)
-    // 为保持左右相近：左9右8
-    var leftCount = Math.ceil(totalTables / 2); // 9
-    var rightCount = totalTables - leftCount;    // 8
-    var colsPerSide = 4;
+    if (!tablesCached) {
+      // 首次渲染：创建所有桌位 DOM
+      grid.innerHTML = '';
+      var leftCount = Math.ceil(totalTables / 2);
+      var rightCount = totalTables - leftCount;
+      var colsPerSide = 4;
 
-    // 左侧桌号按行填充(每行4个)
-    var leftRows = [];
-    for (var i = 0; i < leftCount; i += colsPerSide) {
-      var row = [];
-      for (var c = 0; c < colsPerSide; c++) {
-        var idx = i + c;
-        row.push(idx < leftCount ? idx + 1 : null);
+      var leftRows = [];
+      for (var i = 0; i < leftCount; i += colsPerSide) {
+        var row = [];
+        for (var c = 0; c < colsPerSide; c++) {
+          var idx = i + c;
+          row.push(idx < leftCount ? idx + 1 : null);
+        }
+        leftRows.push(row);
       }
-      leftRows.push(row);
-    }
 
-    // 右侧桌号按行填充(每行4个)
-    var rightRows = [];
-    for (var j = 0; j < rightCount; j += colsPerSide) {
-      var row2 = [];
-      for (var c2 = 0; c2 < colsPerSide; c2++) {
-        var idx2 = j + c2;
-        row2.push(idx2 < rightCount ? leftCount + idx2 + 1 : null);
+      var rightRows = [];
+      for (var j = 0; j < rightCount; j += colsPerSide) {
+        var row2 = [];
+        for (var c2 = 0; c2 < colsPerSide; c2++) {
+          var idx2 = j + c2;
+          row2.push(idx2 < rightCount ? leftCount + idx2 + 1 : null);
+        }
+        rightRows.push(row2);
       }
-      rightRows.push(row2);
+
+      var maxRows = Math.max(leftRows.length, rightRows.length);
+      for (var row3 = 0; row3 < maxRows; row3++) {
+        var leftCols = leftRows[row3] || [null, null, null, null];
+        var rightCols = rightRows[row3] || [null, null, null, null];
+        var fullRow = leftCols.concat(rightCols);
+        fullRow.forEach(function(tNum) {
+          appendTableCell(grid, tNum, null);
+        });
+      }
+      tablesCached = true;
     }
 
-    // 逐行渲染：每行 = 左4格 + 右4格
-    var maxRows = Math.max(leftRows.length, rightRows.length);
-    for (var row3 = 0; row3 < maxRows; row3++) {
-      var leftCols = leftRows[row3] || [null, null, null, null];
-      var rightCols = rightRows[row3] || [null, null, null, null];
-      var fullRow = leftCols.concat(rightCols);
-
-      fullRow.forEach(function(tNum) {
-        appendTableCell(grid, tNum, highlightTables);
-      });
-    }
-
-    // 动画
-    var items = grid.querySelectorAll('.table-item');
-    for (var k = 0; k < items.length; k++) {
-      (function(el, idx) {
-        if (el.style.visibility === 'hidden') return;
-        setTimeout(function() {
-          el.classList.add('show');
-          var numEl = el.querySelector('.table-number');
-          if (numEl) {
-            var num = parseInt(numEl.textContent.replace(/[^0-9]/g, ''));
-            if (highlightTables !== null) {
-              if (highlightTables.indexOf(num) !== -1) el.classList.add('highlighted');
-              else el.classList.add('dimmed');
-            }
-          }
-        }, 50 + idx * 25);
-      })(items[k], k);
-    }
+    // 更新高亮状态（不重建DOM）
+    var items = grid.querySelectorAll('.table-item[data-table]');
+    items.forEach(function(el) {
+      var num = parseInt(el.dataset.table);
+      el.classList.remove('highlighted', 'dimmed');
+      if (highlightTables !== null) {
+        if (highlightTables.indexOf(num) !== -1) {
+          el.classList.add('highlighted');
+          // 更新SVG为高亮样式
+          el.innerHTML = createTableSVG(num, true);
+        } else {
+          el.classList.add('dimmed');
+          el.innerHTML = createTableSVG(num, false);
+        }
+      } else {
+        el.innerHTML = createTableSVG(num, false);
+      }
+    });
   }
 
   function appendTableCell(grid, tNum, highlightTables) {
     var div = document.createElement('div');
     if (tNum !== null) {
       var isH = (highlightTables !== null && highlightTables.indexOf(tNum) !== -1);
-      var label = getGroupName(tNum);
       div.className = 'table-item';
-      div.innerHTML = createTableSVG(tNum, isH) +
-        '<div class="table-number">第' + tNum + '桌</div>' +
-        '<div class="table-label">' + label + '</div>';
+      div.dataset.table = tNum;
+      div.innerHTML = createTableSVG(tNum, isH);
     } else {
       div.className = 'table-item';
       div.style.visibility = 'hidden';
@@ -743,61 +760,54 @@ body {
   // === 初始化：页面加载时渲染全部桌位 ===
   renderTables(null);
 
-  // === 选择大分类 ===
-  window.selectSide = function(side) {
-    currentSide = side;
-    currentGroup = null;
+  // === 打开侧边栏 ===
+  window.openSidebar = function() {
+    var content = document.getElementById('sidebarContent');
+    var html = '';
 
-    document.getElementById('tab-bride').classList.toggle('active', side === 'bride');
-    document.getElementById('tab-groom').classList.toggle('active', side === 'groom');
+    for (var side in CATEGORIES) {
+      var cat = CATEGORIES[side];
+      html += '<div class="sidebar-section">';
+      html += '<div class="sidebar-section-title">' + cat.icon + ' ' + cat.name + '宾客</div>';
+      html += '<div class="sidebar-items">';
+      cat.groups.forEach(function(g) {
+        var tableText = g.tables.length === 1 ? '第' + g.tables[0] + '桌' : '第' + g.tables[0] + '-' + g.tables[g.tables.length-1] + '桌';
+        var displayName = g.name.replace(cat.name, '').replace(/\n/g, ' · ');
+        html += '<div class="sidebar-item" onclick="selectTable(\'' + side + '\',' + JSON.stringify(g.tables) + ')">' +
+          '<span>' + displayName + '</span>' +
+          '<span class="item-tables">' + tableText + '</span>' +
+          '</div>';
+      });
+      html += '</div></div>';
+    }
 
-    // 渲染子分类按钮
-    var container = document.getElementById('sub-categories');
-    var cat = CATEGORIES[side];
-    var html = '<div class="sub-title">请选择您的分类：</div><div class="sub-grid">';
-    cat.groups.forEach(function(g) {
-      var tableText = g.tables.length === 1 ? '第 ' + g.tables[0] + ' 桌' : '第 ' + g.tables[0] + '~' + g.tables[g.tables.length-1] + ' 桌';
-      var displayName = g.name.replace(cat.name, '').replace(/\n/g, '<br>');
-      html += '<button class="sub-btn" onclick="selectGroup(event,\'' + side + '\',' + JSON.stringify(g.tables) + ')">' +
-        displayName +
-        '<div class="sub-btn-table">' + tableText + '</div>' +
-        '</button>';
-    });
-    html += '</div>';
-    container.innerHTML = html;
-    container.style.display = 'block';
-
-    // 重置桌位高亮（显示全部，不高亮）
-    renderTables(null);
-    document.getElementById('result-banner').classList.remove('visible');
-    document.getElementById('direction-arrow').classList.remove('visible');
-    document.getElementById('btn-reset').classList.remove('visible');
-
-    // 滚动到子分类
-    setTimeout(function() {
-      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    content.innerHTML = html;
+    document.getElementById('sidebarOverlay').classList.add('visible');
   };
 
-  // === 选择子分类 ===
-  window.selectGroup = function(e, side, tables) {
-    currentGroup = tables;
+  // === 关闭侧边栏 ===
+  window.closeSidebar = function() {
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+  };
+
+  // === 选择桌位 ===
+  window.selectTable = function(side, tables) {
     var cat = CATEGORIES[side];
     var group = cat.groups.find(function(g) { return JSON.stringify(g.tables) === JSON.stringify(tables); });
 
-    // 高亮按钮
-    var btns = document.querySelectorAll('.sub-btn');
-    btns.forEach(function(btn) { btn.classList.remove('active'); });
-    e.target.closest('.sub-btn').classList.add('active');
+    // 高亮侧边栏项
+    var items = document.querySelectorAll('.sidebar-item');
+    items.forEach(function(el) { el.classList.remove('active'); });
+    event.target.closest('.sidebar-item').classList.add('active');
 
-    // 渲染桌位（高亮选中的桌）
+    // 高亮桌位
     renderTables(tables);
 
     // 更新横幅
     var banner = document.getElementById('result-banner');
     document.getElementById('banner-icon').textContent = cat.icon;
     var tableText = tables.length === 1 ? '第 ' + tables[0] + ' 桌' : '第 ' + tables[0] + '~' + tables[tables.length-1] + ' 桌';
-    document.getElementById('banner-text').textContent = group.name.replace(/\n/g, '、') + ' · ' + tableText;
+    document.getElementById('banner-text').textContent = group.name.replace(/\n/g, ' · ') + ' · ' + tableText;
     var leftCount = Math.ceil(totalTables / 2);
     var isLeft = tables[tables.length - 1] <= leftCount;
     document.getElementById('banner-sub').textContent = isLeft ? '请前往左侧桌位就座' : '请前往右侧桌位就座';
@@ -825,25 +835,19 @@ body {
     // 显示重置按钮
     document.getElementById('btn-reset').classList.add('visible');
 
-    // 滚动到结果
-    setTimeout(function() {
-      banner.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 200);
+    // 关闭侧边栏
+    closeSidebar();
   };
 
   // === 重置 ===
   window.resetSelection = function() {
     currentSide = null;
     currentGroup = null;
-    document.getElementById('tab-bride').classList.remove('active');
-    document.getElementById('tab-groom').classList.remove('active');
-    document.getElementById('sub-categories').style.display = 'none';
     document.getElementById('result-banner').classList.remove('visible');
     document.getElementById('direction-arrow').classList.remove('visible');
     document.getElementById('btn-reset').classList.remove('visible');
     document.getElementById('label-left').classList.remove('active');
     document.getElementById('label-right').classList.remove('active');
-    // 重新渲染全部桌位（无高亮）
     renderTables(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
